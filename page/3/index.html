@@ -261,6 +261,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2017/12/21/c-language-c1-002/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/21/c-language-c1-002/" itemprop="url">C语言学习第一章T002</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-21T12:05:01+08:00">
+                2017-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/21/c-language-c1-002/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/21/c-language-c1-002/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目-输入三个整数，求它们的和与积"><a href="#题目-输入三个整数，求它们的和与积" class="headerlink" title="题目:输入三个整数，求它们的和与积"></a>题目:输入三个整数，求它们的和与积</h2><h3 id="主要代码"><a href="#主要代码" class="headerlink" title="主要代码:"></a>主要代码:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;  </div><div class="line">int add (int ,int ,int);  </div><div class="line">int multi (int ,int ,int);  </div><div class="line">int main (void)  </div><div class="line">&#123;  </div><div class="line">	int x,y,z;  </div><div class="line">	printf(&quot;press x,y,z \n\n&quot;);  </div><div class="line">	scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z);  </div><div class="line">	int s1,s2;  </div><div class="line">	s1 = add(x,y,z);  </div><div class="line">	s2 = multi(x,y,z);  </div><div class="line">	printf(&quot;add result:%d \n\n&quot;,s1);  </div><div class="line">	printf(&quot;multi result:%d \n\n&quot;,s2);  </div><div class="line">	return 0;  </div><div class="line">&#125;  </div><div class="line">int add (int a ,int b ,int c)  </div><div class="line">&#123;  </div><div class="line">	int result;  </div><div class="line">	result = a + b + c;  </div><div class="line">	return result;  </div><div class="line">&#125;  </div><div class="line">int multi (int a ,int b ,int c)  </div><div class="line">&#123;  </div><div class="line">	int result;  </div><div class="line">	result = a * b * c;  </div><div class="line">	return result;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果:"></a>运行结果:</h3><p><img src="http://FisherWY.github.io/2017/pic/c1p2.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2017/12/20/c-language-c1-001/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -563,7 +695,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
