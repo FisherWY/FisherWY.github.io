@@ -261,6 +261,141 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/01/30/c-language-c4-026/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/c-language-c4-026/" itemprop="url">C语言学习第四章T002</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T19:55:00+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/c-language-c4-026/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/30/c-language-c4-026/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。"><a href="#题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。" class="headerlink" title="题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。"></a>题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。</h2><blockquote>
+<p>主函数中输入系数a、b、c。</p>
+</blockquote>
+<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line"></div><div class="line">double function1(double a,double b,double c);</div><div class="line">double function2(double a,double b,double c);</div><div class="line">int judge(int a);</div><div class="line">int jdelta(int a,int b,int c);</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	double a,b,c,delta;</div><div class="line">	printf(&quot;一元二次方程计算器:\n&quot;);</div><div class="line">	printf(&quot;input a:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;a);</div><div class="line">	printf(&quot;input b:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;b);</div><div class="line">	printf(&quot;input c:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;c);</div><div class="line">	if ( judge(a) )</div><div class="line">	&#123;</div><div class="line">		printf(&quot;error!&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		delta = jdelta(a,b,c);</div><div class="line">		printf(&quot;dleta=%f\n&quot;,delta);</div><div class="line">		if (delta&gt;0)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个不等实根：&quot;);</div><div class="line">			function1(a,b,c);</div><div class="line">		&#125;</div><div class="line">		else if (delta==0)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个相等实根：&quot;);</div><div class="line">			function1(a,b,c);</div><div class="line">		&#125;</div><div class="line">		else</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个复数根：&quot;);</div><div class="line">			function2(a,b,c);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function1(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">	double x1,x2,delta;</div><div class="line">	delta = b*b - 4*a*c;</div><div class="line">	x1 = (-b + sqrt(delta))/(2*a);</div><div class="line">	x2 = (-b - sqrt(delta))/(2*a);</div><div class="line">	printf(&quot;x1=%.2lf,&quot;,x1);</div><div class="line">	printf(&quot;x2=%.2lf\n&quot;,x2);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function2(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">	double x1,x2,delta;</div><div class="line">	delta = -(b*b - 4*a*c);</div><div class="line">	x1 = -(b/(2*a))+sqrt(delta)/(2*a);</div><div class="line">	x2 = -(b/(2*a))-sqrt(delta)/(2*a);</div><div class="line">	printf(&quot;x1=%.2lfi,&quot;,x1);</div><div class="line">	printf(&quot;x2=%.2lfi\n&quot;,x2);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">	if (a==0)</div><div class="line">		return 1;</div><div class="line">	else </div><div class="line">		return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int jdelta (int a,int b,int c)</div><div class="line">&#123;</div><div class="line">	int delta;</div><div class="line">	delta = b*b - 4*a*c;</div><div class="line">	return delta;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p2.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p3.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p4.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/01/29/c-language-c4-025/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1451,141 +1586,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/01/06/c-language-c3-015/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/c-language-c3-015/" itemprop="url">C语言第三章T004</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-06T12:43:52+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/06/c-language-c3-015/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/06/c-language-c3-015/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：从键盘输入当月利润，求应发放奖金总数。"><a href="#题目：从键盘输入当月利润，求应发放奖金总数。" class="headerlink" title="题目：从键盘输入当月利润，求应发放奖金总数。"></a>题目：从键盘输入当月利润，求应发放奖金总数。</h2><blockquote>
-<p>企业发放的奖金根据利润提成:利润低于或等于10万元时，奖金可提10%；<br> 利润高于10万元低于20万元时，低于10万元的部分按10%提成，高于10万元的部分可提成7.5%；<br> 20万到40万之间时，高于20万元的部分可提成5%；<br> 40万到60万之间时，高于40万元的部分可提成3%；<br> 60万到100万之间时，高于60万元的部分可提成1.5%；<br> 高于100万元时，超过100万元的部分按1%提成。</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main ( )</div><div class="line">&#123;</div><div class="line">	double a,c,d,sum;</div><div class="line">	printf(&quot;当月利润(&gt;0):\n&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;a);</div><div class="line">	if (a&lt;=10 &amp;&amp; a&gt;0)</div><div class="line">	&#123;</div><div class="line">		sum = a*0.1;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&gt;10 &amp;&amp; a&lt;=20)</div><div class="line">	&#123;</div><div class="line">		c = a - 10;</div><div class="line">		d = c*0.075;</div><div class="line">		sum = d + 10*0.1;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&gt;20 &amp;&amp; a&lt;=40)</div><div class="line">	&#123;</div><div class="line">		c = a - 20;</div><div class="line">		d = c*0.05;</div><div class="line">		sum = d + 10*0.1 + 10*0.075;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&gt;40 &amp;&amp; a&lt;=60)</div><div class="line">	&#123;</div><div class="line">		c = a - 40;</div><div class="line">		d = c*0.03;</div><div class="line">		sum = d + 10*0.1 + 10*0.075 + 20*0.05;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&gt;60 &amp;&amp; a&lt;=100)</div><div class="line">	&#123;</div><div class="line">		c = a - 60;</div><div class="line">		d = c*0.015;</div><div class="line">		sum = d + 10*0.1 + 10*0.075 + 20*0.05 + 20*0.03;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&gt;100)</div><div class="line">	&#123;</div><div class="line">		c = a - 100;</div><div class="line">		d = c*0.01;</div><div class="line">		sum = d + 10*0.1 + 10*0.075 + 20*0.05 + 20*0.03 + 40*0.015;</div><div class="line">		printf(&quot;奖金:%.3lf\n&quot;,sum);</div><div class="line">	&#125;</div><div class="line">	else if (a&lt;=0)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;error!\n&quot;);</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c3p9.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1636,7 +1636,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
