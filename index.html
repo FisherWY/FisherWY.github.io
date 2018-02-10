@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -204,7 +204,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            Über
           </a>
         </li>
       
@@ -224,7 +224,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -247,6 +247,141 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/10/c-language-c5-036/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/10/c-language-c5-036/" itemprop="url">C语言学习第五章T003</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T10:59:17+08:00">
+                2018-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/10/c-language-c5-036/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/10/c-language-c5-036/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：输出n阶左上拐矩阵，n的值由用户输入。"><a href="#题目：输出n阶左上拐矩阵，n的值由用户输入。" class="headerlink" title="题目：输出n阶左上拐矩阵，n的值由用户输入。"></a>题目：输出n阶左上拐矩阵，n的值由用户输入。</h2><blockquote>
+<p>示例：<br>       1   1   1   1   1<br>       1   2   2   2   2<br>       1   2   3   3   3<br>       1   2   3   4   4<br>       1   2   3   4   5</p>
+</blockquote>
+<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a[100],i,j,k,x;</div><div class="line">	printf(&quot;input n!(1-100) :&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;i);</div><div class="line">	for (j=0;j&lt;i;j++)</div><div class="line">	&#123;</div><div class="line">		a[j]=1;</div><div class="line">	&#125;</div><div class="line">	for (j=0;j&lt;i;j++)</div><div class="line">	&#123;</div><div class="line">		for (k=0;k&lt;i;k++)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;%4d&quot;,a[k]);</div><div class="line">		&#125;</div><div class="line">		printf(&quot;\n&quot;);</div><div class="line">		for (x=j;x&lt;i;x++)</div><div class="line">		&#123;</div><div class="line">			a[x+1]=a[j]+1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p3.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -290,7 +425,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:57+08:00">
                 2018-02-08
@@ -425,7 +560,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:40+08:00">
                 2018-02-08
@@ -560,7 +695,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:42:55+08:00">
                 2018-02-06
@@ -692,7 +827,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:22:21+08:00">
                 2018-02-06
@@ -827,7 +962,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-05T11:26:33+08:00">
                 2018-02-05
@@ -959,7 +1094,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-03T19:40:33+08:00">
                 2018-02-03
@@ -1094,7 +1229,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-03T19:40:20+08:00">
                 2018-02-03
@@ -1229,7 +1364,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-01T13:13:22+08:00">
                 2018-02-01
@@ -1364,7 +1499,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-31T22:02:13+08:00">
                 2018-01-31
@@ -1457,141 +1592,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/01/30/c-language-c4-026/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/30/c-language-c4-026/" itemprop="url">C语言学习第四章T002</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T19:55:00+08:00">
-                2018-01-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/30/c-language-c4-026/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/30/c-language-c4-026/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。"><a href="#题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。" class="headerlink" title="题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。"></a>题目：求一元二次方程的根，用3个函数分别求判别式大于0、等于0和小于0时的根，并输出结果。</h2><blockquote>
-<p>主函数中输入系数a、b、c。</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line"></div><div class="line">double function1(double a,double b,double c);</div><div class="line">double function2(double a,double b,double c);</div><div class="line">int judge(int a);</div><div class="line">int jdelta(int a,int b,int c);</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	double a,b,c,delta;</div><div class="line">	printf(&quot;一元二次方程计算器:\n&quot;);</div><div class="line">	printf(&quot;input a:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;a);</div><div class="line">	printf(&quot;input b:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;b);</div><div class="line">	printf(&quot;input c:&quot;);</div><div class="line">	scanf(&quot;%lf&quot;,&amp;c);</div><div class="line">	if ( judge(a) )</div><div class="line">	&#123;</div><div class="line">		printf(&quot;error!&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		delta = jdelta(a,b,c);</div><div class="line">		printf(&quot;dleta=%f\n&quot;,delta);</div><div class="line">		if (delta&gt;0)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个不等实根：&quot;);</div><div class="line">			function1(a,b,c);</div><div class="line">		&#125;</div><div class="line">		else if (delta==0)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个相等实根：&quot;);</div><div class="line">			function1(a,b,c);</div><div class="line">		&#125;</div><div class="line">		else</div><div class="line">		&#123;</div><div class="line">			printf(&quot;方程有两个复数根：&quot;);</div><div class="line">			function2(a,b,c);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function1(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">	double x1,x2,delta;</div><div class="line">	delta = b*b - 4*a*c;</div><div class="line">	x1 = (-b + sqrt(delta))/(2*a);</div><div class="line">	x2 = (-b - sqrt(delta))/(2*a);</div><div class="line">	printf(&quot;x1=%.2lf,&quot;,x1);</div><div class="line">	printf(&quot;x2=%.2lf\n&quot;,x2);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function2(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">	double x1,x2,delta;</div><div class="line">	delta = -(b*b - 4*a*c);</div><div class="line">	x1 = -(b/(2*a))+sqrt(delta)/(2*a);</div><div class="line">	x2 = -(b/(2*a))-sqrt(delta)/(2*a);</div><div class="line">	printf(&quot;x1=%.2lfi,&quot;,x1);</div><div class="line">	printf(&quot;x2=%.2lfi\n&quot;,x2);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">	if (a==0)</div><div class="line">		return 1;</div><div class="line">	else </div><div class="line">		return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int jdelta (int a,int b,int c)</div><div class="line">&#123;</div><div class="line">	int delta;</div><div class="line">	delta = b*b - 4*a*c;</div><div class="line">	return delta;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p2.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p3.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p4.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1642,8 +1642,8 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">35</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
             
@@ -1656,7 +1656,7 @@
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
                   <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">tags</span>
+                  <span class="site-state-item-name">Tags</span>
                 </a>
               </div>
             
@@ -1724,7 +1724,7 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
