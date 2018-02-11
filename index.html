@@ -261,6 +261,141 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/11/c-language-c5-037/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/11/c-language-c5-037/" itemprop="url">C语言学习第五章T004</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-11T15:24:07+08:00">
+                2018-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/11/c-language-c5-037/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/11/c-language-c5-037/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：输出n阶蛇形矩阵，n的值由用户输入。"><a href="#题目：输出n阶蛇形矩阵，n的值由用户输入。" class="headerlink" title="题目：输出n阶蛇形矩阵，n的值由用户输入。"></a>题目：输出n阶蛇形矩阵，n的值由用户输入。</h2><blockquote>
+<p>示例：<br>      15       7       6       2       1<br>      16      14       8       5       3<br>      22      17      13       9       4<br>      23      21      18      12      10<br>      25      24      20      19      11</p>
+</blockquote>
+<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main ()</div><div class="line">&#123;</div><div class="line">	int a[50][50],i,k,l,m,num;</div><div class="line">	//i控制行和列的数目,k计算矩阵的左列和第一行,l和m用于输出矩阵中的内容</div><div class="line">	int zs,zx,ys,yx;	//zs=左上角,zx=左下角,ys=右上角,yx=右下角</div><div class="line">	int x,y,flag;</div><div class="line">	</div><div class="line">	//数组初始化:</div><div class="line">	for (y=0;y&lt;50;y++)</div><div class="line">	&#123;</div><div class="line">		for (x=0;x&lt;50;x++)</div><div class="line">		&#123;</div><div class="line">			a[y][x] = 0;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	printf(&quot;line(&lt;50):&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;i);</div><div class="line">	</div><div class="line">	//flag初始化</div><div class="line">	if (i%2 == 0)</div><div class="line">	&#123;</div><div class="line">		flag = 0;</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		flag = 1;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	ys = 1;</div><div class="line">	zx = i*i;</div><div class="line">	a[0][i-1] = ys;</div><div class="line">	a[i-1][0] = zx;</div><div class="line">	</div><div class="line">	//对角线的上半部分第一行:</div><div class="line">	for (k=1;k&lt;i;k++)</div><div class="line">	&#123;</div><div class="line">		if (k%2 == 1)		//偶数行</div><div class="line">		&#123;</div><div class="line">			a[0][i-k-1] = a[0][i-k] + 1;</div><div class="line">		&#125;</div><div class="line">		if (k%2 == 0)		//奇数行</div><div class="line">		&#123;</div><div class="line">			a[0][i-k-1] = a[0][i-k] + 2*k;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//对角线:</div><div class="line">	for(l=1;l&lt;i;l++)</div><div class="line">	&#123;</div><div class="line">		if (i%2 == 0)</div><div class="line">		&#123;</div><div class="line">			a[l][l] = a[l-1][l-1] + 1;</div><div class="line">		&#125;</div><div class="line">		if (i%2 == 1)</div><div class="line">		&#123;</div><div class="line">			a[l][l] = a[l-1][l-1] - 1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//上半部分剩下的:</div><div class="line">	m = 0;</div><div class="line">	for (k=1;k&lt;=i;k++)</div><div class="line">	&#123;</div><div class="line">		if (k%2 == flag)		//偶数行</div><div class="line">		&#123;</div><div class="line">			for (l=1;l&lt;=i-1;l++)</div><div class="line">			&#123;</div><div class="line">				a[l][l+1+m] = a[l-1][l+m] + 1;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		else				//奇数行</div><div class="line">		&#123;</div><div class="line">			for (l=1;l&lt;=i-1;l++)</div><div class="line">			&#123;</div><div class="line">				a[l][l+1+m] = a[l-1][l+m] - 1;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		m = m + 1;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//对角线的下半部分第一行:</div><div class="line">	for (k=1;k&lt;i-1;k++)</div><div class="line">	&#123;</div><div class="line">		if (k%2 == 1)		//偶数行</div><div class="line">		&#123;</div><div class="line">			a[i-k-1][0] = a[i-k][0] - 2*k;</div><div class="line">		&#125;</div><div class="line">		if (k%2 == 0)		//奇数行</div><div class="line">		&#123;</div><div class="line">			a[i-k-1][0] = a[i-k][0] - 1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//下半部分剩下的:</div><div class="line">	m = 0;</div><div class="line">	for (k=1;k&lt;=i;k++)</div><div class="line">	&#123;</div><div class="line">		if (k%2 == flag)		//偶数行</div><div class="line">		&#123;</div><div class="line">			for (l=1;l&lt;i-1;l++)</div><div class="line">			&#123;</div><div class="line">				a[l+1+m][l] = a[l+m][l-1] + 1;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		else				//奇数行</div><div class="line">		&#123;</div><div class="line">			for (l=1;l&lt;i-1;l++)</div><div class="line">			&#123;</div><div class="line">				a[l+1+m][l] = a[l+m][l-1] -1;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		m = m + 1;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//输出整个蛇形矩阵</div><div class="line">	for (y=0;y&lt;i;y++)</div><div class="line">	&#123;</div><div class="line">		for (x=0;x&lt;i;x++)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;%8d&quot;,a[y][x]);</div><div class="line">		&#125;</div><div class="line">		printf(&quot;\n&quot;);</div><div class="line">		printf(&quot;\n&quot;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p4.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/10/c-language-c5-036/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1457,141 +1592,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/01/31/c-language-c4-027/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/31/c-language-c4-027/" itemprop="url">C语言学习第四章T003</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-31T22:02:13+08:00">
-                2018-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/31/c-language-c4-027/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/31/c-language-c4-027/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：用递归方法求n解勒让德多项式的值"><a href="#题目：用递归方法求n解勒让德多项式的值" class="headerlink" title="题目：用递归方法求n解勒让德多项式的值"></a>题目：用递归方法求n解勒让德多项式的值</h2><blockquote>
-<p>公式详情：<a href="https://baike.baidu.com/item/勒让德多项式" target="_blank" rel="external">https://baike.baidu.com/item/勒让德多项式</a></p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;iostream&gt;</div><div class="line">float polya(float n,float x);</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	float x,n,y;</div><div class="line">	printf(&quot;input x:&quot;);</div><div class="line">	scanf(&quot;%f&quot;,&amp;x);</div><div class="line">	printf(&quot;input n:&quot;);</div><div class="line">	scanf(&quot;%f&quot;,&amp;n);</div><div class="line">	y=polya(n,x);</div><div class="line">	printf(&quot;answer:%f\n&quot;,y);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">float polya(float n,float x)</div><div class="line"></div><div class="line">&#123;</div><div class="line">	if (n==0)</div><div class="line">	&#123;</div><div class="line">		return 1.0;</div><div class="line">	&#125;</div><div class="line">	else if(n==1)</div><div class="line">	&#123;</div><div class="line">		return x;</div><div class="line">	&#125;</div><div class="line">	else</div><div class="line">	&#123;</div><div class="line">		return ( (2.0*n-1.0)*x*polya(n-1.0,x) - (n-1.0)*polya(n-2.0,x) )/n;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p5.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1642,7 +1642,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
