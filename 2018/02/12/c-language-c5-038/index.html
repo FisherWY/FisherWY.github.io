@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="题目：查找，替换数字。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int main">
+<meta name="description" content="题目：查找，替换数字并输出下标。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int">
 <meta name="keywords" content="C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C语言学习第五章T005">
 <meta property="og:url" content="https://fisherwy.github.io/2018/02/12/c-language-c5-038/index.html">
 <meta property="og:site_name" content="Fisher&#39;s Blog">
-<meta property="og:description" content="题目：查找，替换数字。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int main">
+<meta property="og:description" content="题目：查找，替换数字并输出下标。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://FisherWY.github.io/2017/pic/c5p5.png">
-<meta property="og:updated_time" content="2018-02-12T03:39:29.949Z">
+<meta property="og:updated_time" content="2018-02-12T03:47:35.703Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言学习第五章T005">
-<meta name="twitter:description" content="题目：查找，替换数字。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int main">
+<meta name="twitter:description" content="题目：查找，替换数字并输出下标。 输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。   主要代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152# include &amp;lt;stdio.h&amp;gt;int">
 <meta name="twitter:image" content="http://FisherWY.github.io/2017/pic/c5p5.png">
 
 
@@ -342,7 +342,7 @@
       
 
       
-        <h2 id="题目：查找，替换数字。"><a href="#题目：查找，替换数字。" class="headerlink" title="题目：查找，替换数字。"></a>题目：查找，替换数字。</h2><blockquote>
+        <h2 id="题目：查找，替换数字并输出下标。"><a href="#题目：查找，替换数字并输出下标。" class="headerlink" title="题目：查找，替换数字并输出下标。"></a>题目：查找，替换数字并输出下标。</h2><blockquote>
 <p>输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。 </p>
 </blockquote>
 <h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a[5],max,min,i,x,y,t;</div><div class="line">	</div><div class="line">	//input:</div><div class="line">	printf(&quot;input 5 numbers:&quot;);</div><div class="line">	for (i=0;i&lt;5;i++)</div><div class="line">	&#123;</div><div class="line">			scanf(&quot;%d&quot;,&amp;a[i]);</div><div class="line">	&#125;</div><div class="line">	printf(&quot;start:&quot;);</div><div class="line">	for (i=0;i&lt;5;i++)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;%4d&quot;,a[i]);</div><div class="line">	&#125;</div><div class="line">	printf(&quot;\n&quot;);</div><div class="line">	</div><div class="line">	//judge:</div><div class="line">	max = a[0];</div><div class="line">	min = a[0];</div><div class="line">	x = y = 1;</div><div class="line">	for (i=1;i&lt;5;i++)</div><div class="line">	&#123;</div><div class="line">		if (a[i]&gt;max)</div><div class="line">		&#123;</div><div class="line">			max = a[i];</div><div class="line">			x = i+1;</div><div class="line">		&#125;</div><div class="line">		if (a[i]&lt;min)</div><div class="line">		&#123;</div><div class="line">			min = a[i];</div><div class="line">			y = i+1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//exchange:</div><div class="line">	t = a[x-1];</div><div class="line">	a[x-1] = a[y-1];</div><div class="line">	a[y-1] = t;</div><div class="line">	</div><div class="line">	//output:</div><div class="line">	printf(&quot;max is the %d number,max=%d\n&quot;,x,max);</div><div class="line">	printf(&quot;min is the %d number,min=%d\n&quot;,y,min);</div><div class="line">	printf(&quot;after exchange:&quot;);</div><div class="line">	for (i=0;i&lt;5;i++)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;%4d&quot;,a[i]);</div><div class="line">	&#125;</div><div class="line">	printf(&quot;\n&quot;);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -386,6 +386,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/14/c-language-c5-039/" rel="prev" title="C语言学习第五章T006">
+                C语言学习第五章T006 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -472,7 +476,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
@@ -540,7 +544,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目：查找，替换数字。"><span class="nav-number">1.</span> <span class="nav-text">题目：查找，替换数字。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要代码："><span class="nav-number">1.1.</span> <span class="nav-text">主要代码：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行结果："><span class="nav-number">2.</span> <span class="nav-text">运行结果：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目：查找，替换数字并输出下标。"><span class="nav-number">1.</span> <span class="nav-text">题目：查找，替换数字并输出下标。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要代码："><span class="nav-number">1.1.</span> <span class="nav-text">主要代码：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行结果："><span class="nav-number">2.</span> <span class="nav-text">运行结果：</span></a></li></ol></div>
             
 
           </div>
