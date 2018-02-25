@@ -261,6 +261,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/25/c-language-c5-042/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/25/c-language-c5-042/" itemprop="url">C语言学习第五章T009</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-25T15:55:58+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/25/c-language-c5-042/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/25/c-language-c5-042/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：判断101-200中的素数数量。"><a href="#题目：判断101-200中的素数数量。" class="headerlink" title="题目：判断101~200中的素数数量。"></a>题目：判断101~200中的素数数量。</h2><p>&gt;</p>
+<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line">int judge(int a);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a,b,c=0;</div><div class="line">	for (a=101;a&lt;=200;a++)</div><div class="line">	&#123;</div><div class="line">		b = judge(a);</div><div class="line">		//printf(&quot;%d\n&quot;,b);</div><div class="line">		if (b == 1)</div><div class="line">		&#123;</div><div class="line">			c += 1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;101-200 have prime number:%d\n&quot;,c);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">	int b,c,i;</div><div class="line">	b = sqrt(a);</div><div class="line">	for (i=2;i&lt;=b;i++)</div><div class="line">	&#123;</div><div class="line">		if (a%i==0)</div><div class="line">		&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	if (i&gt;b)</div><div class="line">	&#123;</div><div class="line">		c = 1;</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		c = 0;</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p9.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/24/c-language-c5-041/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1460,141 +1593,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/06/c-language-c4-032/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/c-language-c4-032/" itemprop="url">C语言学习第四章T008</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:22:21+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/06/c-language-c4-032/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/02/06/c-language-c4-032/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：输入一个百分制成绩，按要求输出对应的成绩等级。"><a href="#题目：输入一个百分制成绩，按要求输出对应的成绩等级。" class="headerlink" title="题目：输入一个百分制成绩，按要求输出对应的成绩等级。"></a>题目：输入一个百分制成绩，按要求输出对应的成绩等级。</h2><blockquote>
-<p>90分以上为A（包括90）<br> 80-90分为B（包括80）<br> 70-80分为C（包括70）<br> 60-70分为D（包括60）<br> 60一下为E</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">void judge (float a);</div><div class="line">int main ()</div><div class="line">&#123;</div><div class="line">	float score;</div><div class="line">	printf(&quot;input stduent&apos;s score(0-100):&quot;);</div><div class="line">	scanf(&quot;%f&quot;,&amp;score);</div><div class="line">	if (score&lt;0 || score&gt;100)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;score input illegal!&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s score is:%.1f \n&quot;,score);</div><div class="line">		judge(score);</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void judge (float a)</div><div class="line">&#123;</div><div class="line">	char jlevel;</div><div class="line">	if (a&gt;=90)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s level is:A\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else if (a&lt;90 &amp;&amp; a&gt;=80)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s level is:B\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else if (a&lt;80 &amp;&amp; a&gt;=70)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s level is:C\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else if (a&lt;70 &amp;&amp; a&gt;=60)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s level is:D\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		printf(&quot;student&apos;s level is:E\n&quot;);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p12.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1645,7 +1643,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
