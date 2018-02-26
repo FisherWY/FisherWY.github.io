@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -204,7 +204,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -224,7 +224,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -247,6 +247,138 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/26/c-language-c5-043/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/26/c-language-c5-043/" itemprop="url">C语言第五章T010</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-26T18:36:10+08:00">
+                2018-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/26/c-language-c5-043/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/26/c-language-c5-043/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：输出杨辉三角形，其中行数n由用户输入。"><a href="#题目：输出杨辉三角形，其中行数n由用户输入。" class="headerlink" title="题目：输出杨辉三角形，其中行数n由用户输入。"></a>题目：输出杨辉三角形，其中行数n由用户输入。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int i,x,y,a[20][20];</div><div class="line">	printf(&quot;triangle&apos;s line:&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;i);</div><div class="line">	for (x=1;x&lt;=i;x++)		//使每一行的首尾都为1</div><div class="line">	&#123;</div><div class="line">		a[x][1]=a[x][x]=1;</div><div class="line">	&#125;</div><div class="line">	for (x=3;x&lt;=i;x++)		//第三行开始的中间的数都为上一行的左右两个数之和</div><div class="line">	&#123;</div><div class="line">		for (y=2;y&lt;=x-1;y++)</div><div class="line">		&#123;</div><div class="line">			a[x][y]=a[x-1][y-1]+a[x-1][y];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	for (x=1;x&lt;=i;x++)		//打印杨辉三角</div><div class="line">	&#123;</div><div class="line">		for (y=1;y&lt;=i-x;y++)	//使杨辉三角变成等腰三角形</div><div class="line">		&#123;</div><div class="line">			printf(&quot;   &quot;);</div><div class="line">		&#125;</div><div class="line">		for (y=1;y&lt;=x;y++)		//打印杨辉三角</div><div class="line">		&#123;</div><div class="line">			printf(&quot;%6d&quot;,a[x][y]);</div><div class="line">		&#125;</div><div class="line">		printf(&quot;\n&quot;);		//每一行结束时换行</div><div class="line">	&#125;</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p10.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -290,7 +422,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-25T15:55:58+08:00">
                 2018-02-25
@@ -343,8 +475,7 @@
       
         
           
-            <h2 id="题目：判断101-200中的素数数量。"><a href="#题目：判断101-200中的素数数量。" class="headerlink" title="题目：判断101~200中的素数数量。"></a>题目：判断101~200中的素数数量。</h2><p>&gt;</p>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line">int judge(int a);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a,b,c=0;</div><div class="line">	for (a=101;a&lt;=200;a++)</div><div class="line">	&#123;</div><div class="line">		b = judge(a);</div><div class="line">		//printf(&quot;%d\n&quot;,b);</div><div class="line">		if (b == 1)</div><div class="line">		&#123;</div><div class="line">			c += 1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;101-200 have prime number:%d\n&quot;,c);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">	int b,c,i;</div><div class="line">	b = sqrt(a);</div><div class="line">	for (i=2;i&lt;=b;i++)</div><div class="line">	&#123;</div><div class="line">		if (a%i==0)</div><div class="line">		&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	if (i&gt;b)</div><div class="line">	&#123;</div><div class="line">		c = 1;</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		c = 0;</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <h2 id="题目：判断101-200中的素数数量。"><a href="#题目：判断101-200中的素数数量。" class="headerlink" title="题目：判断101~200中的素数数量。"></a>题目：判断101~200中的素数数量。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line">int judge(int a);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a,b,c=0;</div><div class="line">	for (a=101;a&lt;=200;a++)</div><div class="line">	&#123;</div><div class="line">		b = judge(a);</div><div class="line">		//printf(&quot;%d\n&quot;,b);</div><div class="line">		if (b == 1)</div><div class="line">		&#123;</div><div class="line">			c += 1;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;101-200 have prime number:%d\n&quot;,c);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">	int b,c,i;</div><div class="line">	b = sqrt(a);</div><div class="line">	for (i=2;i&lt;=b;i++)</div><div class="line">	&#123;</div><div class="line">		if (a%i==0)</div><div class="line">		&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	if (i&gt;b)</div><div class="line">	&#123;</div><div class="line">		c = 1;</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		c = 0;</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p9.png" alt=""></p>
 
           
@@ -423,7 +554,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-24T09:01:27+08:00">
                 2018-02-24
@@ -558,7 +689,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-17T12:13:50+08:00">
                 2018-02-17
@@ -693,7 +824,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-14T22:30:33+08:00">
                 2018-02-14
@@ -828,7 +959,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-12T11:12:08+08:00">
                 2018-02-12
@@ -963,7 +1094,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-11T15:24:07+08:00">
                 2018-02-11
@@ -1098,7 +1229,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T10:59:17+08:00">
                 2018-02-10
@@ -1233,7 +1364,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:57+08:00">
                 2018-02-08
@@ -1368,7 +1499,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:40+08:00">
                 2018-02-08
@@ -1461,138 +1592,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/06/c-language-c4-033/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/c-language-c4-033/" itemprop="url">C语言学习第四章T009</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:42:55+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/06/c-language-c4-033/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/02/06/c-language-c4-033/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：编程找到并输出5个整数中的最大和最小数。"><a href="#题目：编程找到并输出5个整数中的最大和最小数。" class="headerlink" title="题目：编程找到并输出5个整数中的最大和最小数。"></a>题目：编程找到并输出5个整数中的最大和最小数。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int i,x,max,min,a[x];</div><div class="line">	printf(&quot;how many numbers do you want to input:&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;x);</div><div class="line">	for (i=0;i&lt;x;i++)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;now input No.%d number:&quot;,i+1);</div><div class="line">		scanf(&quot;%d&quot;,&amp;a[i]);</div><div class="line">	&#125;</div><div class="line">	max=a[0];</div><div class="line">	min=a[1];</div><div class="line">	for (i=0;i&lt;x;i++)</div><div class="line">	&#123;</div><div class="line">		if(a[i]&gt;max)</div><div class="line">		&#123;</div><div class="line">			max=a[i];</div><div class="line">		&#125;</div><div class="line">		if(a[i]&lt;min)</div><div class="line">		&#123;</div><div class="line">			min=a[i];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;max=%d\n&quot;,max);</div><div class="line">	printf(&quot;min=%d\n&quot;,min);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p13.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1643,8 +1642,8 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">42</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -1657,7 +1656,7 @@
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
                   <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">Tags</span>
+                  <span class="site-state-item-name">tags</span>
                 </a>
               </div>
             
@@ -1725,7 +1724,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
