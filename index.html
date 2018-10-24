@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -204,7 +204,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -224,7 +224,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -247,6 +247,246 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/10/24/FRP内网穿透/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/24/FRP内网穿透/" itemprop="url">FRP内网穿透</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-24T15:18:31+08:00">
+                2018-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/24/FRP内网穿透/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/10/24/FRP内网穿透/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="刷了H大padavan固件的极3进行FRP内网穿透配置"><a href="#刷了H大padavan固件的极3进行FRP内网穿透配置" class="headerlink" title="刷了H大padavan固件的极3进行FRP内网穿透配置"></a>刷了H大padavan固件的极3进行FRP内网穿透配置</h2><p>​    最近学校换了新的网络，在每个宿舍装了个锐捷的路由器，顺便把旧的网口给关闭了。极3在接了新的网口后网络体验并不好，想着极3的保修日期已所剩无多，便申请了开发者模式刷了H大的padavan固件玩玩。</p>
+<p><img src="http://FisherWY.github.io/uploads/RouterMain.png" alt=""></p>
+<p>​    很多新功能有木有！！于是我就接了个外接硬盘，配置了Aria2，FTP服务和Samba服务。便愉快地玩耍了2天之后，虽然这些功能在宿舍很好用，但是离开了局域网之后就用不了了。于是我研究了一下内网穿透，发现FRP内网穿透是一种不错的方法，接下来，FRP内网穿透搞起！</p>
+<p>​    做FRP内网穿透需要以下原材料：<strong>一台能上网的电脑，一台有FRP功能的路由器(这里使用的是刷了H大padavan的极路由3)，一个有公网ip的服务器，一个已备案的域名。</strong></p>
+<p>​    第一步，对域名进行设置，打开自己域名的管理界面，这里使用的是Dnspod：</p>
+<p><img src="http://FisherWY.github.io/uploads/FRPdomain.png" alt=""></p>
+<p>添加如下记录(剩下的参数全部默认即可)：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">主机记录</th>
+<th style="text-align:center">记录类型</th>
+<th style="text-align:center">记录值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">www</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">你的IP地址</td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">你的IP地址</td>
+</tr>
+</tbody>
+</table>
+<p>​      第二步，SSH连接服务器，使用<strong><code>wget</code></strong>命令下载FRP的包，FRP的Release版本下载地址在这里<a href="https://github.com/fatedier/frp/releases]()，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。" target="_blank" rel="external">https://github.com/fatedier/frp/releases]()，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。</a></p>
+<p><img src="http://FisherWY.github.io/uploads/DownloadFRP.png" alt="">                      </p>
+<p>​          第三步，使用<strong><code>tar -zxv 文件名A</code></strong>解压文件包，然后使用<strong><code>mv 文件名A /usr/bin/frp</code></strong>将其移动到指定目录并且重命名为文件夹frp。</p>
+<p>​          第四步，添加FRP为开机自启服务。<strong><code>cd /etc/systemd/system</code></strong>切换目录，<strong><code>vim frps.service</code></strong>新建一个文件并添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=frps service</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=simple</div><div class="line">ExecStart=/usr/bin/frp/frps -c /usr/bin/frp/frps.ini</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+<p>添加完成后esc退出编辑模式，按shift+冒号输入wq并回车保存并退出vim。输入<strong><code>systemctl start frps</code></strong>启动frp服务，关于frp常用的系统服务项命令如下：</p>
+<table>
+<thead>
+<tr>
+<th>systemctl start frps</th>
+<th>启动FRP服务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>systemctl restart frps</td>
+<td>重启FRP服务</td>
+</tr>
+<tr>
+<td><strong>systemctl stop frps</strong></td>
+<td><strong>停止FRP服务</strong></td>
+</tr>
+<tr>
+<td>systemctl status frps</td>
+<td>查看FRP日志</td>
+</tr>
+</tbody>
+</table>
+<p>​           第五步，配置FRPS文件，<strong><code>cd /usr/bin/frp</code></strong>切换到FRP根目录下，<strong><code>vim frps.ini</code></strong>编辑配置文件，具体的配置项请查阅<a href="https://github.com/fatedier/frp/blob/master/README_zh.md" target="_blank" rel="external">README</a>，我添加的配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">token = 12345678</div><div class="line">bind_port = 8840</div><div class="line">bind_udp_port = 8841</div><div class="line">vhost_http_port = 8842</div><div class="line">vhost_https_port = 8843</div><div class="line">dashboard_port = 8850</div><div class="line">dashboard_user = test</div><div class="line">dashboard_pwd = 88888888</div><div class="line">subdomain_host = yourdomain.com</div></pre></td></tr></table></figure>
+<p>我的配置项说明：</p>
+<table>
+<thead>
+<tr>
+<th>token</th>
+<th>FRP客户端与FRP服务器端通信的密码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bind_port</td>
+<td>FRP服务器端的TCP端口</td>
+</tr>
+<tr>
+<td><strong>bind_udp_port</strong></td>
+<td><strong>FRP服务器端的UDP端口</strong></td>
+</tr>
+<tr>
+<td>vhost_http_port</td>
+<td>访问http服务的端口</td>
+</tr>
+<tr>
+<td><strong>vhost_https_port</strong></td>
+<td><strong>访问https服务的端口</strong></td>
+</tr>
+<tr>
+<td>dashboard_port</td>
+<td>访问FRP的dashboard端口</td>
+</tr>
+<tr>
+<td><strong>dashboard_user</strong></td>
+<td><strong>访问dashboard时的用户名</strong></td>
+</tr>
+<tr>
+<td>dashboard_pwd</td>
+<td>访问dashboard时的密码</td>
+</tr>
+<tr>
+<td><strong>subdomain_host</strong></td>
+<td><strong>二级路由时的主域名</strong></td>
+</tr>
+</tbody>
+</table>
+<p>​    第六步，打开路由器的FRP配置页面。按照下图步骤启动FRP客户端：</p>
+<p><img src="http://FisherWY.github.io/uploads/FRPCsetting.png" alt=""></p>
+<p>修改客户端配置中的参数，服务端的参数无需修改，我的参数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">server_addr = 你的IP地址</div><div class="line">server_port = 8840</div><div class="line">token = 12345678</div><div class="line"></div><div class="line">[router]</div><div class="line">type = http</div><div class="line">local_ip = 127.0.0.1</div><div class="line">local_port = 80</div><div class="line">subdomain = router</div><div class="line"></div><div class="line">[ssh]</div><div class="line">remote_port = 8848</div><div class="line">type = tcp</div><div class="line">local_ip = 127.0.0.1</div><div class="line">local_port = 22</div></pre></td></tr></table></figure>
+<p>第一个项[common]是连接到FRP服务器的配置，按照自己在服务器端的配置来填写。</p>
+<p>第二个项[router]是http协议的内网穿透，80端口是我的路由器管理界面端口，subdomian是二级路由地址，如果按照我的配置进行配置，配置完成后访问router.yourdomain.com:8842即可访问路由器的管理界面。</p>
+<p>第三个项[ssh]是tcp协议的内网穿透，22端口是路由器的ssh端口，配置好后在终端输入<strong><code>ssh admin@www.yourdomain.com:8848</code></strong>即可ssh登录路由器。</p>
+<p>应用该页面的设置，打开管理界面的log查看连接状态，若出现下图消息，则FRP内网穿透配置成功。</p>
+<p><img src="http://FisherWY.github.io/uploads/FRPlog.png" alt=""></p>
+<h4 id="到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透-Aria2WebUI的配合使用，达到远程下载的目的。"><a href="#到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透-Aria2WebUI的配合使用，达到远程下载的目的。" class="headerlink" title="到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透+Aria2WebUI的配合使用，达到远程下载的目的。"></a>到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透+Aria2WebUI的配合使用，达到远程下载的目的。</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -290,7 +530,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-11T15:20:52+08:00">
                 2018-03-11
@@ -425,7 +665,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-05T19:52:25+08:00">
                 2018-03-05
@@ -560,7 +800,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-04T20:33:20+08:00">
                 2018-03-04
@@ -695,7 +935,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-02T21:25:32+08:00">
                 2018-03-02
@@ -830,7 +1070,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-28T15:46:28+08:00">
                 2018-02-28
@@ -962,7 +1202,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-26T18:36:10+08:00">
                 2018-02-26
@@ -1094,7 +1334,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-25T15:55:58+08:00">
                 2018-02-25
@@ -1226,7 +1466,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-24T09:01:27+08:00">
                 2018-02-24
@@ -1361,7 +1601,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-17T12:13:50+08:00">
                 2018-02-17
@@ -1454,141 +1694,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/14/c-language-c5-039/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/14/c-language-c5-039/" itemprop="url">C语言学习第五章T006</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-14T22:30:33+08:00">
-                2018-02-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/14/c-language-c5-039/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/02/14/c-language-c5-039/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"><a href="#题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。" class="headerlink" title="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"></a>题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。</h2><blockquote>
-<p>NROWS和NCOOLS为常量名。</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"># inlcude &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a[5][5],x,y;</div><div class="line">	printf(&quot;input a 5*5 matrix:\n&quot;);</div><div class="line">	for (x=0;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;input line%d:&quot;,x+1);</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			//printf(&quot;input column%d:&quot;,y+1);</div><div class="line">			scanf(&quot;%d&quot;,&amp;a[x][y]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;inputs:\n&quot;);</div><div class="line">	for (x=0;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;%4d&quot;,a[x][y]);</div><div class="line">		&#125;</div><div class="line">		printf(&quot;\n&quot;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	float avg,sum=0;</div><div class="line">	int i,min=0,t=0;</div><div class="line">	</div><div class="line">	//avg column:</div><div class="line">	</div><div class="line">	printf(&quot;which column do you want to avg(1-5):&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;i);</div><div class="line">	if (i&lt;1 || i&gt;5)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;error!\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		//avg = favg(i,a[5][5]);</div><div class="line">		for (x=0;x&lt;5;x++)</div><div class="line">		&#123;</div><div class="line">			sum = sum + a[x][i-1]; </div><div class="line">		&#125;</div><div class="line">		avg = sum/5;</div><div class="line">		printf(&quot;avg=%2f\n&quot;,avg);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//min line:</div><div class="line">	</div><div class="line">	for (y=0;y&lt;5;y++)</div><div class="line">	&#123;</div><div class="line">		min = min + a[0][y];</div><div class="line">	&#125;</div><div class="line">	for (x=1;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			t = t + a[x][y];</div><div class="line">		&#125;</div><div class="line">		if (t&lt;min)</div><div class="line">		&#123;</div><div class="line">			min = t;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;min line:%d\n&quot;,min);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p6.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1639,8 +1744,8 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">48</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -1652,8 +1757,8 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">Tags</span>
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
                 </a>
               </div>
             
@@ -1721,7 +1826,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 

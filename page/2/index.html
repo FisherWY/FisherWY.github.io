@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -204,7 +204,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            Über
+            About
           </a>
         </li>
       
@@ -224,7 +224,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -247,6 +247,141 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/14/c-language-c5-039/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fisher.WY">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/14/c-language-c5-039/" itemprop="url">C语言学习第五章T006</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-14T22:30:33+08:00">
+                2018-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/14/c-language-c5-039/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/02/14/c-language-c5-039/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"><a href="#题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。" class="headerlink" title="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"></a>题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。</h2><blockquote>
+<p>NROWS和NCOOLS为常量名。</p>
+</blockquote>
+<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"># inlcude &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	int a[5][5],x,y;</div><div class="line">	printf(&quot;input a 5*5 matrix:\n&quot;);</div><div class="line">	for (x=0;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;input line%d:&quot;,x+1);</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			//printf(&quot;input column%d:&quot;,y+1);</div><div class="line">			scanf(&quot;%d&quot;,&amp;a[x][y]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;inputs:\n&quot;);</div><div class="line">	for (x=0;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			printf(&quot;%4d&quot;,a[x][y]);</div><div class="line">		&#125;</div><div class="line">		printf(&quot;\n&quot;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	float avg,sum=0;</div><div class="line">	int i,min=0,t=0;</div><div class="line">	</div><div class="line">	//avg column:</div><div class="line">	</div><div class="line">	printf(&quot;which column do you want to avg(1-5):&quot;);</div><div class="line">	scanf(&quot;%d&quot;,&amp;i);</div><div class="line">	if (i&lt;1 || i&gt;5)</div><div class="line">	&#123;</div><div class="line">		printf(&quot;error!\n&quot;);</div><div class="line">	&#125;</div><div class="line">	else </div><div class="line">	&#123;</div><div class="line">		//avg = favg(i,a[5][5]);</div><div class="line">		for (x=0;x&lt;5;x++)</div><div class="line">		&#123;</div><div class="line">			sum = sum + a[x][i-1]; </div><div class="line">		&#125;</div><div class="line">		avg = sum/5;</div><div class="line">		printf(&quot;avg=%2f\n&quot;,avg);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//min line:</div><div class="line">	</div><div class="line">	for (y=0;y&lt;5;y++)</div><div class="line">	&#123;</div><div class="line">		min = min + a[0][y];</div><div class="line">	&#125;</div><div class="line">	for (x=1;x&lt;5;x++)</div><div class="line">	&#123;</div><div class="line">		for (y=0;y&lt;5;y++)</div><div class="line">		&#123;</div><div class="line">			t = t + a[x][y];</div><div class="line">		&#125;</div><div class="line">		if (t&lt;min)</div><div class="line">		&#123;</div><div class="line">			min = t;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	printf(&quot;min line:%d\n&quot;,min);</div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p6.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -290,7 +425,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-12T11:12:08+08:00">
                 2018-02-12
@@ -425,7 +560,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-11T15:24:07+08:00">
                 2018-02-11
@@ -560,7 +695,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T10:59:17+08:00">
                 2018-02-10
@@ -695,7 +830,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:57+08:00">
                 2018-02-08
@@ -830,7 +965,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-08T10:26:40+08:00">
                 2018-02-08
@@ -965,7 +1100,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:42:55+08:00">
                 2018-02-06
@@ -1097,7 +1232,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T11:22:21+08:00">
                 2018-02-06
@@ -1232,7 +1367,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-05T11:26:33+08:00">
                 2018-02-05
@@ -1364,7 +1499,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-03T19:40:33+08:00">
                 2018-02-03
@@ -1457,141 +1592,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://fisherwy.github.io/2018/02/03/c-language-c4-029/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fisher.WY">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/03/c-language-c4-029/" itemprop="url">C语言第四章T005</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-03T19:40:20+08:00">
-                2018-02-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/03/c-language-c4-029/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/02/03/c-language-c4-029/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="题目：使用函数调用的方法计算下面式子的值"><a href="#题目：使用函数调用的方法计算下面式子的值" class="headerlink" title="题目：使用函数调用的方法计算下面式子的值"></a>题目：使用函数调用的方法计算下面式子的值</h2><blockquote>
-<p>y = (2<em>n-1)/(2</em>n)/(2*n) (其中n等于1)</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line">float function (float n);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">	float y;</div><div class="line">	y = function(1);</div><div class="line">	printf(&quot;y=%f\n&quot;,y);</div><div class="line">	return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">float function (float n)</div><div class="line">&#123;</div><div class="line">	float a,y=0;</div><div class="line">	for (n=1;;n++)</div><div class="line">	&#123;</div><div class="line">		a = (2*n-1)/(2*n)/(2*n);</div><div class="line">		if(a&gt;0.0001)</div><div class="line">		&#123;</div><div class="line">			y = y + a;</div><div class="line">		&#125;</div><div class="line">		else</div><div class="line">		&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return y;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p7.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1642,8 +1642,8 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">48</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -1655,8 +1655,8 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">Tags</span>
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
                 </a>
               </div>
             
@@ -1724,7 +1724,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
