@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://fisherwy.github.io/Users/fisher/Documents/blog/public/uploads/Aria_Success.png">
 <meta property="og:image" content="http://FisherWY.github.io/uploads/Aria_Downloadlink.png">
 <meta property="og:image" content="http://FisherWY.github.io/uploads/Aria_Download.png">
-<meta property="og:updated_time" content="2018-10-25T11:40:16.364Z">
+<meta property="og:updated_time" content="2018-10-25T11:47:21.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Aria2配合FRP使用">
 <meta name="twitter:description" content="Aria2配合FRP内网穿透使用&amp;emsp;&amp;emsp;在上一篇文章中，我们使用一台云服务器，一个域名，一台路由器实现了内网穿透，并配置了路由器管理页面和SSH的内网穿透，在这篇文章中，我们用FRP配合路由器的Aria2实现远程下载功能。 &amp;emsp;&amp;emsp;第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2.conf详细配置，将其中的rpc-secre">
@@ -202,7 +202,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -212,7 +212,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
-            About
+            Über
           </a>
         </li>
       
@@ -232,7 +232,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -296,7 +296,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-25T18:47:20+08:00">
                 2018-10-25
@@ -355,7 +355,7 @@
 <p><img src="http://FisherWY.github.io/uploads/Aria_FRPSetting.png" alt=""></p>
 <p>查看路由器的log，若出现下图所示的日志，则表示配置成功。</p>
 <p><img src="/Users/fisher/Documents/blog/public/uploads/Aria_Success.png" alt=""></p>
-<h5 id="emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。"><a href="#emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。" class="headerlink" title="&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：http://token:1234567@aria.yourdomain.com:8842/jsonrpc，点击保存，若网页没有错误提示，则配置成功。"></a>&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：<a href="http://aria2c.com" target="_blank" rel="external"></a>。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：<code>http://token:1234567@aria.yourdomain.com:8842/jsonrpc</code>，点击保存，若网页没有错误提示，则配置成功。</h5><h5 id="emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："><a href="#emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：" class="headerlink" title="&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："></a>&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：</h5><p><img src="http://FisherWY.github.io/uploads/Aria_Downloadlink.png" alt=""></p>
+<h5 id="emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。"><a href="#emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。" class="headerlink" title="&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：http://token:1234567@aria.yourdomain.com:8842/jsonrpc，点击保存，若网页没有错误提示，则配置成功。"></a>&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：<a href="http://aria2c.com" target="_blank" rel="external">Aria2c</a>。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：<code>http://token:1234567@aria.yourdomain.com:8842/jsonrpc</code>，点击保存，若网页没有错误提示，则配置成功。</h5><h5 id="emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："><a href="#emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：" class="headerlink" title="&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："></a>&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：</h5><p><img src="http://FisherWY.github.io/uploads/Aria_Downloadlink.png" alt=""></p>
 <p>返回Web控制台，点击添加按钮，将链接粘贴进去。如果需要重命名文件，则在文件名一栏填入想要的文件名，留空则是原名。如果需要改变下载位置，则在保存位置中进行填写，留空则下载到第一步配置的dir中。点击添加，一个下载任务就创建成功了，右键可以对任务进行开始/暂停/删除操作。</p>
 <p><img src="http://FisherWY.github.io/uploads/Aria_Download.png" alt=""></p>
 <h5 id="emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter"><a href="#emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter" class="headerlink" title="&emsp;&emsp;到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https://github.com/acgotaku/BaiduExporter"></a>&emsp;&emsp;到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：<a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="external">https://github.com/acgotaku/BaiduExporter</a></h5>
@@ -460,10 +460,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -484,7 +484,7 @@
                 <a href="/archives">
               
                   <span class="site-state-item-count">50</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-name">Artikel</span>
                 </a>
               </div>
             
@@ -497,7 +497,7 @@
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
                   <span class="site-state-item-count">3</span>
-                  <span class="site-state-item-name">tags</span>
+                  <span class="site-state-item-name">Tags</span>
                 </a>
               </div>
             
@@ -551,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Aria2配合FRP内网穿透使用"><span class="nav-number">1.</span> <span class="nav-text">Aria2配合FRP内网穿透使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2-conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示"><span class="nav-number">1.0.0.0.1.</span> <span class="nav-text">  第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2.conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步："><span class="nav-number">1.0.0.0.2.</span> <span class="nav-text">  第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可："><span class="nav-number">1.0.0.0.3.</span> <span class="nav-text">  第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。"><span class="nav-number">1.0.0.0.4.</span> <span class="nav-text">  第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：http://token:1234567@aria.yourdomain.com:8842/jsonrpc，点击保存，若网页没有错误提示，则配置成功。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："><span class="nav-number">1.0.0.0.5.</span> <span class="nav-text">  第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter"><span class="nav-number">1.0.0.0.6.</span> <span class="nav-text">  到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https://github.com/acgotaku/BaiduExporter</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Aria2配合FRP内网穿透使用"><span class="nav-number">1.</span> <span class="nav-text">Aria2配合FRP内网穿透使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2-conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示"><span class="nav-number">1.0.0.0.1.</span> <span class="nav-text">  第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2.conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步："><span class="nav-number">1.0.0.0.2.</span> <span class="nav-text">  第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可："><span class="nav-number">1.0.0.0.3.</span> <span class="nav-text">  第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。"><span class="nav-number">1.0.0.0.4.</span> <span class="nav-text">  第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：http://token:1234567@aria.yourdomain.com:8842/jsonrpc，点击保存，若网页没有错误提示，则配置成功。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："><span class="nav-number">1.0.0.0.5.</span> <span class="nav-text">  第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter"><span class="nav-number">1.0.0.0.6.</span> <span class="nav-text">  到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https://github.com/acgotaku/BaiduExporter</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -581,7 +581,7 @@
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
