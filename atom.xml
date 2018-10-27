@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Fisher&#39;s Blog</title>
+  
+  <subtitle>Good good study! Day day up!</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://fisherwy.github.io/"/>
+  <updated>2018-10-25T12:07:44.448Z</updated>
+  <id>https://fisherwy.github.io/</id>
+  
+  <author>
+    <name>Fisher.WY</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Aria2配合FRP使用</title>
+    <link href="https://fisherwy.github.io/2018/10/25/Aria2%E9%85%8D%E5%90%88FRP%E4%BD%BF%E7%94%A8/"/>
+    <id>https://fisherwy.github.io/2018/10/25/Aria2配合FRP使用/</id>
+    <published>2018-10-25T10:47:20.000Z</published>
+    <updated>2018-10-25T12:07:44.448Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Aria2配合FRP内网穿透使用"><a href="#Aria2配合FRP内网穿透使用" class="headerlink" title="Aria2配合FRP内网穿透使用"></a>Aria2配合FRP内网穿透使用</h2><p>&emsp;&emsp;在上一篇文章中，我们使用一台云服务器，一个域名，一台路由器实现了内网穿透，并配置了路由器管理页面和SSH的内网穿透，在这篇文章中，我们用FRP配合路由器的Aria2实现远程下载功能。</p><h5 id="emsp-emsp-第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2-conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示"><a href="#emsp-emsp-第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2-conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示" class="headerlink" title="&emsp;&emsp;第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2.conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示:"></a>&emsp;&emsp;第一步，对路由器的Aria进行配置。浏览器登录管理页面并启动Aria2服务，点击aria2.conf详细配置，将其中的rpc-secret改为你想设置的密码，dir设置为你想要储存下载的位置，最后应用本页面的设置，如下图所示:</h5><p><img src="http://FisherWY.github.io/uploads/Aria_Start.png" alt=""></p><h5 id="emsp-emsp-第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步："><a href="#emsp-emsp-第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步：" class="headerlink" title="&emsp;&emsp;第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步："></a>&emsp;&emsp;第二步，添加Aria2到防火墙的白名单中。这对于H大padavan固件来说十分简单，只需要以下3步：</h5><p><img src="http://FisherWY.github.io/uploads/Aria_FirewallSetting.png" alt=""></p><h5 id="emsp-emsp-第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可："><a href="#emsp-emsp-第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可：" class="headerlink" title="&emsp;&emsp;第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可："></a>&emsp;&emsp;第三步，对FRP客户端的配置文件进行编辑。在昨天的配置文件中追加如下配置即可：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[aria]</div><div class="line">type = http</div><div class="line">local_ip = 127.0.0.1</div><div class="line">local_port = 6800</div><div class="line">subdomain = aria</div></pre></td></tr></table></figure><p>添加后应用配置，如下图所示：</p><p><img src="http://FisherWY.github.io/uploads/Aria_FRPSetting.png" alt=""></p><p>查看路由器的log，若出现下图所示的日志，则表示配置成功。</p><p><img src="http://FisherWY.github.io/uploads/Aria_Success.png" alt=""></p><h5 id="emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。"><a href="#emsp-emsp-第四步，Aria2-Web-控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC-Path中填写如下配置：http-token-1234567-aria-yourdomain-com-8842-jsonrpc，点击保存，若网页没有错误提示，则配置成功。" class="headerlink" title="&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：Aria2c。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：http://token:1234567@aria.yourdomain.com:8842/jsonrpc，点击保存，若网页没有错误提示，则配置成功。"></a>&emsp;&emsp;第四步，Aria2 Web 控制台配置。我这里使用的是这个控制台：<a href="http://aria2c.com" target="_blank" rel="external">Aria2c</a>。打开之后点击右上角设置，在JSON-RPC Path中填写如下配置：<code>http://token:1234567@aria.yourdomain.com:8842/jsonrpc</code>，点击保存，若网页没有错误提示，则配置成功。</h5><h5 id="emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："><a href="#emsp-emsp-第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：" class="headerlink" title="&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示："></a>&emsp;&emsp;第五步，测试下载。找到你要下载的东西，右键复制链接，如下图所示：</h5><p><img src="http://FisherWY.github.io/uploads/Aria_Downloadlink.png" alt=""></p><p>返回Web控制台，点击添加按钮，将链接粘贴进去。如果需要重命名文件，则在文件名一栏填入想要的文件名，留空则是原名。如果需要改变下载位置，则在保存位置中进行填写，留空则下载到第一步配置的dir中。点击添加，一个下载任务就创建成功了，右键可以对任务进行开始/暂停/删除操作。</p><p><img src="http://FisherWY.github.io/uploads/Aria_Download.png" alt=""></p><h4 id="emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter"><a href="#emsp-emsp-到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https-github-com-acgotaku-BaiduExporter" class="headerlink" title="&emsp;&emsp;到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：https://github.com/acgotaku/BaiduExporter"></a>&emsp;&emsp;到这里Aria2配合FRP使用的配置就完成了。如果觉得复制下载地址再粘贴的方法麻烦，或者需要不限速下载百度网盘的文件，可以在浏览器中添加Aria2下载插件。关于如何添加插件并下载百度网盘文件的教程，网址在这里：<a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="external">https://github.com/acgotaku/BaiduExporter</a></h4>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Aria2配合FRP内网穿透使用&quot;&gt;&lt;a href=&quot;#Aria2配合FRP内网穿透使用&quot; class=&quot;headerlink&quot; title=&quot;Aria2配合FRP内网穿透使用&quot;&gt;&lt;/a&gt;Aria2配合FRP内网穿透使用&lt;/h2&gt;&lt;p&gt;&amp;emsp;&amp;emsp;在上
+      
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="https://fisherwy.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>FRP内网穿透</title>
+    <link href="https://fisherwy.github.io/2018/10/24/FRP%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"/>
+    <id>https://fisherwy.github.io/2018/10/24/FRP内网穿透/</id>
+    <published>2018-10-24T07:18:31.000Z</published>
+    <updated>2018-10-25T10:38:50.797Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="刷了H大padavan固件的极3进行FRP内网穿透配置"><a href="#刷了H大padavan固件的极3进行FRP内网穿透配置" class="headerlink" title="刷了H大padavan固件的极3进行FRP内网穿透配置"></a>刷了H大padavan固件的极3进行FRP内网穿透配置</h2><p>&emsp;&emsp;最近学校换了新的网络，在每个宿舍装了个锐捷的路由器，顺便把旧的网口给关闭了。极3在接了新的网口后网络体验并不好，想着极3的保修日期已所剩无多，便申请了开发者模式刷了H大的padavan固件玩玩。</p><p><img src="http://FisherWY.github.io/uploads/RouterMain.png" alt=""></p><p>&emsp;&emsp;很多新功能有木有！！于是我就接了个外接硬盘，配置了Aria2，FTP服务和Samba服务。便愉快地玩耍了2天之后，虽然这些功能在宿舍很好用，但是离开了局域网之后就用不了了。于是我研究了一下内网穿透，发现FRP内网穿透是一种不错的方法，接下来，FRP内网穿透搞起！</p><p>&emsp;&emsp;做FRP内网穿透需要以下原材料：<strong>一台能上网的电脑，一台有FRP功能的路由器(这里使用的是刷了H大padavan的极路由3)，一个有公网ip的服务器，一个已备案的域名。</strong></p><h5 id="emsp-emsp-第一步，对域名进行设置，打开自己域名的管理界面，这里使用的是Dnspod："><a href="#emsp-emsp-第一步，对域名进行设置，打开自己域名的管理界面，这里使用的是Dnspod：" class="headerlink" title="&emsp;&emsp;第一步，对域名进行设置，打开自己域名的管理界面，这里使用的是Dnspod："></a>&emsp;&emsp;<strong>第一步</strong>，对域名进行设置，打开自己域名的管理界面，这里使用的是Dnspod：</h5><p><img src="http://FisherWY.github.io/uploads/FRPdomain.png" alt=""></p><p>添加如下记录(剩下的参数全部默认即可)：</p><table><thead><tr><th style="text-align:center">主机记录</th><th style="text-align:center">记录类型</th><th style="text-align:center">记录值</th></tr></thead><tbody><tr><td style="text-align:center">www</td><td style="text-align:center">A</td><td style="text-align:center">你的IP地址</td></tr><tr><td style="text-align:center">*</td><td style="text-align:center">A</td><td style="text-align:center">你的IP地址</td></tr></tbody></table><h5 id="emsp-emsp-第二步，SSH连接服务器，使用wget命令下载FRP的包，FRP的Release版本下载地址在这里https-github-com-fatedier-frp-releases，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。"><a href="#emsp-emsp-第二步，SSH连接服务器，使用wget命令下载FRP的包，FRP的Release版本下载地址在这里https-github-com-fatedier-frp-releases，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。" class="headerlink" title="&emsp;&emsp;第二步，SSH连接服务器，使用wget命令下载FRP的包，FRP的Release版本下载地址在这里https://github.com/fatedier/frp/releases，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。"></a>&emsp;&emsp;<strong>第二步</strong>，SSH连接服务器，使用<strong><code>wget</code></strong>命令下载FRP的包，FRP的Release版本下载地址在这里<a href="https://github.com/fatedier/frp/releases，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。" target="_blank" rel="external">https://github.com/fatedier/frp/releases，选择对应的版本，右键拷贝链接，粘贴到终端回车开始下载。</a></h5><p><img src="http://FisherWY.github.io/uploads/DownloadFRP.png" alt="">                      </p><h5 id="emsp-emsp-第三步，使用tar-zxv-文件名A解压文件包，然后使用mv-文件名A-usr-bin-frp将其移动到指定目录并且重命名为文件夹frp。"><a href="#emsp-emsp-第三步，使用tar-zxv-文件名A解压文件包，然后使用mv-文件名A-usr-bin-frp将其移动到指定目录并且重命名为文件夹frp。" class="headerlink" title="&emsp;&emsp; 第三步，使用tar -zxv 文件名A解压文件包，然后使用mv 文件名A /usr/bin/frp将其移动到指定目录并且重命名为文件夹frp。"></a>&emsp;&emsp; <strong>第三步</strong>，使用<strong><code>tar -zxv 文件名A</code></strong>解压文件包，然后使用<strong><code>mv 文件名A /usr/bin/frp</code></strong>将其移动到指定目录并且重命名为文件夹frp。</h5><h5 id="emsp-emsp-第四步，添加FRP为开机自启服务。cd-etc-systemd-system切换目录，vim-frps-service新建一个文件并添加以下内容："><a href="#emsp-emsp-第四步，添加FRP为开机自启服务。cd-etc-systemd-system切换目录，vim-frps-service新建一个文件并添加以下内容：" class="headerlink" title="&emsp;&emsp;第四步，添加FRP为开机自启服务。cd /etc/systemd/system切换目录，vim frps.service新建一个文件并添加以下内容："></a>&emsp;&emsp;<strong>第四步</strong>，添加FRP为开机自启服务。<strong><code>cd /etc/systemd/system</code></strong>切换目录，<strong><code>vim frps.service</code></strong>新建一个文件并添加以下内容：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=frps service</div><div class="line"></div><div class="line">[Service]</div><div class="line">Type=simple</div><div class="line">ExecStart=/usr/bin/frp/frps -c /usr/bin/frp/frps.ini</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure><p>添加完成后esc退出编辑模式，按shift+冒号输入wq并回车保存并退出vim。输入<strong><code>systemctl start frps</code></strong>启动frp服务，关于frp常用的系统服务项命令如下：</p><table><thead><tr><th>systemctl start frps</th><th>启动FRP服务</th></tr></thead><tbody><tr><td>systemctl restart frps</td><td>重启FRP服务</td></tr><tr><td><strong>systemctl stop frps</strong></td><td><strong>停止FRP服务</strong></td></tr><tr><td>systemctl status frps</td><td>查看FRP日志</td></tr></tbody></table><h5 id="emsp-emsp-第五步，配置FRPS文件，cd-usr-bin-frp切换到FRP根目录下，vim-frps-ini编辑配置文件，具体的配置项请查阅README，我添加的配置如下："><a href="#emsp-emsp-第五步，配置FRPS文件，cd-usr-bin-frp切换到FRP根目录下，vim-frps-ini编辑配置文件，具体的配置项请查阅README，我添加的配置如下：" class="headerlink" title="&emsp;&emsp;第五步，配置FRPS文件，cd /usr/bin/frp切换到FRP根目录下，vim frps.ini编辑配置文件，具体的配置项请查阅README，我添加的配置如下："></a>&emsp;&emsp;<strong>第五步</strong>，配置FRPS文件，<strong><code>cd /usr/bin/frp</code></strong>切换到FRP根目录下，<strong><code>vim frps.ini</code></strong>编辑配置文件，具体的配置项请查阅<a href="https://github.com/fatedier/frp/blob/master/README_zh.md" target="_blank" rel="external">README</a>，我添加的配置如下：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">token = 12345678</div><div class="line">bind_port = 8840</div><div class="line">bind_udp_port = 8841</div><div class="line">vhost_http_port = 8842</div><div class="line">vhost_https_port = 8843</div><div class="line">dashboard_port = 8850</div><div class="line">dashboard_user = test</div><div class="line">dashboard_pwd = 88888888</div><div class="line">subdomain_host = yourdomain.com</div></pre></td></tr></table></figure><p>我的配置项说明：</p><table><thead><tr><th>token</th><th>FRP客户端与FRP服务器端通信的密码</th></tr></thead><tbody><tr><td>bind_port</td><td>FRP服务器端的TCP端口</td></tr><tr><td><strong>bind_udp_port</strong></td><td><strong>FRP服务器端的UDP端口</strong></td></tr><tr><td>vhost_http_port</td><td>访问http服务的端口</td></tr><tr><td><strong>vhost_https_port</strong></td><td><strong>访问https服务的端口</strong></td></tr><tr><td>dashboard_port</td><td>访问FRP的dashboard端口</td></tr><tr><td><strong>dashboard_user</strong></td><td><strong>访问dashboard时的用户名</strong></td></tr><tr><td>dashboard_pwd</td><td>访问dashboard时的密码</td></tr><tr><td><strong>subdomain_host</strong></td><td><strong>二级路由时的主域名</strong></td></tr></tbody></table><h5 id="emsp-emsp-第六步，打开路由器的FRP配置页面。按照下图步骤启动FRP客户端："><a href="#emsp-emsp-第六步，打开路由器的FRP配置页面。按照下图步骤启动FRP客户端：" class="headerlink" title="&emsp;&emsp;第六步，打开路由器的FRP配置页面。按照下图步骤启动FRP客户端："></a>&emsp;&emsp;<strong>第六步</strong>，打开路由器的FRP配置页面。按照下图步骤启动FRP客户端：</h5><p><img src="http://FisherWY.github.io/uploads/FRPCsetting.png" alt=""></p><p>修改客户端配置中的参数，服务端的参数无需修改，我的参数如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[common]</div><div class="line">server_addr = 你的IP地址</div><div class="line">server_port = 8840</div><div class="line">token = 12345678</div><div class="line"></div><div class="line">[router]</div><div class="line">type = http</div><div class="line">local_ip = 127.0.0.1</div><div class="line">local_port = 80</div><div class="line">subdomain = router</div><div class="line"></div><div class="line">[ssh]</div><div class="line">remote_port = 8848</div><div class="line">type = tcp</div><div class="line">local_ip = 127.0.0.1</div><div class="line">local_port = 22</div></pre></td></tr></table></figure><p>第一个项[common]是连接到FRP服务器的配置，按照自己在服务器端的配置来填写。</p><p>第二个项[router]是http协议的内网穿透，80端口是我的路由器管理界面端口，subdomian是二级路由地址，如果按照我的配置进行配置，配置完成后访问router.yourdomain.com:8842即可访问路由器的管理界面。</p><p>第三个项[ssh]是tcp协议的内网穿透，22端口是路由器的ssh端口，配置好后在终端输入<strong><code>ssh admin@www.yourdomain.com:8848</code></strong>即可ssh登录路由器。</p><p>应用该页面的设置，打开管理界面的log查看连接状态，若出现下图消息，则FRP内网穿透配置成功。</p><p><img src="http://FisherWY.github.io/uploads/FRPlog.png" alt=""></p><h4 id="emsp-emsp-到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透-Aria2WebUI的配合使用，达到远程下载的目的。"><a href="#emsp-emsp-到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透-Aria2WebUI的配合使用，达到远程下载的目的。" class="headerlink" title="&emsp;&emsp;到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透+Aria2WebUI的配合使用，达到远程下载的目的。"></a>&emsp;&emsp;到这里FRP内网穿透的基本配置就完成了，现在在其他网络环境中也可以对路由进行管理了，下一篇博客中将会为你带来Aria2的内网穿透+Aria2WebUI的配合使用，达到远程下载的目的。</h4>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;刷了H大padavan固件的极3进行FRP内网穿透配置&quot;&gt;&lt;a href=&quot;#刷了H大padavan固件的极3进行FRP内网穿透配置&quot; class=&quot;headerlink&quot; title=&quot;刷了H大padavan固件的极3进行FRP内网穿透配置&quot;&gt;&lt;/a&gt;刷了H大p
+      
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="https://fisherwy.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第六章T005</title>
+    <link href="https://fisherwy.github.io/2018/03/11/c-language-c6-054/"/>
+    <id>https://fisherwy.github.io/2018/03/11/c-language-c6-054/</id>
+    <published>2018-03-11T07:20:52.000Z</published>
+    <updated>2018-03-11T08:08:39.828Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编写判断字符串是否为回文的函数"><a href="#题目：编写判断字符串是否为回文的函数" class="headerlink" title="题目：编写判断字符串是否为回文的函数"></a>题目：编写判断字符串是否为回文的函数</h2><blockquote><p>例如: abccba是为回文的字符串。</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;string.h&gt;</div><div class="line"></div><div class="line">int judge(char );</div><div class="line">int judge(char a[])</div><div class="line">&#123;</div><div class="line">int len;</div><div class="line">char b[100];</div><div class="line">len = strlen(a);</div><div class="line">for (int i = 0; i &lt; len; i++)</div><div class="line">&#123;</div><div class="line">b[i] = a[len - i - 1];</div><div class="line">&#125;</div><div class="line">if (strcmp(a,b) == 0)</div><div class="line">&#123;</div><div class="line">return 1;</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main()</div><div class="line">&#123;</div><div class="line">char a[100];</div><div class="line">printf(&quot;input string a:&quot;);</div><div class="line">gets(a);</div><div class="line">if (judge(a))</div><div class="line">&#123;</div><div class="line">printf(&quot;String a is Palindrome\n&quot;);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">printf(&quot;String a is not Palindrome\n&quot;);</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c6p5.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编写判断字符串是否为回文的函数&quot;&gt;&lt;a href=&quot;#题目：编写判断字符串是否为回文的函数&quot; class=&quot;headerlink&quot; title=&quot;题目：编写判断字符串是否为回文的函数&quot;&gt;&lt;/a&gt;题目：编写判断字符串是否为回文的函数&lt;/h2&gt;&lt;blockquo
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第六章T004</title>
+    <link href="https://fisherwy.github.io/2018/03/05/c-language-c6-053/"/>
+    <id>https://fisherwy.github.io/2018/03/05/c-language-c6-053/</id>
+    <published>2018-03-05T11:52:25.000Z</published>
+    <updated>2018-03-05T12:59:04.146Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编写一个函数（参数用指针）将一个3×3矩阵转置。"><a href="#题目：编写一个函数（参数用指针）将一个3×3矩阵转置。" class="headerlink" title="题目：编写一个函数（参数用指针）将一个3×3矩阵转置。"></a>题目：编写一个函数（参数用指针）将一个3×3矩阵转置。</h2><blockquote><p>例如：<br> 1 2 3  ———–&gt;  7 4 1<br> 4 5 6  转置后为  8 5 2<br> 7 8 9  ———–&gt;  9 6 3</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># define n 3</div><div class="line">void fun(int (*a)[n], int (*b)[n]);</div><div class="line"></div><div class="line">int main ()</div><div class="line">&#123;</div><div class="line">int a[n][n],b[n][n];</div><div class="line">fun(a,b);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void fun(int (*a)[3], int (*b)[3])</div><div class="line">&#123;</div><div class="line">int i,j;</div><div class="line">printf(&quot;input 9 numbers:\n&quot;);</div><div class="line">for (i=0;i&lt;n;i++)</div><div class="line">&#123;</div><div class="line">for (j=0;j&lt;n;j++)</div><div class="line">&#123;</div><div class="line">scanf(&quot;%d&quot;,(a[i]+j));</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;start:\n&quot;);</div><div class="line">for (i=0;i&lt;n;i++)</div><div class="line">&#123;</div><div class="line">for (j=0;j&lt;n;j++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,*(a[i]+j));</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line">for (i=0;i&lt;n;i++)</div><div class="line">&#123;</div><div class="line">for (j=0;j&lt;n;j++)</div><div class="line">&#123;</div><div class="line">*(b[i]+j) = *(a[n-1-j]+i);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;after:\n&quot;);</div><div class="line">for (i=0;i&lt;n;i++)</div><div class="line">&#123;</div><div class="line">for (j=0;j&lt;n;j++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,*(b[i]+j));</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c6p4.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编写一个函数（参数用指针）将一个3×3矩阵转置。&quot;&gt;&lt;a href=&quot;#题目：编写一个函数（参数用指针）将一个3×3矩阵转置。&quot; class=&quot;headerlink&quot; title=&quot;题目：编写一个函数（参数用指针）将一个3×3矩阵转置。&quot;&gt;&lt;/a&gt;题目：编写
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第六章T003</title>
+    <link href="https://fisherwy.github.io/2018/03/04/c-language-c6-052/"/>
+    <id>https://fisherwy.github.io/2018/03/04/c-language-c6-052/</id>
+    <published>2018-03-04T12:33:20.000Z</published>
+    <updated>2018-03-04T12:37:36.584Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编写一个求字符串长度的函数（参数用指针）。"><a href="#题目：编写一个求字符串长度的函数（参数用指针）。" class="headerlink" title="题目：编写一个求字符串长度的函数（参数用指针）。"></a>题目：编写一个求字符串长度的函数（参数用指针）。</h2><blockquote><p>在主函数中输入字符串，并输出其长度。</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">void len (int * , char *);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int sum=0,*p;</div><div class="line">char a,*q;</div><div class="line">p = &amp;sum;</div><div class="line">q = &amp;a;</div><div class="line">while (*q=getchar() != &apos;\n&apos;)</div><div class="line">&#123;</div><div class="line">len(p,q);</div><div class="line">&#125;</div><div class="line">printf(&quot;lenth:%d\n&quot;,*p);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void len (int *p, char *q)</div><div class="line">&#123;</div><div class="line">*p = sizeof(*q) + *p;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c6p3.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编写一个求字符串长度的函数（参数用指针）。&quot;&gt;&lt;a href=&quot;#题目：编写一个求字符串长度的函数（参数用指针）。&quot; class=&quot;headerlink&quot; title=&quot;题目：编写一个求字符串长度的函数（参数用指针）。&quot;&gt;&lt;/a&gt;题目：编写一个求字符串长度的
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第六章T002</title>
+    <link href="https://fisherwy.github.io/2018/03/02/c-language-c6-051/"/>
+    <id>https://fisherwy.github.io/2018/03/02/c-language-c6-051/</id>
+    <published>2018-03-02T13:25:32.000Z</published>
+    <updated>2018-03-02T13:39:52.057Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。"><a href="#题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。" class="headerlink" title="题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。"></a>题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。</h2><blockquote><p>需要写出指定的三个函数完成，所有函数的参数均用指针。</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">void cmax (int *);</div><div class="line">void cmin (int *);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[10],i,*p=a;</div><div class="line">printf(&quot;input 10 number:&quot;);</div><div class="line">for (i=0;i&lt;10;i++)</div><div class="line">&#123;</div><div class="line">scanf(&quot;%d&quot;,p+i);</div><div class="line">&#125;</div><div class="line">printf(&quot;start:&quot;);</div><div class="line">for (i=0;i&lt;10;i++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,*(p+i));</div><div class="line">&#125;</div><div class="line">cmax (p);</div><div class="line">cmin (p);</div><div class="line">printf(&quot;\nafter sort:&quot;);</div><div class="line">for (i=0;i&lt;10;i++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,*(p+i));</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void cmax (int *p)</div><div class="line">&#123;</div><div class="line">int max=*p,t,j,k;</div><div class="line">for (j=1;j&lt;10;j++)</div><div class="line">&#123;</div><div class="line">if (*(p+j)&gt;max)</div><div class="line">&#123;</div><div class="line">max = *(p+j);</div><div class="line">k = j;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">t = *(p+9);</div><div class="line">*(p+9) = max;</div><div class="line">*(p+k) = t;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void cmin (int *p)</div><div class="line">&#123;</div><div class="line">int min=*p,t,j,k;</div><div class="line">for (j=1;j&lt;10;j++)</div><div class="line">&#123;</div><div class="line">if (*(p+j)&lt;min)</div><div class="line">&#123;</div><div class="line">min = *(p+j);</div><div class="line">k = j;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">t = *p;</div><div class="line">*p = min;</div><div class="line">*(p+k) = t;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c6p2.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。&quot;&gt;&lt;a href=&quot;#题目：输入10个整数，用其中最小的数与第一个数对换，用其中最大的数与最后一个对换。&quot; class=&quot;headerlink&quot; title=&quot;题目：输入10个整数
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第六章T001</title>
+    <link href="https://fisherwy.github.io/2018/02/28/c-language-c6-045/"/>
+    <id>https://fisherwy.github.io/2018/02/28/c-language-c6-045/</id>
+    <published>2018-02-28T07:46:28.000Z</published>
+    <updated>2018-02-28T08:02:21.434Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编写程序求取一元二次方程的根。"><a href="#题目：编写程序求取一元二次方程的根。" class="headerlink" title="题目：编写程序求取一元二次方程的根。"></a>题目：编写程序求取一元二次方程的根。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line"></div><div class="line">double function1(double a,double b,double c);</div><div class="line">double function2(double a,double b,double c);</div><div class="line">int judge(double a);</div><div class="line">double jdelta(double a,double b,double c);</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">double a,b,c,delta;</div><div class="line">printf(&quot;一元二次方程计算器:\n&quot;);</div><div class="line">printf(&quot;input a:&quot;);</div><div class="line">scanf(&quot;%lf&quot;,&amp;a);</div><div class="line">printf(&quot;input b:&quot;);</div><div class="line">scanf(&quot;%lf&quot;,&amp;b);</div><div class="line">printf(&quot;input c:&quot;);</div><div class="line">scanf(&quot;%lf&quot;,&amp;c);</div><div class="line">if ( judge(a) )</div><div class="line">&#123;</div><div class="line">printf(&quot;error!&quot;);</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">delta = jdelta(a,b,c);</div><div class="line">printf(&quot;dleta=%f\n&quot;,delta);</div><div class="line">if (delta&gt;0)</div><div class="line">&#123;</div><div class="line">printf(&quot;方程有两个不等实根：&quot;);</div><div class="line">function1(a,b,c);</div><div class="line">&#125;</div><div class="line">else if (delta==0)</div><div class="line">&#123;</div><div class="line">printf(&quot;方程有两个相等实根：&quot;);</div><div class="line">function1(a,b,c);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">printf(&quot;方程有两个复数根：&quot;);</div><div class="line">function2(a,b,c);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function1(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">double x1,x2,delta;</div><div class="line">delta = b*b - 4*a*c;</div><div class="line">x1 = (-b + sqrt(delta))/(2*a);</div><div class="line">x2 = (-b - sqrt(delta))/(2*a);</div><div class="line">printf(&quot;x1=%.2lf,&quot;,x1);</div><div class="line">printf(&quot;x2=%.2lf\n&quot;,x2);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double function2(double a,double b,double c)</div><div class="line">&#123;</div><div class="line">double x1,x2,delta;</div><div class="line">delta = -(b*b - 4*a*c);</div><div class="line">x1 = -(b/(2*a))+sqrt(delta)/(2*a);</div><div class="line">x2 = -(b/(2*a))-sqrt(delta)/(2*a);</div><div class="line">printf(&quot;x1=%.2lfi,&quot;,x1);</div><div class="line">printf(&quot;x2=%.2lfi\n&quot;,x2);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (double a)</div><div class="line">&#123;</div><div class="line">if (a==0)</div><div class="line">return 1;</div><div class="line">else </div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">double jdelta (double a,double b,double c)</div><div class="line">&#123;</div><div class="line">double delta;</div><div class="line">delta = b*b - 4*a*c;</div><div class="line">return delta;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c6p1.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编写程序求取一元二次方程的根。&quot;&gt;&lt;a href=&quot;#题目：编写程序求取一元二次方程的根。&quot; class=&quot;headerlink&quot; title=&quot;题目：编写程序求取一元二次方程的根。&quot;&gt;&lt;/a&gt;题目：编写程序求取一元二次方程的根。&lt;/h2&gt;&lt;h3 id=&quot;主
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言第五章T010</title>
+    <link href="https://fisherwy.github.io/2018/02/26/c-language-c5-043/"/>
+    <id>https://fisherwy.github.io/2018/02/26/c-language-c5-043/</id>
+    <published>2018-02-26T10:36:10.000Z</published>
+    <updated>2018-02-26T10:51:04.194Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输出杨辉三角形，其中行数n由用户输入。"><a href="#题目：输出杨辉三角形，其中行数n由用户输入。" class="headerlink" title="题目：输出杨辉三角形，其中行数n由用户输入。"></a>题目：输出杨辉三角形，其中行数n由用户输入。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int i,x,y,a[20][20];</div><div class="line">printf(&quot;triangle&apos;s line:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;i);</div><div class="line">for (x=1;x&lt;=i;x++)//使每一行的首尾都为1</div><div class="line">&#123;</div><div class="line">a[x][1]=a[x][x]=1;</div><div class="line">&#125;</div><div class="line">for (x=3;x&lt;=i;x++)//第三行开始的中间的数都为上一行的左右两个数之和</div><div class="line">&#123;</div><div class="line">for (y=2;y&lt;=x-1;y++)</div><div class="line">&#123;</div><div class="line">a[x][y]=a[x-1][y-1]+a[x-1][y];</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">for (x=1;x&lt;=i;x++)//打印杨辉三角</div><div class="line">&#123;</div><div class="line">for (y=1;y&lt;=i-x;y++)//使杨辉三角变成等腰三角形</div><div class="line">&#123;</div><div class="line">printf(&quot;   &quot;);</div><div class="line">&#125;</div><div class="line">for (y=1;y&lt;=x;y++)//打印杨辉三角</div><div class="line">&#123;</div><div class="line">printf(&quot;%6d&quot;,a[x][y]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);//每一行结束时换行</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p10.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输出杨辉三角形，其中行数n由用户输入。&quot;&gt;&lt;a href=&quot;#题目：输出杨辉三角形，其中行数n由用户输入。&quot; class=&quot;headerlink&quot; title=&quot;题目：输出杨辉三角形，其中行数n由用户输入。&quot;&gt;&lt;/a&gt;题目：输出杨辉三角形，其中行数n由用户输
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T009</title>
+    <link href="https://fisherwy.github.io/2018/02/25/c-language-c5-042/"/>
+    <id>https://fisherwy.github.io/2018/02/25/c-language-c5-042/</id>
+    <published>2018-02-25T07:55:58.000Z</published>
+    <updated>2018-02-26T10:37:40.713Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：判断101-200中的素数数量。"><a href="#题目：判断101-200中的素数数量。" class="headerlink" title="题目：判断101~200中的素数数量。"></a>题目：判断101~200中的素数数量。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;math.h&gt;</div><div class="line">int judge(int a);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a,b,c=0;</div><div class="line">for (a=101;a&lt;=200;a++)</div><div class="line">&#123;</div><div class="line">b = judge(a);</div><div class="line">//printf(&quot;%d\n&quot;,b);</div><div class="line">if (b == 1)</div><div class="line">&#123;</div><div class="line">c += 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;101-200 have prime number:%d\n&quot;,c);</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int judge (int a)</div><div class="line">&#123;</div><div class="line">int b,c,i;</div><div class="line">b = sqrt(a);</div><div class="line">for (i=2;i&lt;=b;i++)</div><div class="line">&#123;</div><div class="line">if (a%i==0)</div><div class="line">&#123;</div><div class="line">break;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">if (i&gt;b)</div><div class="line">&#123;</div><div class="line">c = 1;</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">c = 0;</div><div class="line">&#125;</div><div class="line">return c;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p9.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：判断101-200中的素数数量。&quot;&gt;&lt;a href=&quot;#题目：判断101-200中的素数数量。&quot; class=&quot;headerlink&quot; title=&quot;题目：判断101~200中的素数数量。&quot;&gt;&lt;/a&gt;题目：判断101~200中的素数数量。&lt;/h2&gt;&lt;h3 i
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T008</title>
+    <link href="https://fisherwy.github.io/2018/02/24/c-language-c5-041/"/>
+    <id>https://fisherwy.github.io/2018/02/24/c-language-c5-041/</id>
+    <published>2018-02-24T01:01:27.000Z</published>
+    <updated>2018-02-24T01:58:01.689Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。"><a href="#题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。" class="headerlink" title="题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。"></a>题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。</h2><blockquote><p>例子：12345构成新的数后为24</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">long int a,i=0,s[65];</div><div class="line">printf(&quot;input a number:&quot;);</div><div class="line">scanf(&quot;%ld&quot;,&amp;a);</div><div class="line">while (a!=0)</div><div class="line">&#123;</div><div class="line">if ( (a%10)%2 == 0 )</div><div class="line">&#123;</div><div class="line">s[i] = a%10;</div><div class="line">i++;</div><div class="line">&#125;</div><div class="line">a = a/10;</div><div class="line">&#125;</div><div class="line">printf(&quot;output:&quot;);</div><div class="line">for ( i=i-1 ; i &gt;= 0; i-- )</div><div class="line">&#123;</div><div class="line">printf(&quot;%ld&quot;,s[i]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p8.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。&quot;&gt;&lt;a href=&quot;#题目：将一个长整型数的每一位数位上的偶数依次取出来，构成一个新的数，其高低位顺序不变。&quot; class=&quot;headerlink&quot; title=&quot;题目：将一个
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T007</title>
+    <link href="https://fisherwy.github.io/2018/02/17/c-language-c5-040/"/>
+    <id>https://fisherwy.github.io/2018/02/17/c-language-c5-040/</id>
+    <published>2018-02-17T04:13:50.000Z</published>
+    <updated>2018-02-17T04:21:13.341Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输入一个正整数，并将其颠倒过来。"><a href="#题目：输入一个正整数，并将其颠倒过来。" class="headerlink" title="题目：输入一个正整数，并将其颠倒过来。"></a>题目：输入一个正整数，并将其颠倒过来。</h2><blockquote><p>例子：123颠倒后为321</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line"># include &lt;stdlib.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a,y,s=0;</div><div class="line">printf(&quot;输入一个整数:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;a);</div><div class="line">if (a&lt;0)</div><div class="line">&#123;</div><div class="line">printf(&quot;error!\n&quot;);</div><div class="line">exit(0);</div><div class="line">&#125;</div><div class="line">while (a != 0)</div><div class="line">&#123;</div><div class="line">y = a%10;</div><div class="line">s = s*10 + y;</div><div class="line">a = a/10;</div><div class="line">&#125;</div><div class="line">printf(&quot;颠倒之后:%d\n&quot;,s);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p7.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输入一个正整数，并将其颠倒过来。&quot;&gt;&lt;a href=&quot;#题目：输入一个正整数，并将其颠倒过来。&quot; class=&quot;headerlink&quot; title=&quot;题目：输入一个正整数，并将其颠倒过来。&quot;&gt;&lt;/a&gt;题目：输入一个正整数，并将其颠倒过来。&lt;/h2&gt;&lt;bloc
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T006</title>
+    <link href="https://fisherwy.github.io/2018/02/14/c-language-c5-039/"/>
+    <id>https://fisherwy.github.io/2018/02/14/c-language-c5-039/</id>
+    <published>2018-02-14T14:30:33.000Z</published>
+    <updated>2018-02-14T14:44:51.648Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"><a href="#题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。" class="headerlink" title="题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。"></a>题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。</h2><blockquote><p>NROWS和NCOOLS为常量名。</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"># inlcude &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[5][5],x,y;</div><div class="line">printf(&quot;input a 5*5 matrix:\n&quot;);</div><div class="line">for (x=0;x&lt;5;x++)</div><div class="line">&#123;</div><div class="line">printf(&quot;input line%d:&quot;,x+1);</div><div class="line">for (y=0;y&lt;5;y++)</div><div class="line">&#123;</div><div class="line">//printf(&quot;input column%d:&quot;,y+1);</div><div class="line">scanf(&quot;%d&quot;,&amp;a[x][y]);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;inputs:\n&quot;);</div><div class="line">for (x=0;x&lt;5;x++)</div><div class="line">&#123;</div><div class="line">for (y=0;y&lt;5;y++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[x][y]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">float avg,sum=0;</div><div class="line">int i,min=0,t=0;</div><div class="line"></div><div class="line">//avg column:</div><div class="line"></div><div class="line">printf(&quot;which column do you want to avg(1-5):&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;i);</div><div class="line">if (i&lt;1 || i&gt;5)</div><div class="line">&#123;</div><div class="line">printf(&quot;error!\n&quot;);</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">//avg = favg(i,a[5][5]);</div><div class="line">for (x=0;x&lt;5;x++)</div><div class="line">&#123;</div><div class="line">sum = sum + a[x][i-1]; </div><div class="line">&#125;</div><div class="line">avg = sum/5;</div><div class="line">printf(&quot;avg=%2f\n&quot;,avg);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//min line:</div><div class="line"></div><div class="line">for (y=0;y&lt;5;y++)</div><div class="line">&#123;</div><div class="line">min = min + a[0][y];</div><div class="line">&#125;</div><div class="line">for (x=1;x&lt;5;x++)</div><div class="line">&#123;</div><div class="line">for (y=0;y&lt;5;y++)</div><div class="line">&#123;</div><div class="line">t = t + a[x][y];</div><div class="line">&#125;</div><div class="line">if (t&lt;min)</div><div class="line">&#123;</div><div class="line">min = t;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;min line:%d\n&quot;,min);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p6.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&quot;&gt;&lt;a href=&quot;#题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&quot; class=&quot;headerl
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T005</title>
+    <link href="https://fisherwy.github.io/2018/02/12/c-language-c5-038/"/>
+    <id>https://fisherwy.github.io/2018/02/12/c-language-c5-038/</id>
+    <published>2018-02-12T03:12:08.000Z</published>
+    <updated>2018-02-12T03:47:35.703Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：查找，替换数字并输出下标。"><a href="#题目：查找，替换数字并输出下标。" class="headerlink" title="题目：查找，替换数字并输出下标。"></a>题目：查找，替换数字并输出下标。</h2><blockquote><p>输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。 </p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[5],max,min,i,x,y,t;</div><div class="line"></div><div class="line">//input:</div><div class="line">printf(&quot;input 5 numbers:&quot;);</div><div class="line">for (i=0;i&lt;5;i++)</div><div class="line">&#123;</div><div class="line">scanf(&quot;%d&quot;,&amp;a[i]);</div><div class="line">&#125;</div><div class="line">printf(&quot;start:&quot;);</div><div class="line">for (i=0;i&lt;5;i++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[i]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line"></div><div class="line">//judge:</div><div class="line">max = a[0];</div><div class="line">min = a[0];</div><div class="line">x = y = 1;</div><div class="line">for (i=1;i&lt;5;i++)</div><div class="line">&#123;</div><div class="line">if (a[i]&gt;max)</div><div class="line">&#123;</div><div class="line">max = a[i];</div><div class="line">x = i+1;</div><div class="line">&#125;</div><div class="line">if (a[i]&lt;min)</div><div class="line">&#123;</div><div class="line">min = a[i];</div><div class="line">y = i+1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//exchange:</div><div class="line">t = a[x-1];</div><div class="line">a[x-1] = a[y-1];</div><div class="line">a[y-1] = t;</div><div class="line"></div><div class="line">//output:</div><div class="line">printf(&quot;max is the %d number,max=%d\n&quot;,x,max);</div><div class="line">printf(&quot;min is the %d number,min=%d\n&quot;,y,min);</div><div class="line">printf(&quot;after exchange:&quot;);</div><div class="line">for (i=0;i&lt;5;i++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[i]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p5.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：查找，替换数字并输出下标。&quot;&gt;&lt;a href=&quot;#题目：查找，替换数字并输出下标。&quot; class=&quot;headerlink&quot; title=&quot;题目：查找，替换数字并输出下标。&quot;&gt;&lt;/a&gt;题目：查找，替换数字并输出下标。&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;输
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T004</title>
+    <link href="https://fisherwy.github.io/2018/02/11/c-language-c5-037/"/>
+    <id>https://fisherwy.github.io/2018/02/11/c-language-c5-037/</id>
+    <published>2018-02-11T07:24:07.000Z</published>
+    <updated>2018-02-11T07:35:30.503Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输出n阶蛇形矩阵，n的值由用户输入。"><a href="#题目：输出n阶蛇形矩阵，n的值由用户输入。" class="headerlink" title="题目：输出n阶蛇形矩阵，n的值由用户输入。"></a>题目：输出n阶蛇形矩阵，n的值由用户输入。</h2><blockquote><p>示例：<br>      15       7       6       2       1<br>      16      14       8       5       3<br>      22      17      13       9       4<br>      23      21      18      12      10<br>      25      24      20      19      11</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main ()</div><div class="line">&#123;</div><div class="line">int a[50][50],i,k,l,m,num;</div><div class="line">//i控制行和列的数目,k计算矩阵的左列和第一行,l和m用于输出矩阵中的内容</div><div class="line">int zs,zx,ys,yx;//zs=左上角,zx=左下角,ys=右上角,yx=右下角</div><div class="line">int x,y,flag;</div><div class="line"></div><div class="line">//数组初始化:</div><div class="line">for (y=0;y&lt;50;y++)</div><div class="line">&#123;</div><div class="line">for (x=0;x&lt;50;x++)</div><div class="line">&#123;</div><div class="line">a[y][x] = 0;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">printf(&quot;line(&lt;50):&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;i);</div><div class="line"></div><div class="line">//flag初始化</div><div class="line">if (i%2 == 0)</div><div class="line">&#123;</div><div class="line">flag = 0;</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">flag = 1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ys = 1;</div><div class="line">zx = i*i;</div><div class="line">a[0][i-1] = ys;</div><div class="line">a[i-1][0] = zx;</div><div class="line"></div><div class="line">//对角线的上半部分第一行:</div><div class="line">for (k=1;k&lt;i;k++)</div><div class="line">&#123;</div><div class="line">if (k%2 == 1)//偶数行</div><div class="line">&#123;</div><div class="line">a[0][i-k-1] = a[0][i-k] + 1;</div><div class="line">&#125;</div><div class="line">if (k%2 == 0)//奇数行</div><div class="line">&#123;</div><div class="line">a[0][i-k-1] = a[0][i-k] + 2*k;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//对角线:</div><div class="line">for(l=1;l&lt;i;l++)</div><div class="line">&#123;</div><div class="line">if (i%2 == 0)</div><div class="line">&#123;</div><div class="line">a[l][l] = a[l-1][l-1] + 1;</div><div class="line">&#125;</div><div class="line">if (i%2 == 1)</div><div class="line">&#123;</div><div class="line">a[l][l] = a[l-1][l-1] - 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//上半部分剩下的:</div><div class="line">m = 0;</div><div class="line">for (k=1;k&lt;=i;k++)</div><div class="line">&#123;</div><div class="line">if (k%2 == flag)//偶数行</div><div class="line">&#123;</div><div class="line">for (l=1;l&lt;=i-1;l++)</div><div class="line">&#123;</div><div class="line">a[l][l+1+m] = a[l-1][l+m] + 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">else//奇数行</div><div class="line">&#123;</div><div class="line">for (l=1;l&lt;=i-1;l++)</div><div class="line">&#123;</div><div class="line">a[l][l+1+m] = a[l-1][l+m] - 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">m = m + 1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//对角线的下半部分第一行:</div><div class="line">for (k=1;k&lt;i-1;k++)</div><div class="line">&#123;</div><div class="line">if (k%2 == 1)//偶数行</div><div class="line">&#123;</div><div class="line">a[i-k-1][0] = a[i-k][0] - 2*k;</div><div class="line">&#125;</div><div class="line">if (k%2 == 0)//奇数行</div><div class="line">&#123;</div><div class="line">a[i-k-1][0] = a[i-k][0] - 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//下半部分剩下的:</div><div class="line">m = 0;</div><div class="line">for (k=1;k&lt;=i;k++)</div><div class="line">&#123;</div><div class="line">if (k%2 == flag)//偶数行</div><div class="line">&#123;</div><div class="line">for (l=1;l&lt;i-1;l++)</div><div class="line">&#123;</div><div class="line">a[l+1+m][l] = a[l+m][l-1] + 1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">else//奇数行</div><div class="line">&#123;</div><div class="line">for (l=1;l&lt;i-1;l++)</div><div class="line">&#123;</div><div class="line">a[l+1+m][l] = a[l+m][l-1] -1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">m = m + 1;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//输出整个蛇形矩阵</div><div class="line">for (y=0;y&lt;i;y++)</div><div class="line">&#123;</div><div class="line">for (x=0;x&lt;i;x++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%8d&quot;,a[y][x]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p4.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输出n阶蛇形矩阵，n的值由用户输入。&quot;&gt;&lt;a href=&quot;#题目：输出n阶蛇形矩阵，n的值由用户输入。&quot; class=&quot;headerlink&quot; title=&quot;题目：输出n阶蛇形矩阵，n的值由用户输入。&quot;&gt;&lt;/a&gt;题目：输出n阶蛇形矩阵，n的值由用户输入。&lt;/
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T003</title>
+    <link href="https://fisherwy.github.io/2018/02/10/c-language-c5-036/"/>
+    <id>https://fisherwy.github.io/2018/02/10/c-language-c5-036/</id>
+    <published>2018-02-10T02:59:17.000Z</published>
+    <updated>2018-02-10T03:09:51.192Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输出n阶左上拐矩阵，n的值由用户输入。"><a href="#题目：输出n阶左上拐矩阵，n的值由用户输入。" class="headerlink" title="题目：输出n阶左上拐矩阵，n的值由用户输入。"></a>题目：输出n阶左上拐矩阵，n的值由用户输入。</h2><blockquote><p>示例：<br>       1   1   1   1   1<br>       1   2   2   2   2<br>       1   2   3   3   3<br>       1   2   3   4   4<br>       1   2   3   4   5</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[100],i,j,k,x;</div><div class="line">printf(&quot;input n!(1-100) :&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;i);</div><div class="line">for (j=0;j&lt;i;j++)</div><div class="line">&#123;</div><div class="line">a[j]=1;</div><div class="line">&#125;</div><div class="line">for (j=0;j&lt;i;j++)</div><div class="line">&#123;</div><div class="line">for (k=0;k&lt;i;k++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[k]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">for (x=j;x&lt;i;x++)</div><div class="line">&#123;</div><div class="line">a[x+1]=a[j]+1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p3.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输出n阶左上拐矩阵，n的值由用户输入。&quot;&gt;&lt;a href=&quot;#题目：输出n阶左上拐矩阵，n的值由用户输入。&quot; class=&quot;headerlink&quot; title=&quot;题目：输出n阶左上拐矩阵，n的值由用户输入。&quot;&gt;&lt;/a&gt;题目：输出n阶左上拐矩阵，n的值由用户输
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T002</title>
+    <link href="https://fisherwy.github.io/2018/02/08/c-language-c5-035/"/>
+    <id>https://fisherwy.github.io/2018/02/08/c-language-c5-035/</id>
+    <published>2018-02-08T02:26:57.000Z</published>
+    <updated>2018-02-08T02:45:54.082Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编程输出特定的数字"><a href="#题目：编程输出特定的数字" class="headerlink" title="题目：编程输出特定的数字"></a>题目：编程输出特定的数字</h2><blockquote><p> 1   0   0   0   0   0<br>   2   1   0   0   0   0<br>   3   2   1   0   0   0<br>   4   3   2   1   0   0<br>   5   4   3   2   1   0<br>   6   5   4   3   2   1</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[6]=&#123;1,0,0,0,0,0&#125;,i,x,y;</div><div class="line">for (i=0;i&lt;6;i++)</div><div class="line">&#123;</div><div class="line">for (x=0;x&lt;6;x++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[x]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">for (y=0;y&lt;=i+1;y++)</div><div class="line">&#123;</div><div class="line">a[y]=a[y]+1;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p2.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编程输出特定的数字&quot;&gt;&lt;a href=&quot;#题目：编程输出特定的数字&quot; class=&quot;headerlink&quot; title=&quot;题目：编程输出特定的数字&quot;&gt;&lt;/a&gt;题目：编程输出特定的数字&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt; 1   0   0   0   
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第五章T001</title>
+    <link href="https://fisherwy.github.io/2018/02/08/c-language-c5-034/"/>
+    <id>https://fisherwy.github.io/2018/02/08/c-language-c5-034/</id>
+    <published>2018-02-08T02:26:40.000Z</published>
+    <updated>2018-02-08T02:40:16.385Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：矩阵行对调"><a href="#题目：矩阵行对调" class="headerlink" title="题目：矩阵行对调"></a>题目：矩阵行对调</h2><blockquote><p>用循环将矩阵的第1行与第3行对调。<br> 0  2   9  7<br> 5  13  6  8<br> 27 11  1  3</p><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a[3][4] = &#123;&#123;0,2,9,7&#125;,&#123;5,13,6,8,&#125;,&#123;27,11,1,3&#125;&#125;;</div><div class="line">int x,y;</div><div class="line">printf(&quot;start:\n&quot;);</div><div class="line">for (x=0;x&lt;3;x++)</div><div class="line">&#123;</div><div class="line">for (y=0;y&lt;4;y++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[x][y]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line">printf(&quot;processed:\n&quot;);</div><div class="line">for (x=2;x&gt;=0;x--)</div><div class="line">&#123;</div><div class="line">for (y=0;y&lt;4;y++)</div><div class="line">&#123;</div><div class="line">printf(&quot;%4d&quot;,a[x][y]);</div><div class="line">&#125;</div><div class="line">printf(&quot;\n&quot;);</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></blockquote><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c5p1.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：矩阵行对调&quot;&gt;&lt;a href=&quot;#题目：矩阵行对调&quot; class=&quot;headerlink&quot; title=&quot;题目：矩阵行对调&quot;&gt;&lt;/a&gt;题目：矩阵行对调&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;用循环将矩阵的第1行与第3行对调。&lt;br&gt; 0  2   9  7
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第四章T009</title>
+    <link href="https://fisherwy.github.io/2018/02/06/c-language-c4-033/"/>
+    <id>https://fisherwy.github.io/2018/02/06/c-language-c4-033/</id>
+    <published>2018-02-06T03:42:55.000Z</published>
+    <updated>2018-02-06T03:50:00.650Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：编程找到并输出5个整数中的最大和最小数。"><a href="#题目：编程找到并输出5个整数中的最大和最小数。" class="headerlink" title="题目：编程找到并输出5个整数中的最大和最小数。"></a>题目：编程找到并输出5个整数中的最大和最小数。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int i,x,max,min,a[x];</div><div class="line">printf(&quot;how many numbers do you want to input:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;x);</div><div class="line">for (i=0;i&lt;x;i++)</div><div class="line">&#123;</div><div class="line">printf(&quot;now input No.%d number:&quot;,i+1);</div><div class="line">scanf(&quot;%d&quot;,&amp;a[i]);</div><div class="line">&#125;</div><div class="line">max=a[0];</div><div class="line">min=a[1];</div><div class="line">for (i=0;i&lt;x;i++)</div><div class="line">&#123;</div><div class="line">if(a[i]&gt;max)</div><div class="line">&#123;</div><div class="line">max=a[i];</div><div class="line">&#125;</div><div class="line">if(a[i]&lt;min)</div><div class="line">&#123;</div><div class="line">min=a[i];</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">printf(&quot;max=%d\n&quot;,max);</div><div class="line">printf(&quot;min=%d\n&quot;,min);</div><div class="line">return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p13.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：编程找到并输出5个整数中的最大和最小数。&quot;&gt;&lt;a href=&quot;#题目：编程找到并输出5个整数中的最大和最小数。&quot; class=&quot;headerlink&quot; title=&quot;题目：编程找到并输出5个整数中的最大和最小数。&quot;&gt;&lt;/a&gt;题目：编程找到并输出5个整数中的最
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第四章T008</title>
+    <link href="https://fisherwy.github.io/2018/02/06/c-language-c4-032/"/>
+    <id>https://fisherwy.github.io/2018/02/06/c-language-c4-032/</id>
+    <published>2018-02-06T03:22:21.000Z</published>
+    <updated>2018-02-06T03:40:34.083Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输入一个百分制成绩，按要求输出对应的成绩等级。"><a href="#题目：输入一个百分制成绩，按要求输出对应的成绩等级。" class="headerlink" title="题目：输入一个百分制成绩，按要求输出对应的成绩等级。"></a>题目：输入一个百分制成绩，按要求输出对应的成绩等级。</h2><blockquote><p>90分以上为A（包括90）<br> 80-90分为B（包括80）<br> 70-80分为C（包括70）<br> 60-70分为D（包括60）<br> 60一下为E</p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">void judge (float a);</div><div class="line">int main ()</div><div class="line">&#123;</div><div class="line">float score;</div><div class="line">printf(&quot;input stduent&apos;s score(0-100):&quot;);</div><div class="line">scanf(&quot;%f&quot;,&amp;score);</div><div class="line">if (score&lt;0 || score&gt;100)</div><div class="line">&#123;</div><div class="line">printf(&quot;score input illegal!&quot;);</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s score is:%.1f \n&quot;,score);</div><div class="line">judge(score);</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void judge (float a)</div><div class="line">&#123;</div><div class="line">char jlevel;</div><div class="line">if (a&gt;=90)</div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s level is:A\n&quot;);</div><div class="line">&#125;</div><div class="line">else if (a&lt;90 &amp;&amp; a&gt;=80)</div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s level is:B\n&quot;);</div><div class="line">&#125;</div><div class="line">else if (a&lt;80 &amp;&amp; a&gt;=70)</div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s level is:C\n&quot;);</div><div class="line">&#125;</div><div class="line">else if (a&lt;70 &amp;&amp; a&gt;=60)</div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s level is:D\n&quot;);</div><div class="line">&#125;</div><div class="line">else </div><div class="line">&#123;</div><div class="line">printf(&quot;student&apos;s level is:E\n&quot;);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p12.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输入一个百分制成绩，按要求输出对应的成绩等级。&quot;&gt;&lt;a href=&quot;#题目：输入一个百分制成绩，按要求输出对应的成绩等级。&quot; class=&quot;headerlink&quot; title=&quot;题目：输入一个百分制成绩，按要求输出对应的成绩等级。&quot;&gt;&lt;/a&gt;题目：输入一个百
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言学习第四章T007</title>
+    <link href="https://fisherwy.github.io/2018/02/05/c-language-c4-031/"/>
+    <id>https://fisherwy.github.io/2018/02/05/c-language-c4-031/</id>
+    <published>2018-02-05T03:26:33.000Z</published>
+    <updated>2018-02-05T03:36:09.902Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。"><a href="#题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。" class="headerlink" title="题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。"></a>题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line"># include &lt;stdio.h&gt;</div><div class="line">int maxiumn (int x,int y,int z);</div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">int a,b,c;</div><div class="line">printf(&quot;triangle&apos;s a line:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;a);</div><div class="line">printf(&quot;triangle&apos;s b line:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;b);</div><div class="line">printf(&quot;triangle&apos;s c line:&quot;);</div><div class="line">scanf(&quot;%d&quot;,&amp;c);</div><div class="line">//input tri&apos;s 3 line</div><div class="line">if (a&lt;0 || b&lt;0 || c&lt;0)</div><div class="line">&#123;</div><div class="line">printf(&quot;error!It&apos;s not a triangle!&quot;);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">if (a+b&lt;c || a+c&lt;b || b+c&lt;a)//judge if it&apos;s tri or not</div><div class="line">&#123;</div><div class="line">printf(&quot;error! \n&quot;);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">int mac,l1,l2;</div><div class="line">mac=maxiumn(a,b,c);</div><div class="line">if (mac==a)//judge the line from big to small</div><div class="line">&#123;</div><div class="line">l1=b;</div><div class="line">l2=c;</div><div class="line">&#125;</div><div class="line">else if (mac==b)</div><div class="line">&#123;</div><div class="line">l1=a;</div><div class="line">l2=c;</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">l1=a;</div><div class="line">l2=b;</div><div class="line">&#125;</div><div class="line">if (l1*l1+l2*l2==mac*mac)//judge the shape of triangle</div><div class="line">&#123;</div><div class="line">printf(&quot;it&apos;s a RT triangle \n&quot;);</div><div class="line">&#125;</div><div class="line">else if (l1*l1+l2*l2&lt;mac*mac)</div><div class="line">&#123;</div><div class="line">printf(&quot;it&apos;s a acute angle triangle\n&quot;);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">printf(&quot;it&apos;s an obtuse angle triangle\n&quot;);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int maxiumn (int x,int y,int z)//count the longest line</div><div class="line">&#123;</div><div class="line">int max;</div><div class="line">if (x&gt;y)</div><div class="line">&#123;</div><div class="line">max=x;</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">max=y;</div><div class="line">&#125;</div><div class="line">if (max&lt;z)</div><div class="line">&#123;</div><div class="line">max=z;</div><div class="line">&#125;</div><div class="line">printf(&quot;the max line:%d \n&quot;,max);</div><div class="line">return max;</div><div class="line">&#125;</div></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="http://FisherWY.github.io/2017/pic/c4p9.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p10.png" alt=""><br><img src="http://FisherWY.github.io/2017/pic/c4p11.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。&quot;&gt;&lt;a href=&quot;#题目：输入三个数，判断这三个数对应长度的线段构成的三角形是什么类型。设计数据并测试程序。&quot; class=&quot;headerlink&quot; title=&quot;题目：输
+      
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://fisherwy.github.io/tags/C/"/>
+    
+  </entry>
+  
+</feed>
