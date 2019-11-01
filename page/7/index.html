@@ -198,7 +198,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ewewng0019jwup04aftcxp.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2fnqt4v0019zhup0k0ylc6w.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -212,7 +212,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2ewewng0019jwup04aftcxp.html" class="post-title-link" itemprop="url">C语言学习第三章T9</a>
+            <a href="/ck2fnqt4v0019zhup0k0ylc6w.html" class="post-title-link" itemprop="url">C语言学习第三章T9</a>
         </h1>
 
         <div class="post-meta">
@@ -245,10 +245,15 @@
       
           <h2 id="题目：用二分法求下面方程在（－10，10）之间的根"><a href="#题目：用二分法求下面方程在（－10，10）之间的根" class="headerlink" title="题目：用二分法求下面方程在（－10，10）之间的根"></a>题目：用二分法求下面方程在（－10，10）之间的根</h2><blockquote>
 <p>2x^3-4x^2+3x-6=0</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment"># include &lt;math.h&gt;</span></span><br><span class="line"></span><br><span class="line">float <span class="function"><span class="keyword">fun</span> (<span class="title">float</span></span> );	<span class="regexp">//</span>求方程的解的函数</span><br><span class="line">float <span class="function"><span class="keyword">fun</span> (<span class="title">float</span></span> x)</span><br><span class="line">&#123;</span><br><span class="line">    float y;</span><br><span class="line">    y = <span class="number">2</span>*x*x*x-<span class="number">4</span>*x*x+<span class="number">3</span>*x-<span class="number">6</span>;</span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    float l,r,x;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">"input x1 x2(-10~10):"</span>);</span><br><span class="line">        scanf(<span class="string">"%f %f"</span>,&amp;l,&amp;r);</span><br><span class="line">    &#125;<span class="keyword">while</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">l</span></span>)*<span class="function"><span class="keyword">fun</span>(<span class="title">r</span></span>)&gt;<span class="number">0</span> );	<span class="regexp">//</span>判断输入的范围内是否有解</span><br><span class="line">    <span class="keyword">while</span> ( (abs(r-l))&gt;<span class="number">0.00001</span> )	/<span class="regexp">/解的精度，可按要求调整</span></span><br><span class="line"><span class="regexp">	&#123;</span></span><br><span class="line"><span class="regexp">		x = (l+r)/</span><span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">x</span></span>)&gt;<span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            r = x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">x</span></span>)&lt;<span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            l = x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"result:%lf\n"</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c3p14.png" alt=""></p>
-
+</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment"># include &lt;math.h&gt;</span></span><br><span class="line"></span><br><span class="line">float <span class="function"><span class="keyword">fun</span> (<span class="title">float</span></span> );	<span class="regexp">//</span>求方程的解的函数</span><br><span class="line">float <span class="function"><span class="keyword">fun</span> (<span class="title">float</span></span> x)</span><br><span class="line">&#123;</span><br><span class="line">    float y;</span><br><span class="line">    y = <span class="number">2</span>*x*x*x-<span class="number">4</span>*x*x+<span class="number">3</span>*x-<span class="number">6</span>;</span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    float l,r,x;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">"input x1 x2(-10~10):"</span>);</span><br><span class="line">        scanf(<span class="string">"%f %f"</span>,&amp;l,&amp;r);</span><br><span class="line">    &#125;<span class="keyword">while</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">l</span></span>)*<span class="function"><span class="keyword">fun</span>(<span class="title">r</span></span>)&gt;<span class="number">0</span> );	<span class="regexp">//</span>判断输入的范围内是否有解</span><br><span class="line">    <span class="keyword">while</span> ( (abs(r-l))&gt;<span class="number">0.00001</span> )	/<span class="regexp">/解的精度，可按要求调整</span></span><br><span class="line"><span class="regexp">	&#123;</span></span><br><span class="line"><span class="regexp">		x = (l+r)/</span><span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">x</span></span>)&gt;<span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            r = x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="function"><span class="keyword">fun</span>(<span class="title">x</span></span>)&lt;<span class="number">0</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            l = x;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"result:%lf\n"</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2fnqt4v0019zhup0k0ylc6w.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -267,7 +272,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ewewnf0017jwupfxwjq5m5.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2fnqt4s0017zhupwi3tu9dq.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -281,7 +286,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2ewewnf0017jwupfxwjq5m5.html" class="post-title-link" itemprop="url">C语言学习第三章T8</a>
+            <a href="/ck2fnqt4s0017zhupwi3tu9dq.html" class="post-title-link" itemprop="url">C语言学习第三章T8</a>
         </h1>
 
         <div class="post-meta">
@@ -314,10 +319,15 @@
       
           <h2 id="题目：九头鸟问题"><a href="#题目：九头鸟问题" class="headerlink" title="题目：九头鸟问题"></a>题目：九头鸟问题</h2><blockquote>
 <p>九头鸟（传说中的一种怪鸟，它有9个头，两只脚）<br> 鸡和兔子关在一个笼子里，它们的头数是100，它们的脚数也是100<br> 编程计算其中九头鸟、鸡和兔子各有多少只。</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	思路：设九头鸟有x只，鸡有y只，兔子有z只。</span></span><br><span class="line"><span class="comment">	知道头的数数量和脚的数量，只能列出两条方程，化简。</span></span><br><span class="line"><span class="comment">	最后用嵌套循环和化简出来的式子一个个进行尝试，若符合条件则输出。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x,y,z;</span><br><span class="line">    <span class="keyword">for</span> (x=<span class="number">1</span>;x&lt;=<span class="number">10</span>;x++)</span><br><span class="line">        <span class="keyword">for</span> (z=<span class="number">1</span>;z&lt;=<span class="number">24</span>;z++)</span><br><span class="line">            <span class="keyword">for</span> (y=<span class="number">1</span>;y&lt;=<span class="number">47</span>;y++)</span><br><span class="line">                <span class="keyword">if</span> (<span class="number">9</span>*x+y+z==<span class="number">100</span> &amp;&amp; x+y+<span class="number">2</span>*z==<span class="number">50</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">"九头鸟:%4d 鸡：%4d 兔子：%4d\n"</span>,x,y,z);</span><br><span class="line">                &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c3p13.png" alt=""></p>
-
+</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	思路：设九头鸟有x只，鸡有y只，兔子有z只。</span></span><br><span class="line"><span class="comment">	知道头的数数量和脚的数量，只能列出两条方程，化简。</span></span><br><span class="line"><span class="comment">	最后用嵌套循环和化简出来的式子一个个进行尝试，若符合条件则输出。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x,y,z;</span><br><span class="line">    <span class="keyword">for</span> (x=<span class="number">1</span>;x&lt;=<span class="number">10</span>;x++)</span><br><span class="line">        <span class="keyword">for</span> (z=<span class="number">1</span>;z&lt;=<span class="number">24</span>;z++)</span><br><span class="line">            <span class="keyword">for</span> (y=<span class="number">1</span>;y&lt;=<span class="number">47</span>;y++)</span><br><span class="line">                <span class="keyword">if</span> (<span class="number">9</span>*x+y+z==<span class="number">100</span> &amp;&amp; x+y+<span class="number">2</span>*z==<span class="number">50</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">"九头鸟:%4d 鸡：%4d 兔子：%4d\n"</span>,x,y,z);</span><br><span class="line">                &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2fnqt4s0017zhupwi3tu9dq.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -336,7 +346,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ewewne0015jwuph1vz3kyf.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2fnqt4p0015zhup2boec63z.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -350,7 +360,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2ewewne0015jwuph1vz3kyf.html" class="post-title-link" itemprop="url">C语言第三章T7</a>
+            <a href="/ck2fnqt4p0015zhup2boec63z.html" class="post-title-link" itemprop="url">C语言第三章T7</a>
         </h1>
 
         <div class="post-meta">
@@ -383,10 +393,15 @@
       
           <h2 id="题目：从键盘输入正整数a，求s-a-aa-aaa-…-a…a。"><a href="#题目：从键盘输入正整数a，求s-a-aa-aaa-…-a…a。" class="headerlink" title="题目：从键盘输入正整数a，求s=a+aa+aaa+…+a…a。"></a>题目：从键盘输入正整数a，求s=a+aa+aaa+…+a…a。</h2><blockquote>
 <p>此处a必需为个位正整数，aaaa表示的是a在不同的位数上而不是连乘，连加次数以输入的a作为循环边界</p>
-</blockquote>
-<h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a,b,i=<span class="number">0</span>,sum=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input a(1-9):"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a);</span><br><span class="line">    b = a;</span><br><span class="line">    <span class="keyword">if</span> (b&gt;=<span class="number">1</span> &amp;&amp; b&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;b;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum = sum + a;</span><br><span class="line">            a = a*<span class="number">10</span> + b;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum=%d \n"</span>,sum);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error! \n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c3p12.png" alt=""></p>
-
+</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a,b,i=<span class="number">0</span>,sum=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input a(1-9):"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;a);</span><br><span class="line">    b = a;</span><br><span class="line">    <span class="keyword">if</span> (b&gt;=<span class="number">1</span> &amp;&amp; b&lt;<span class="number">10</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;b;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            sum = sum + a;</span><br><span class="line">            a = a*<span class="number">10</span> + b;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sum=%d \n"</span>,sum);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"error! \n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2fnqt4p0015zhup2boec63z.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -405,7 +420,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ewewnc0013jwupp8fnd7cb.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2fnqt4o0013zhupkre1c30m.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -419,7 +434,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2ewewnc0013jwupp8fnd7cb.html" class="post-title-link" itemprop="url">C语言第三章T6</a>
+            <a href="/ck2fnqt4o0013zhupkre1c30m.html" class="post-title-link" itemprop="url">C语言第三章T6</a>
         </h1>
 
         <div class="post-meta">
@@ -451,8 +466,14 @@
 
       
           <h2 id="题目：输入一个正整数，求它的所有素数因子。"><a href="#题目：输入一个正整数，求它的所有素数因子。" class="headerlink" title="题目：输入一个正整数，求它的所有素数因子。"></a>题目：输入一个正整数，求它的所有素数因子。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input a number:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">2</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(n!=i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(n%i==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%d "</span>,i);</span><br><span class="line">                n=n/i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,n);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果:"></a>运行结果:</h2><p><img src="images/c/c3p11.png" alt=""></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2fnqt4o0013zhupkre1c30m.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -471,7 +492,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ewewna000zjwupnugpsqhx.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2fnqt4n0011zhupsjqu4hem.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -485,7 +506,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2ewewna000zjwupnugpsqhx.html" class="post-title-link" itemprop="url">C语言第三章T5</a>
+            <a href="/ck2fnqt4n0011zhupsjqu4hem.html" class="post-title-link" itemprop="url">C语言第三章T5</a>
         </h1>
 
         <div class="post-meta">
@@ -517,8 +538,14 @@
 
       
           <h2 id="题目：输入字符，并以按Enter键结束。将其中的小写字母转换成大写字母，而其他字符不变。"><a href="#题目：输入字符，并以按Enter键结束。将其中的小写字母转换成大写字母，而其他字符不变。" class="headerlink" title="题目：输入字符，并以按Enter键结束。将其中的小写字母转换成大写字母，而其他字符不变。"></a>题目：输入字符，并以按Enter键结束。将其中的小写字母转换成大写字母，而其他字符不变。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> a;</span><br><span class="line">    <span class="keyword">while</span> ( ( a=getchar() ) != <span class="string">'\n'</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(a<span class="number">-32</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c3p10.png" alt=""></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2fnqt4n0011zhupsjqu4hem.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -692,5 +719,5 @@
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":150,"height":300},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
 </html>
