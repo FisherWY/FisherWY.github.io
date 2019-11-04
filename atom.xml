@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2019-11-04T04:45:54.883Z</updated>
+  <updated>2019-11-04T14:31:41.482Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -17,9 +17,53 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>VMware装OpenWrt</title>
+    <link href="http://fisher.lazybone.xyz/ck2kisia70030eaupncuwnthe.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisia70030eaupncuwnthe.html</id>
+    <published>2019-11-04T12:27:24.000Z</published>
+    <updated>2019-11-04T14:31:41.482Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>在没有设备的情况下，VMware虚拟机就是检验编译成果和学习的最好工具，这篇博客记录了我是如何根据<a href="https://openwrt.org/docs/guide-user/virtualization/vmware" target="_blank" rel="noopener">官方文档</a>配置虚拟机的</p><h2 id="自行编译"><a href="#自行编译" class="headerlink" title="自行编译"></a>自行编译</h2><p>如果自己编译的时候在<code>Target Images</code>中勾选了<code>Build VMware images files</code>后，那么在编译输出的文件夹中就能够直接找到<code>vmdk</code>格式的文件，可以直接跳过前期准备</p><a id="more"></a><h2 id="使用img镜像转换"><a href="#使用img镜像转换" class="headerlink" title="使用img镜像转换"></a>使用img镜像转换</h2><p>首先安装依赖，我使用的是Ubuntu 19.04</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install qemu-img</span><br></pre></td></tr></table></figure><p>然后从OpenWrt官网上下载镜像文件并解压，这里下载的是<code>openwrt-18.06.4-x86-64-combined-ext4.img.gz</code></p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://downloads.openwrt.org/releases/18.06.4/targets/x86/64/openwrt-18.06.4-x86-64-combined-ext4.img.gz</span><br><span class="line">gunzip openwrt-18.06.4-x86-64-combined-ext4.img.gz</span><br></pre></td></tr></table></figure><p>使用<code>qemu-img</code>将img固件转换为vmdk格式的虚拟机硬盘文件</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img convert -f raw -O vmdk openwrt-18.06.4-x86-64-combined-ext4.img openwrt-18.06.4-x86-64-combined-ext4.vmdk</span><br></pre></td></tr></table></figure><h1 id="创建虚拟机"><a href="#创建虚拟机" class="headerlink" title="创建虚拟机"></a>创建虚拟机</h1><p>接下来就是创建一个空白的虚拟机，将vmdk文件添加到该空白虚拟机中</p><ol><li><p>文件-&gt;新建虚拟机，选择自定义</p><p><img src="images/router/Openwrt_VM1.png" alt="第一步"></p></li><li><p>虚拟机硬件兼容性直接默认就好</p><p><img src="images/router/Openwrt_VM2.png" alt="第二步"></p></li><li><p>选择稍后安装操作系统</p><p><img src="images/router/Openwrt_VM3.png" alt="第三步"></p></li><li><p>OpenWrt18使用的是Linux4.x的内核，因此操作系统类型选择<code>其他 Linux 4.x</code></p><p><img src="images/router/Openwrt_VM4.png" alt="第四步"></p></li><li><p>虚拟机的名字，自己起一个喜欢的</p><p><img src="images/router/Openwrt_VM5.png" alt="第五步"></p></li><li><p>分配处理器，1个处理器1个内核就够了</p><p><img src="images/router/Openwrt_VM6.png" alt="第六步"></p></li><li><p>分配内存，256MB就够了</p><p><img src="images/router/Openwrt_VM7.png" alt="第七步"></p></li><li><p>虚拟机的网络连接类型，根据情况选择，我使用的是桥接网络</p><p><img src="images/router/Openwrt_VM8.png" alt="第八步"></p></li><li><p>I/O控制器类型选择<code>LSI Logic</code></p><p><img src="images/router/Openwrt_VM9.png" alt="第九步"></p></li><li><p>虚拟磁盘类型选择<code>SCSI</code></p><p><img src="images/router/Openwrt_VM10.png" alt="第十步"></p></li><li><p>选择磁盘的时候，点击<code>使用现有虚拟磁盘</code>，然后选择刚刚转换的vmdk文件。如果提示说可以转换为格式较新的虚拟磁盘，选择保持当前磁盘格式</p><p><img src="images/router/Openwrt_VM11.png" alt="第十一步1"></p><p><img src="images/router/Openwrt_VM11_1.png" alt="第十一步2"></p></li><li><p>打开虚拟机所在位置，找到<code>xxx.vmx</code>文件，使用文本编辑器打开，在最后一句加上<code>ethernet0.virtualDev = &quot;e1000&quot;</code>，保存文件</p><p>这条语句将虚拟机的虚拟网卡类型设置为Intel e1000，Openwrt能够将其识别出来，如果想使用其他虚拟网卡类型，可以在编译配置的时候在<code>Kernel modules -&gt; Network Devices</code>中勾选其他网卡驱动</p><p><img src="images/router/Openwrt_VM12.png" alt="第十二步"></p></li></ol><h1 id="启动虚拟机，配置网络"><a href="#启动虚拟机，配置网络" class="headerlink" title="启动虚拟机，配置网络"></a>启动虚拟机，配置网络</h1><p>启动虚拟机，屏幕上是不会显示命令行的，看到屏幕的日志不再滚动之后按回车就可以进入命令行了</p><p><img src="images/router/Openwrt_Start.png" alt="开机界面"></p><p>因为Openwrt默认的lan配置是只限于虚拟机本地网络的，因此还不能使用浏览器打开LuCi管理界面。需要修改一下lan网络配置</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/config/network</span><br></pre></td></tr></table></figure><p>如果网络中的路由器有DHCP服务器，则将<code>interface &#39;lan&#39;</code>改成如下所示</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config interface <span class="string">'lan'</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">'bridge'</span></span><br><span class="line">    option ifname <span class="string">'eth0'</span></span><br><span class="line">    option proto <span class="string">'dhcp'</span></span><br></pre></td></tr></table></figure><p>如果网络中的路由器没有DHCP服务器，则自行指定：IP地址、子网掩码、默认网关、DNS服务器</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">config interface <span class="string">'lan'</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">'bridge'</span></span><br><span class="line">    option ifname <span class="string">'eth0'</span></span><br><span class="line">    option proto <span class="string">'static'</span></span><br><span class="line">    option ipaddr <span class="string">'192.168.1.11'</span><span class="comment">#自行指定</span></span><br><span class="line">    option netmask <span class="string">'255.255.255.0'</span> <span class="comment">#自行指定</span></span><br><span class="line">    option ip6assign <span class="string">'60'</span></span><br><span class="line">    option gateway <span class="string">'192.168.1.1'</span><span class="comment">#自行指定</span></span><br><span class="line">    option dns <span class="string">'192.168.1.1'</span><span class="comment">#自行指定</span></span><br></pre></td></tr></table></figure><p>重启网络服务，查看是否获得IP地址，有IP地址就表示配置成功</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br><span class="line">ifconfig br-lan</span><br></pre></td></tr></table></figure><p><img src="images/router/Openwrt_Net.png" alt="网络配置"></p><h1 id="登录LuCi"><a href="#登录LuCi" class="headerlink" title="登录LuCi"></a>登录LuCi</h1><p>在网络配置好之后，就可以打开浏览器，使用LuCi对路由器进行管理配置了。第一次登录的时候，Openwrt会要求设置root密码</p><p><img src="images/router/Openwrt_LuCi.png" alt="LuCi"></p><p>之后就可以愉快地玩耍了😁</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前期准备&quot;&gt;&lt;a href=&quot;#前期准备&quot; class=&quot;headerlink&quot; title=&quot;前期准备&quot;&gt;&lt;/a&gt;前期准备&lt;/h1&gt;&lt;p&gt;在没有设备的情况下，VMware虚拟机就是检验编译成果和学习的最好工具，这篇博客记录了我是如何根据&lt;a href=&quot;https://openwrt.org/docs/guide-user/virtualization/vmware&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;官方文档&lt;/a&gt;配置虚拟机的&lt;/p&gt;&lt;h2 id=&quot;自行编译&quot;&gt;&lt;a href=&quot;#自行编译&quot; class=&quot;headerlink&quot; title=&quot;自行编译&quot;&gt;&lt;/a&gt;自行编译&lt;/h2&gt;&lt;p&gt;如果自己编译的时候在&lt;code&gt;Target Images&lt;/code&gt;中勾选了&lt;code&gt;Build VMware images files&lt;/code&gt;后，那么在编译输出的文件夹中就能够直接找到&lt;code&gt;vmdk&lt;/code&gt;格式的文件，可以直接跳过前期准备&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="http://fisher.lazybone.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="路由器" scheme="http://fisher.lazybone.xyz/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OpenWrt编译</title>
+    <link href="http://fisher.lazybone.xyz/ck2kisia3002ueauphudr61ui.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisia3002ueauphudr61ui.html</id>
+    <published>2019-11-03T14:12:18.000Z</published>
+    <updated>2019-11-04T14:19:35.195Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>“你们为什么不自己去尝试编译一个OpenWrt研究一下呢？”</p><p>在操作系统课上，刘刚不止一次讲了这句话了。其实我之前给路由器刷过OpenWrt固件，但是编译还真没试过。恰好我对此也有兴趣，于是说干就干，自己编译一个OpenWrt固件！</p><h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>系统环境：Ubuntu 19.04 64-bit</p><p>安装依赖</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install subversion g++ zlib1g-dev build-essential git python python3</span><br><span class="line">sudo apt install libncurses5-dev gawk gettext unzip file libssl-dev wget</span><br><span class="line">sudo apt install libelf-dev ecj fastjar java-propose-classpath</span><br></pre></td></tr></table></figure><a id="more"></a><h1 id="获取OpenWrt源码"><a href="#获取OpenWrt源码" class="headerlink" title="获取OpenWrt源码"></a>获取OpenWrt源码</h1><p>OpenWrt官方也有一个Git仓库，但是国内的网络使用比较慢，因此我们使用GitHub上来自官方的镜像仓库</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/openwrt/openwrt.git</span><br></pre></td></tr></table></figure><p>之后需要更新源码的时候，只需要使用Git的命令即可</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure><p><img src="images/router/Openwrt_Git.png" alt="更新源码"></p><h1 id="更新依赖包"><a href="#更新依赖包" class="headerlink" title="更新依赖包"></a>更新依赖包</h1><p>在每次编译之前我们需要将依赖包更新一下，以保证编译到固件中的软件包是最新版的</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> openwrt</span><br><span class="line"></span><br><span class="line">./scripts/feeds update -a</span><br><span class="line">./scripts/feeds install -a</span><br></pre></td></tr></table></figure><p><img src="images/router/Openwrt_FeedsUpdate.png" alt="更新依赖包"></p><p><img src="images/router/Openwrt_FeedsInstall.png" alt="安装依赖包"></p><h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>在正式编译之前，我们需要修改编译的配置文件，以指定编译的目标平台、架构、需要的系统软件包、固件的格式。在OpenWrt的编译配置中，我们使用图形化的编译配置<code>make menuconfig</code></p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make menuconfig</span><br></pre></td></tr></table></figure><p>此时终端会出现一个如下图的界面</p><p><img src="images/router/Openwrt_Menuconfig.png" alt="编译配置"></p><p>在这个界面就可以配置出自己想要的固件，我的配置如下：</p><ul><li>Target System =&gt; x86    (目标系统架构)</li><li>Subtarget =&gt; x86_64    (目标CPU类型)</li><li>Target Profile =&gt; Generic x86/64    (目标设备)</li></ul><p>剩下的配置就是<strong>编译出的固件格式</strong>，<strong>系统环境依赖包</strong>，<strong>LuCi依赖包</strong>等等。可以根据自己的需要灵活选择。在选择完成之后保存配置文件，就可以开始编译了</p><h1 id="正式编译"><a href="#正式编译" class="headerlink" title="正式编译"></a>正式编译</h1><p>第一次编译的时候，Openwrt并不推荐使用多线程编译，因为编译过程中需要下载比较多的软件包。因此第一次编译我只添加了输出编译日志的参数</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make V=99</span><br></pre></td></tr></table></figure><p>第一次编译完成之后，在以后的编译中就可以使用多线程编译了，具体线程数需要看CPU的核心数。因为使用的进程数量是<code>-j</code>参数中的数字+1，而我给虚拟机分配的CPU核心数有4个，因此我的参数是<code>-j3</code></p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j3 V=99</span><br></pre></td></tr></table></figure><p>在网络通畅的情况下，第一次编译需要的时间比较长，我用了一个下午😂。后面加入多线程编译后只需要20分钟就编译完了</p><p><img src="images/router/Openwrt_Make1.png" alt="编译1"></p><p><img src="images/router/Openwrt_Make2.png" alt="编译2"></p><p>编译完成后的固件在文件夹中的<code>bin/target</code>中，编译好的依赖包在<code>bin/packages</code>中，以后可以做一个镜像站代替官方的opkg依赖源</p><p><img src="images/router/Openwrt_Makeup.png" alt="编译完成"></p><p>需要重新编译的时候，先进行<code>make clean</code>清理之前编译好的固件，再执行<code>make</code>重新编译</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;“你们为什么不自己去尝试编译一个OpenWrt研究一下呢？”&lt;/p&gt;&lt;p&gt;在操作系统课上，刘刚不止一次讲了这句话了。其实我之前给路由器刷过OpenWrt固件，但是编译还真没试过。恰好我对此也有兴趣，于是说干就干，自己编译一个OpenWrt固件！&lt;/p&gt;&lt;h1 id=&quot;前期准备&quot;&gt;&lt;a href=&quot;#前期准备&quot; class=&quot;headerlink&quot; title=&quot;前期准备&quot;&gt;&lt;/a&gt;前期准备&lt;/h1&gt;&lt;p&gt;系统环境：Ubuntu 19.04 64-bit&lt;/p&gt;&lt;p&gt;安装依赖&lt;/p&gt;&lt;figure class=&quot;highlight sh&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sudo apt install subversion g++ zlib1g-dev build-essential git python python3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt install libncurses5-dev gawk gettext unzip file libssl-dev wget&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sudo apt install libelf-dev ecj fastjar java-propose-classpath&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="http://fisher.lazybone.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="路由器" scheme="http://fisher.lazybone.xyz/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
     <title>小程序获取QQ音乐播放链接插件</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmk002wstup7o7s1bte.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmk002wstup7o7s1bte.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisiae0035eaupxg2ukzmf.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisiae0035eaupxg2ukzmf.html</id>
     <published>2019-11-03T08:27:15.000Z</published>
     <updated>2019-11-04T04:45:54.883Z</updated>
     
@@ -40,12 +84,12 @@
   
   <entry>
     <title>使用Nginx搭建下载服务器</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmm0030stupwnectd25.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmm0030stupwnectd25.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisiaa0033eaupygzgpp2m.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisiaa0033eaupygzgpp2m.html</id>
     <published>2019-11-01T12:19:30.000Z</published>
-    <updated>2019-11-01T13:37:00.199Z</updated>
+    <updated>2019-11-04T14:28:24.602Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="使用Nginx搭建下载服务器"><a href="#使用Nginx搭建下载服务器" class="headerlink" title="使用Nginx搭建下载服务器"></a>使用Nginx搭建下载服务器</h1><p>下载服务器主要用于存放自己日常使用的安装包和文件</p><h2 id="1-创建文件存放根目录"><a href="#1-创建文件存放根目录" class="headerlink" title="1. 创建文件存放根目录"></a>1. 创建文件存放根目录</h2><p>使用<code>ssh</code>登录服务器，创建文件夹。在这里我使用的是自己的用户和自己用户的根目录，方便文件的管理</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">mkdir downloads</span><br></pre></td></tr></table></figure><h2 id="2-修改Nginx配置文件"><a href="#2-修改Nginx配置文件" class="headerlink" title="2. 修改Nginx配置文件"></a>2. 修改Nginx配置文件</h2><p>修改Nginx配置文件，将文件夹添加为下载根目录</p><a id="more"></a><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure><p>在Http Server添加一个<code>location</code>代码块</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location /downloads/ &#123;</span><br><span class="line">    <span class="built_in">alias</span> /home/fisher/downloads/;</span><br><span class="line">    autoindex on;</span><br><span class="line">    <span class="comment"># 只显示文件粗略大小，以k、M等单位计算</span></span><br><span class="line">    autoindex_exact_size off;</span><br><span class="line">    <span class="comment"># 使用服务器本地时间</span></span><br><span class="line">    autoindex_localtime on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="3-重载Nginx"><a href="#3-重载Nginx" class="headerlink" title="3. 重载Nginx"></a>3. 重载Nginx</h2><p>重新加载Nginx配置文件，使配置生效</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx reload</span><br></pre></td></tr></table></figure><p>这时候用浏览器访问<code>http://hostname/downloads/</code>，出现以下页面，配置成功！</p><p><img src="images/nginx/downloads.png" alt="页面根目录"></p><h2 id="4-存在的问题"><a href="#4-存在的问题" class="headerlink" title="4. 存在的问题"></a>4. 存在的问题</h2><p>在使用默认的配置下，使用<code>curl</code>或<code>wget</code>下载到1m之后就会丢失连接，使用迅雷下载途中会中断多次，在查找并使用了网上的解决方案之后仍然不能解决问题。个人认为是默认缓冲为1m的原因，具体的解决方法待我研究研究。在此先挖一个坑。</p><h2 id="5-root和alias的区别"><a href="#5-root和alias的区别" class="headerlink" title="5. root和alias的区别"></a>5. root和alias的区别</h2><p>最开始配置<code>location</code>代码块的中的根目录时候，我使用的是<code>root</code>，重载Nginx之后发现404。接着我换成了<code>alias</code>之后就可以了。仔细查了一下文档，这两个参数的区别在于：<code>两者解析URL的方式不同</code></p><p>首先<code>location</code>代码块如下：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location <span class="regexp">/folder/</span> &#123;</span><br><span class="line">    (root或alias): <span class="regexp">/home/</span>fisher<span class="regexp">/downloads/</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><code>alias</code>：使用<code>alias</code>中的路径替换掉URL的参数路径，例如：www.domain.com/folder/会返回服务器上的<code>/home/fisher/downloads/</code>中的文件，使用该方式最后面必须以<code>/</code>结束，否则会找不到文件</li><li><code>root</code>：将URL参数路径中的路径追加到<code>root</code>后面，例如：www.domain.com/folder/会返回服务器上的<code>/home/fisher/downloads/folder/</code>，因此出现了404的问题</li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="使用Nginx搭建下载服务器"><a href="#使用Nginx搭建下载服务器" class="headerlink" title="使用Nginx搭建下载服务器"></a>使用Nginx搭建下载服务器</h1><p>下载服务器主要用于存放自己日常使用的安装包和文件</p><h2 id="1-创建文件存放根目录"><a href="#1-创建文件存放根目录" class="headerlink" title="1. 创建文件存放根目录"></a>1. 创建文件存放根目录</h2><p>使用<code>ssh</code>登录服务器，创建文件夹。在这里我使用的是自己的用户和自己用户的根目录，方便文件的管理</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">mkdir downloads</span><br></pre></td></tr></table></figure><h2 id="2-修改Nginx配置文件"><a href="#2-修改Nginx配置文件" class="headerlink" title="2. 修改Nginx配置文件"></a>2. 修改Nginx配置文件</h2><p>修改Nginx配置文件，将文件夹添加为下载根目录</p><a id="more"></a><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure><p>在Http Server添加一个<code>location</code>代码块</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location /downloads/ &#123;</span><br><span class="line">    <span class="built_in">alias</span> /home/fisher/downloads/;</span><br><span class="line">    autoindex on;</span><br><span class="line">    <span class="comment"># 只显示文件粗略大小，以k、M等单位计算</span></span><br><span class="line">    autoindex_exact_size off;</span><br><span class="line">    <span class="comment"># 使用服务器本地时间</span></span><br><span class="line">    autoindex_localtime on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="3-重载Nginx"><a href="#3-重载Nginx" class="headerlink" title="3. 重载Nginx"></a>3. 重载Nginx</h2><p>重新加载Nginx配置文件，使配置生效</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx reload</span><br></pre></td></tr></table></figure><p>这时候用浏览器访问<code>http://hostname/downloads/</code>，出现以下页面，配置成功！</p><p><img src="images/nginx/downloads.png" alt="页面根目录"></p><h2 id="4-存在的问题"><a href="#4-存在的问题" class="headerlink" title="4. 存在的问题"></a>4. 存在的问题</h2><p>在使用默认的配置下，使用<code>curl</code>或<code>wget</code>下载到1m之后就会丢失连接，使用迅雷下载途中会中断多次，在查找并使用了网上的解决方案之后仍然不能解决问题。个人认为是默认缓冲为1m的原因，具体的解决方法待我研究研究。在此先挖一个坑。</p><h3 id="问题的解决（2019-11-04）"><a href="#问题的解决（2019-11-04）" class="headerlink" title="问题的解决（2019-11-04）"></a>问题的解决（2019-11-04）</h3><p>在研究了<code>sendfile</code>参数、<code>max_chunk_size</code>参数、<code>buffer_size</code>等参数无用之后。今天早上我的Nginx甚至不能正常工作了，无奈之下我只好把Nginx卸载重装。神奇的是重装完之后一切都恢复正常了，不需要加什么特别的参数，使用默认的配置文件就能解决存在的问题了。看来重装能解决99%的问题😂？</p><h2 id="5-root和alias的区别"><a href="#5-root和alias的区别" class="headerlink" title="5. root和alias的区别"></a>5. root和alias的区别</h2><p>最开始配置<code>location</code>代码块的中的根目录时候，我使用的是<code>root</code>，重载Nginx之后发现404。接着我换成了<code>alias</code>之后就可以了。仔细查了一下文档，这两个参数的区别在于：<code>两者解析URL的方式不同</code></p><p>首先<code>location</code>代码块如下：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location <span class="regexp">/folder/</span> &#123;</span><br><span class="line">    (root或alias): <span class="regexp">/home/</span>fisher<span class="regexp">/downloads/</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><code>alias</code>：使用<code>alias</code>中的路径替换掉URL的参数路径，例如：www.domain.com/folder/会返回服务器上的<code>/home/fisher/downloads/</code>中的文件，使用该方式最后面必须以<code>/</code>结束，否则会找不到文件</li><li><code>root</code>：将URL参数路径中的路径追加到<code>root</code>后面，例如：www.domain.com/folder/会返回服务器上的<code>/home/fisher/downloads/folder/</code>，因此出现了404的问题</li></ul>]]></content>
     
     <summary type="html">
     
@@ -64,8 +108,8 @@
   
   <entry>
     <title>从Github迁移Hexo博客</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmh002rstupe5j1fljk.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmh002rstupe5j1fljk.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisiag0037eaupjn6gemlz.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisiag0037eaupjn6gemlz.html</id>
     <published>2019-10-31T14:29:01.000Z</published>
     <updated>2019-10-31T16:05:51.025Z</updated>
     
@@ -106,8 +150,8 @@
   
   <entry>
     <title>Aria2配合FRP使用</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqkx0009stupz2goqk0l.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqkx0009stupz2goqk0l.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi6z0000eaupcewloyag.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi6z0000eaupcewloyag.html</id>
     <published>2018-10-25T10:47:20.000Z</published>
     <updated>2019-11-03T07:43:09.294Z</updated>
     
@@ -128,8 +172,8 @@
   
   <entry>
     <title>FRP内网穿透配置</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqkj0000stupm9w61uk9.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqkj0000stupm9w61uk9.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi790002eaupszyxhc4d.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi790002eaupszyxhc4d.html</id>
     <published>2018-10-24T07:18:31.000Z</published>
     <updated>2019-11-01T12:22:58.413Z</updated>
     
@@ -154,8 +198,8 @@
   
   <entry>
     <title>C语言学习第六章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmg002pstupelsqxyba.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmg002pstupelsqxyba.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisia2002seauptzawi73h.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisia2002seauptzawi73h.html</id>
     <published>2018-03-11T07:20:52.000Z</published>
     <updated>2019-10-31T13:36:42.474Z</updated>
     
@@ -176,8 +220,8 @@
   
   <entry>
     <title>C语言学习第六章T4</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqml002ystup201sxpej.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqml002ystup201sxpej.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisia5002weaupu1jgmyq3.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisia5002weaupu1jgmyq3.html</id>
     <published>2018-03-05T11:52:25.000Z</published>
     <updated>2019-10-31T13:37:03.166Z</updated>
     
@@ -198,8 +242,8 @@
   
   <entry>
     <title>C语言学习第六章T3</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmf002nstupacl3xzxk.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmf002nstupacl3xzxk.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisia1002qeaupn09yuvyq.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisia1002qeaupn09yuvyq.html</id>
     <published>2018-03-04T12:33:20.000Z</published>
     <updated>2019-10-31T13:37:16.830Z</updated>
     
@@ -220,8 +264,8 @@
   
   <entry>
     <title>C语言学习第六章T2</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqme002lstuptu2t9086.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqme002lstuptu2t9086.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9u002meaup84f3m209.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9u002meaup84f3m209.html</id>
     <published>2018-03-02T13:25:32.000Z</published>
     <updated>2019-10-31T13:37:55.125Z</updated>
     
@@ -242,8 +286,8 @@
   
   <entry>
     <title>C语言学习第六章T1</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmd002jstup972qze1f.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmd002jstup972qze1f.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9z002oeaup6odgaf58.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9z002oeaup6odgaf58.html</id>
     <published>2018-02-28T07:46:28.000Z</published>
     <updated>2019-10-31T13:38:25.634Z</updated>
     
@@ -262,8 +306,8 @@
   
   <entry>
     <title>C语言第五章T10</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmb002fstupiy4g0kez.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmb002fstupiy4g0kez.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9s002keaup8unvv2jg.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9s002keaup8unvv2jg.html</id>
     <published>2018-02-26T10:36:10.000Z</published>
     <updated>2019-10-31T13:38:50.659Z</updated>
     
@@ -282,8 +326,8 @@
   
   <entry>
     <title>C语言学习第五章T9</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqmc002hstupe7age3zy.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqmc002hstupe7age3zy.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9q002geauphwrdypy3.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9q002geauphwrdypy3.html</id>
     <published>2018-02-25T07:55:58.000Z</published>
     <updated>2019-10-31T13:39:13.940Z</updated>
     
@@ -302,8 +346,8 @@
   
   <entry>
     <title>C语言学习第五章T8</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqma002dstup83se8j2t.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqma002dstup83se8j2t.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9p002eeaup6i742jd9.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9p002eeaup6i742jd9.html</id>
     <published>2018-02-24T01:01:27.000Z</published>
     <updated>2019-10-31T13:39:45.480Z</updated>
     
@@ -324,8 +368,8 @@
   
   <entry>
     <title>C语言学习第五章T7</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm9002bstup3cqs8ee2.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm9002bstup3cqs8ee2.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9n002ceaupzatq0p7k.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9n002ceaupzatq0p7k.html</id>
     <published>2018-02-17T04:13:50.000Z</published>
     <updated>2019-10-31T13:40:03.325Z</updated>
     
@@ -346,8 +390,8 @@
   
   <entry>
     <title>C语言学习第五章T6</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm80029stupd0jqc50g.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm80029stupd0jqc50g.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9r002ieaup91tdopsy.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9r002ieaup91tdopsy.html</id>
     <published>2018-02-14T14:30:33.000Z</published>
     <updated>2019-10-31T13:40:25.242Z</updated>
     
@@ -368,8 +412,8 @@
   
   <entry>
     <title>C语言学习第五章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm70027stupv22reide.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm70027stupv22reide.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9m002aeaup59wquxnr.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9m002aeaup59wquxnr.html</id>
     <published>2018-02-12T03:12:08.000Z</published>
     <updated>2019-10-31T13:40:46.145Z</updated>
     
@@ -390,8 +434,8 @@
   
   <entry>
     <title>C语言学习第五章T4</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm50025stupibi015ns.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm50025stupibi015ns.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9l0028eauphg3jvd5k.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9l0028eauphg3jvd5k.html</id>
     <published>2018-02-11T07:24:07.000Z</published>
     <updated>2019-10-31T13:41:06.863Z</updated>
     
@@ -412,8 +456,8 @@
   
   <entry>
     <title>C语言学习第五章T3</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm40023stupzvrx1aj1.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm40023stupzvrx1aj1.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2kisi9j0026eaupahub3htg.html"/>
+    <id>http://fisher.lazybone.xyz/ck2kisi9j0026eaupahub3htg.html</id>
     <published>2018-02-10T02:59:17.000Z</published>
     <updated>2019-10-31T13:41:26.050Z</updated>
     
@@ -424,51 +468,6 @@
       &lt;h2 id=&quot;题目：输出n阶左上拐矩阵，n的值由用户输入。&quot;&gt;&lt;a href=&quot;#题目：输出n阶左上拐矩阵，n的值由用户输入。&quot; class=&quot;headerlink&quot; title=&quot;题目：输出n阶左上拐矩阵，n的值由用户输入。&quot;&gt;&lt;/a&gt;题目：输出n阶左上拐矩阵，n的值由用户输入。&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;示例：&lt;br&gt;       1   1   1   1   1&lt;br&gt;       1   2   2   2   2&lt;br&gt;       1   2   3   3   3&lt;br&gt;       1   2   3   4   4&lt;br&gt;       1   2   3   4   5&lt;/p&gt;
 &lt;/blockquote&gt;&lt;h3 id=&quot;主要代码：&quot;&gt;&lt;a href=&quot;#主要代码：&quot; class=&quot;headerlink&quot; title=&quot;主要代码：&quot;&gt;&lt;/a&gt;主要代码：&lt;/h3&gt;
-    
-    </summary>
-    
-    
-      <category term="C语言学习笔记" scheme="http://fisher.lazybone.xyz/tags/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C语言学习第五章T2</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm20021stupyadz4ad9.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm20021stupyadz4ad9.html</id>
-    <published>2018-02-08T02:26:57.000Z</published>
-    <updated>2019-10-31T13:41:49.726Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题目：编程输出特定的数字"><a href="#题目：编程输出特定的数字" class="headerlink" title="题目：编程输出特定的数字"></a>题目：编程输出特定的数字</h2><blockquote><p> 1   0   0   0   0   0<br>   2   1   0   0   0   0<br>   3   2   1   0   0   0<br>   4   3   2   1   0   0<br>   5   4   3   2   1   0<br>   6   5   4   3   2   1</p></blockquote><a id="more"></a><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># include &lt;stdio.h&gt;</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int a[<span class="number">6</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,i,x,y;</span><br><span class="line">    for (i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        for (x=<span class="number">0</span>;x&lt;<span class="number">6</span>;x++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"%4d"</span>,a[x]);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(<span class="string">"<span class="subst">\n</span>"</span>);</span><br><span class="line">        for (y=<span class="number">0</span>;y&lt;=i+<span class="number">1</span>;y++)</span><br><span class="line">        &#123;</span><br><span class="line">            a[y]=a[y]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c5p2.png" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;题目：编程输出特定的数字&quot;&gt;&lt;a href=&quot;#题目：编程输出特定的数字&quot; class=&quot;headerlink&quot; title=&quot;题目：编程输出特定的数字&quot;&gt;&lt;/a&gt;题目：编程输出特定的数字&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt; 1   0   0   0   0   0&lt;br&gt;   2   1   0   0   0   0&lt;br&gt;   3   2   1   0   0   0&lt;br&gt;   4   3   2   1   0   0&lt;br&gt;   5   4   3   2   1   0&lt;br&gt;   6   5   4   3   2   1&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="C语言学习笔记" scheme="http://fisher.lazybone.xyz/tags/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C语言学习第五章T1</title>
-    <link href="http://fisher.lazybone.xyz/ck2jxzqm0001xstup05ctbysc.html"/>
-    <id>http://fisher.lazybone.xyz/ck2jxzqm0001xstup05ctbysc.html</id>
-    <published>2018-02-08T02:26:40.000Z</published>
-    <updated>2019-10-31T13:42:18.060Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题目：矩阵行对调"><a href="#题目：矩阵行对调" class="headerlink" title="题目：矩阵行对调"></a>题目：矩阵行对调</h2><blockquote><p>用循环将矩阵的第1行与第3行对调。<br> 0  2   9  7<br> 5  13  6  8<br> 27 11  1  3</p><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># include &lt;stdio.h&gt;</span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int a[<span class="number">3</span>][<span class="number">4</span>] = &#123;&#123;<span class="number">0</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>&#125;,&#123;<span class="number">5</span>,<span class="number">13</span>,<span class="number">6</span>,<span class="number">8</span>,&#125;,&#123;<span class="number">27</span>,<span class="number">11</span>,<span class="number">1</span>,<span class="number">3</span>&#125;&#125;;</span><br><span class="line">    int x,y;</span><br><span class="line">    printf(<span class="string">"start:<span class="subst">\n</span>"</span>);</span><br><span class="line">    for (x=<span class="number">0</span>;x&lt;<span class="number">3</span>;x++)</span><br><span class="line">    &#123;</span><br><span class="line">        for (y=<span class="number">0</span>;y&lt;<span class="number">4</span>;y++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"%4d"</span>,a[x][y]);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(<span class="string">"<span class="subst">\n</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"processed:<span class="subst">\n</span>"</span>);</span><br><span class="line">    for (x=<span class="number">2</span>;x&gt;=<span class="number">0</span>;x--)</span><br><span class="line">    &#123;</span><br><span class="line">        for (y=<span class="number">0</span>;y&lt;<span class="number">4</span>;y++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"%4d"</span>,a[x][y]);</span><br><span class="line">        &#125;</span><br><span class="line">        printf(<span class="string">"<span class="subst">\n</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></blockquote><a id="more"></a><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c5p1.png" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;题目：矩阵行对调&quot;&gt;&lt;a href=&quot;#题目：矩阵行对调&quot; class=&quot;headerlink&quot; title=&quot;题目：矩阵行对调&quot;&gt;&lt;/a&gt;题目：矩阵行对调&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;用循环将矩阵的第1行与第3行对调。&lt;br&gt; 0  2   9  7&lt;br&gt; 5  13  6  8&lt;br&gt; 27 11  1  3&lt;/p&gt;
-&lt;h3 id=&quot;主要代码：&quot;&gt;&lt;a href=&quot;#主要代码：&quot; class=&quot;headerlink&quot; title=&quot;主要代码：&quot;&gt;&lt;/a&gt;主要代码：&lt;/h3&gt;&lt;figure class=&quot;highlight lsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main (void)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int a[&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;] = &amp;#123;&amp;#123;&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;&amp;#125;,&amp;#123;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;,&amp;#125;,&amp;#123;&lt;span class=&quot;number&quot;&gt;27&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;&amp;#125;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int x,y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;start:&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (x=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;x&amp;lt;&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;;x++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printf(&lt;span class=&quot;string&quot;&gt;&quot;%4d&quot;&lt;/span&gt;,a[x][y]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;processed:&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (x=&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;x&amp;gt;=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;x--)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printf(&lt;span class=&quot;string&quot;&gt;&quot;%4d&quot;&lt;/span&gt;,a[x][y]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/blockquote&gt;
     
     </summary>
     
