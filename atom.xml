@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2019-11-03T09:30:16.155Z</updated>
+  <updated>2019-11-04T04:45:54.883Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>小程序获取QQ音乐播放链接插件</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogr0033moupah0meo79.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogr0033moupah0meo79.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmk002wstup7o7s1bte.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmk002wstup7o7s1bte.html</id>
     <published>2019-11-03T08:27:15.000Z</published>
-    <updated>2019-11-03T09:30:16.155Z</updated>
+    <updated>2019-11-04T04:45:54.883Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近参加了一个微信小程序开发大赛，其中用到了音乐播放功能。于是在小程序官方文档和插件库中逛了一圈，但是官方没有提供对QQ音乐的搜索和获取播放链接等支持，插件库中的插件寥寥无几，并不好用。无奈之下只好自己写一个关于QQ音乐的插件，来完成相应的搜索，获取播放链接等功能。</p><p>在开始介绍插件功能之前，特别感谢<a href="https://www.jianshu.com/p/67e4bd47d981" target="_blank" rel="noopener">简书tisa</a>提供了QQ音乐相应的api。这个插件就是基于这些api进行的封装。</p><a id="more"></a><blockquote><p>插件项目地址：<a href="https://github.com/FisherWY/QQMusicPlugin" target="_blank" rel="noopener">https://github.com/FisherWY/QQMusicPlugin</a></p></blockquote><p><strong>下面正式开始介绍插件使用方法</strong></p><h1 id="下载插件"><a href="#下载插件" class="headerlink" title="下载插件"></a>下载插件</h1><p>前往<a href="https://github.com/FisherWY/QQMusicPlugin/releases" target="_blank" rel="noopener">下载页面</a>，下载最新的v0.2版本，将下载的文件解压放在小程序utils文件夹中，解压后的文件目录结构如下图所示：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-9bd7d59028758099.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="文件目录结构"></p><h1 id="添加合法Request域名"><a href="#添加合法Request域名" class="headerlink" title="添加合法Request域名"></a>添加合法Request域名</h1><p>前往微信公众平台-&gt;开发-&gt;开发设置-&gt;服务器域名。添加以下request合法域名，该域名用于音乐的搜索等</p><blockquote><p><a href="https://c.y.qq.com" target="_blank" rel="noopener">https://c.y.qq.com</a></p></blockquote><p><img src="https://upload-images.jianshu.io/upload_images/17591588-efb70fb7d11cc15b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加合法域名"></p><h1 id="页面中引入插件"><a href="#页面中引入插件" class="headerlink" title="页面中引入插件"></a>页面中引入插件</h1><p>在小程序页面js文件中引用<code>qqMusicTools.js</code>，注意相对路径，这里演示的页面路径为<code>/pages/index/</code></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> musicTool = <span class="built_in">require</span>(<span class="string">"../../utils/QQMusicPlugin/qqMusicTools.js"</span>)</span><br></pre></td></tr></table></figure><p><img src="https://upload-images.jianshu.io/upload_images/17591588-df848ae8ef2b817b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="引入插件"></p><h1 id="搜索音乐"><a href="#搜索音乐" class="headerlink" title="搜索音乐"></a>搜索音乐</h1><p>搜索音乐接口searchMusic（使用PromiseJS语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.searchMusic(<span class="number">1</span>, <span class="number">10</span>, <span class="string">"墙纸"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">searchRes</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(searchRes)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>接口参数说明：</p><ul><li><p>page：搜索页码</p></li><li><p>number：每页搜索记录数量</p></li><li><p>keyword：搜索关键字</p></li></ul><p>搜索接果如下图：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-4b09ae11f0f55d0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="搜索音乐"></p><h1 id="播放音乐"><a href="#播放音乐" class="headerlink" title="播放音乐"></a>播放音乐</h1><p>获取播放音乐链接接口playMusic接受1个参数：<code>filename</code>。表示要播放的音乐的文件名，文件名来自searchMusic结果中的<code>songmid</code>（使用PeomiseJS语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.playMusic(<span class="string">"0021rBlZ1gQiLy"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">playRes</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(playRes)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>接口参数说明：</p><ul><li>filename：要播放的音乐的文件名，文件名来自searchMusic结果中的<code>songmid</code></li></ul><p>返回结果如下图：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-047b0e072dbca89a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取播放链接"></p><h1 id="获取专辑图片"><a href="#获取专辑图片" class="headerlink" title="获取专辑图片"></a>获取专辑图片</h1><p>获取音乐专辑图片接口getAlbumImage（使用Promise语法）（在v0.1版本中，搜索音乐接口已经集成了该接口，专辑图片字段名为<code>albumImg</code>）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.getAlbumImage(<span class="number">6271293</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>参数说明：</p><ul><li>albumId：该参数来自searchMusic结果中的<code>albumId</code></li></ul><p>返回结果如下图：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-9017ef5913029087.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取专辑图片"></p><h1 id="获取热歌榜"><a href="#获取热歌榜" class="headerlink" title="获取热歌榜"></a>获取热歌榜</h1><p>获取热门音乐榜Top100歌单接口getTopMusic不需要任何参数，直接调用即可获得返回结果（使用Promise语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.getTopMusic().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>返回结果如下图：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-a9d05d44b8a0083b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取热歌榜"></p><h1 id="随机推荐歌单"><a href="#随机推荐歌单" class="headerlink" title="随机推荐歌单"></a>随机推荐歌单</h1><p>随机推荐歌单接口radomRecommend不需要任何参数，直接调用即可获得返回结果（使用Promise语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.randomRecommend().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>返回结果如下图：</p><p><img src="https://upload-images.jianshu.io/upload_images/17591588-f0f229cd3670c750.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="随机推荐歌单"></p><h1 id="播放音乐-1"><a href="#播放音乐-1" class="headerlink" title="播放音乐"></a>播放音乐</h1><p>播放音乐，这里使用BackgroundAudioManager演示</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取全局唯一的背景音乐管理器</span></span><br><span class="line"><span class="keyword">const</span> bgAudioManager = wx.getBackgroundAudioManager()</span><br><span class="line"><span class="comment">// 音乐标题</span></span><br><span class="line">bgAudioManager.title = <span class="string">'Music'</span></span><br><span class="line"><span class="comment">// 音乐歌手名</span></span><br><span class="line">bgAudioManager.singer = <span class="string">'Singer'</span></span><br><span class="line"><span class="comment">// 专辑封面图片</span></span><br><span class="line">bgAudioManager.coverImgUrl = <span class="string">'imgUrl'</span></span><br><span class="line"><span class="comment">// 音乐播放链接，设置后自动开始播放</span></span><br><span class="line">bgAudioManager.src = playRes</span><br></pre></td></tr></table></figure><h1 id="整体使用流程"><a href="#整体使用流程" class="headerlink" title="整体使用流程"></a>整体使用流程</h1><p>代码整合到一块，整个使用流程如下（需要注意异步问题）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bgAudioManager = wx.getBackgroundAudioManager();</span><br><span class="line"><span class="comment">// 搜索音乐</span></span><br><span class="line">musicTool.searchMusic(<span class="number">1</span>, <span class="number">10</span>, <span class="string">"绿色"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">searchRes</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(searchRes)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取播放链接</span></span><br><span class="line">musicTool.playMusic(<span class="string">"0021rBlZ1gQiLy"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">playRes</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(playRes)</span><br><span class="line">  bgAudioManager.title = <span class="string">'Music'</span></span><br><span class="line">  bgAudioManager.src = playRes</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取专辑封面</span></span><br><span class="line">musicTool.getAlbumImage(<span class="number">6271293</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取top100音乐</span></span><br><span class="line">musicTool.getTopMusic().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 随机推荐音乐</span></span><br><span class="line">musicTool.randomRecommend().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><h1 id="特别说明"><a href="#特别说明" class="headerlink" title="特别说明"></a>特别说明</h1><ul><li><p>当要播放的音乐属于收费音乐时无法播放 ，具体表现为获取token返回值为空</p></li><li><p>请求过程中需要注意js中的异步问题 </p></li><li><p>微信小程序的BackgroundAudioManager存在部分链接无法播放的问题，因此建议使用InnerAudioContext，无法播放的详细原因参见<a href="https://www.jianshu.com/p/9553cdbc750d" target="_blank" rel="noopener">JabinGP的简书</a></p></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近参加了一个微信小程序开发大赛，其中用到了音乐播放功能。于是在小程序官方文档和插件库中逛了一圈，但是官方没有提供对QQ音乐的搜索和获取播放链接等支持，插件库中的插件寥寥无几，并不好用。无奈之下只好自己写一个关于QQ音乐的插件，来完成相应的搜索，获取播放链接等功能。</p><p>在开始介绍插件功能之前，特别感谢<a href="https://www.jianshu.com/p/67e4bd47d981" target="_blank" rel="noopener">简书tisa</a>提供了QQ音乐相应的api。这个插件就是基于这些api进行的封装。</p><a id="more"></a><blockquote><p>插件项目地址：<a href="https://github.com/FisherWY/QQMusicPlugin" target="_blank" rel="noopener">https://github.com/FisherWY/QQMusicPlugin</a></p></blockquote><p><strong>下面正式开始介绍插件使用方法</strong></p><h1 id="下载插件"><a href="#下载插件" class="headerlink" title="下载插件"></a>下载插件</h1><p>前往<a href="https://github.com/FisherWY/QQMusicPlugin/releases" target="_blank" rel="noopener">下载页面</a>，下载最新的v0.2版本，将下载的文件解压放在小程序utils文件夹中，解压后的文件目录结构如下图所示：</p><p><img src="images/qqmusicplugin/File_Tree.png" alt="文件目录结构"></p><h1 id="添加合法Request域名"><a href="#添加合法Request域名" class="headerlink" title="添加合法Request域名"></a>添加合法Request域名</h1><p>前往微信公众平台-&gt;开发-&gt;开发设置-&gt;服务器域名。添加以下request合法域名，该域名用于音乐的搜索等</p><blockquote><p><a href="https://c.y.qq.com" target="_blank" rel="noopener">https://c.y.qq.com</a></p></blockquote><p><img src="images/qqmusicplugin/Add_Address.png" alt="添加合法域名"></p><h1 id="页面中引入插件"><a href="#页面中引入插件" class="headerlink" title="页面中引入插件"></a>页面中引入插件</h1><p>在小程序页面js文件中引用<code>qqMusicTools.js</code>，注意相对路径，这里演示的页面路径为<code>/pages/index/</code></p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> musicTool = <span class="built_in">require</span>(<span class="string">"../../utils/QQMusicPlugin/qqMusicTools.js"</span>)</span><br></pre></td></tr></table></figure><p><img src="images/qqmusicplugin/Require.png" alt="引入插件"></p><h1 id="搜索音乐"><a href="#搜索音乐" class="headerlink" title="搜索音乐"></a>搜索音乐</h1><p>搜索音乐接口searchMusic（使用PromiseJS语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.searchMusic(<span class="number">1</span>, <span class="number">10</span>, <span class="string">"墙纸"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">searchRes</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(searchRes)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>接口参数说明：</p><ul><li><p>page：搜索页码</p></li><li><p>number：每页搜索记录数量</p></li><li><p>keyword：搜索关键字</p></li></ul><p>搜索接果如下图：</p><p><img src="images/qqmusicplugin/Search_Music.png" alt="搜索音乐"></p><h1 id="播放音乐"><a href="#播放音乐" class="headerlink" title="播放音乐"></a>播放音乐</h1><p>获取播放音乐链接接口playMusic接受1个参数：<code>filename</code>。表示要播放的音乐的文件名，文件名来自searchMusic结果中的<code>songmid</code>（使用PeomiseJS语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.playMusic(<span class="string">"0021rBlZ1gQiLy"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">playRes</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(playRes)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>接口参数说明：</p><ul><li>filename：要播放的音乐的文件名，文件名来自searchMusic结果中的<code>songmid</code></li></ul><p>返回结果如下图：</p><p><img src="images/qqmusicplugin/Search_Result.png" alt="获取播放链接"></p><h1 id="获取专辑图片"><a href="#获取专辑图片" class="headerlink" title="获取专辑图片"></a>获取专辑图片</h1><p>获取音乐专辑图片接口getAlbumImage（使用Promise语法）（在v0.1版本中，搜索音乐接口已经集成了该接口，专辑图片字段名为<code>albumImg</code>）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.getAlbumImage(<span class="number">6271293</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>参数说明：</p><ul><li>albumId：该参数来自searchMusic结果中的<code>albumId</code></li></ul><p>返回结果如下图：</p><p><img src="images/qqmusicplugin/Album_Image.png" alt="获取专辑图片"></p><h1 id="获取热歌榜"><a href="#获取热歌榜" class="headerlink" title="获取热歌榜"></a>获取热歌榜</h1><p>获取热门音乐榜Top100歌单接口getTopMusic不需要任何参数，直接调用即可获得返回结果（使用Promise语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.getTopMusic().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>返回结果如下图：</p><p><img src="images/qqmusicplugin/Top.png" alt="获取热歌榜"></p><h1 id="随机推荐歌单"><a href="#随机推荐歌单" class="headerlink" title="随机推荐歌单"></a>随机推荐歌单</h1><p>随机推荐歌单接口radomRecommend不需要任何参数，直接调用即可获得返回结果（使用Promise语法）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musicTool.randomRecommend().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>返回结果如下图：</p><p><img src="images/qqmusicplugin/Random.png" alt="随机推荐歌单"></p><h1 id="播放音乐-1"><a href="#播放音乐-1" class="headerlink" title="播放音乐"></a>播放音乐</h1><p>播放音乐，这里使用BackgroundAudioManager演示</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取全局唯一的背景音乐管理器</span></span><br><span class="line"><span class="keyword">const</span> bgAudioManager = wx.getBackgroundAudioManager()</span><br><span class="line"><span class="comment">// 音乐标题</span></span><br><span class="line">bgAudioManager.title = <span class="string">'Music'</span></span><br><span class="line"><span class="comment">// 音乐歌手名</span></span><br><span class="line">bgAudioManager.singer = <span class="string">'Singer'</span></span><br><span class="line"><span class="comment">// 专辑封面图片</span></span><br><span class="line">bgAudioManager.coverImgUrl = <span class="string">'imgUrl'</span></span><br><span class="line"><span class="comment">// 音乐播放链接，设置后自动开始播放</span></span><br><span class="line">bgAudioManager.src = playRes</span><br></pre></td></tr></table></figure><h1 id="整体使用流程"><a href="#整体使用流程" class="headerlink" title="整体使用流程"></a>整体使用流程</h1><p>代码整合到一块，整个使用流程如下（需要注意异步问题）</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bgAudioManager = wx.getBackgroundAudioManager();</span><br><span class="line"><span class="comment">// 搜索音乐</span></span><br><span class="line">musicTool.searchMusic(<span class="number">1</span>, <span class="number">10</span>, <span class="string">"绿色"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">searchRes</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(searchRes)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取播放链接</span></span><br><span class="line">musicTool.playMusic(<span class="string">"0021rBlZ1gQiLy"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">playRes</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(playRes)</span><br><span class="line">  bgAudioManager.title = <span class="string">'Music'</span></span><br><span class="line">  bgAudioManager.src = playRes</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取专辑封面</span></span><br><span class="line">musicTool.getAlbumImage(<span class="number">6271293</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 获取top100音乐</span></span><br><span class="line">musicTool.getTopMusic().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 随机推荐音乐</span></span><br><span class="line">musicTool.randomRecommend().then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><h1 id="特别说明"><a href="#特别说明" class="headerlink" title="特别说明"></a>特别说明</h1><ul><li><p>当要播放的音乐属于收费音乐时无法播放 ，具体表现为获取token返回值为空</p></li><li><p>请求过程中需要注意js中的异步问题 </p></li><li><p>微信小程序的BackgroundAudioManager存在部分链接无法播放的问题，因此建议使用InnerAudioContext，无法播放的详细原因参见<a href="https://www.jianshu.com/p/9553cdbc750d" target="_blank" rel="noopener">JabinGP的简书</a></p></li></ul>]]></content>
     
     <summary type="html">
     
@@ -40,8 +40,8 @@
   
   <entry>
     <title>使用Nginx搭建下载服务器</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogq0031moup0us4imas.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogq0031moup0us4imas.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmm0030stupwnectd25.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmm0030stupwnectd25.html</id>
     <published>2019-11-01T12:19:30.000Z</published>
     <updated>2019-11-01T13:37:00.199Z</updated>
     
@@ -64,8 +64,8 @@
   
   <entry>
     <title>从Github迁移Hexo博客</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogo002ymoupm5cbdyvn.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogo002ymoupm5cbdyvn.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmh002rstupe5j1fljk.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmh002rstupe5j1fljk.html</id>
     <published>2019-10-31T14:29:01.000Z</published>
     <updated>2019-10-31T16:05:51.025Z</updated>
     
@@ -106,8 +106,8 @@
   
   <entry>
     <title>Aria2配合FRP使用</title>
-    <link href="http://fisher.lazybone.xyz/ck2isboe90000moupnw4f2ea8.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isboe90000moupnw4f2ea8.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqkx0009stupz2goqk0l.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqkx0009stupz2goqk0l.html</id>
     <published>2018-10-25T10:47:20.000Z</published>
     <updated>2019-11-03T07:43:09.294Z</updated>
     
@@ -128,8 +128,8 @@
   
   <entry>
     <title>FRP内网穿透配置</title>
-    <link href="http://fisher.lazybone.xyz/ck2isboef0002moup9xmftz3i.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isboef0002moup9xmftz3i.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqkj0000stupm9w61uk9.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqkj0000stupm9w61uk9.html</id>
     <published>2018-10-24T07:18:31.000Z</published>
     <updated>2019-11-01T12:22:58.413Z</updated>
     
@@ -154,8 +154,8 @@
   
   <entry>
     <title>C语言学习第六章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogm002umoup8b6gou72.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogm002umoup8b6gou72.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmg002pstupelsqxyba.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmg002pstupelsqxyba.html</id>
     <published>2018-03-11T07:20:52.000Z</published>
     <updated>2019-10-31T13:36:42.474Z</updated>
     
@@ -176,8 +176,8 @@
   
   <entry>
     <title>C语言学习第六章T4</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogl002smoupikaey5cb.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogl002smoupikaey5cb.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqml002ystup201sxpej.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqml002ystup201sxpej.html</id>
     <published>2018-03-05T11:52:25.000Z</published>
     <updated>2019-10-31T13:37:03.166Z</updated>
     
@@ -198,8 +198,8 @@
   
   <entry>
     <title>C语言学习第六章T3</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogk002qmoups69nhp7a.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogk002qmoups69nhp7a.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmf002nstupacl3xzxk.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmf002nstupacl3xzxk.html</id>
     <published>2018-03-04T12:33:20.000Z</published>
     <updated>2019-10-31T13:37:16.830Z</updated>
     
@@ -220,8 +220,8 @@
   
   <entry>
     <title>C语言学习第六章T2</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogj002omoupp41fmghp.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogj002omoupp41fmghp.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqme002lstuptu2t9086.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqme002lstuptu2t9086.html</id>
     <published>2018-03-02T13:25:32.000Z</published>
     <updated>2019-10-31T13:37:55.125Z</updated>
     
@@ -242,8 +242,8 @@
   
   <entry>
     <title>C语言学习第六章T1</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogi002mmoupu0h7fvhh.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogi002mmoupu0h7fvhh.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmd002jstup972qze1f.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmd002jstup972qze1f.html</id>
     <published>2018-02-28T07:46:28.000Z</published>
     <updated>2019-10-31T13:38:25.634Z</updated>
     
@@ -262,8 +262,8 @@
   
   <entry>
     <title>C语言第五章T10</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogh002kmoupwcqp0ux3.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogh002kmoupwcqp0ux3.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmb002fstupiy4g0kez.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmb002fstupiy4g0kez.html</id>
     <published>2018-02-26T10:36:10.000Z</published>
     <updated>2019-10-31T13:38:50.659Z</updated>
     
@@ -282,8 +282,8 @@
   
   <entry>
     <title>C语言学习第五章T9</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogf002imouprprcjsqi.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogf002imouprprcjsqi.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqmc002hstupe7age3zy.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqmc002hstupe7age3zy.html</id>
     <published>2018-02-25T07:55:58.000Z</published>
     <updated>2019-10-31T13:39:13.940Z</updated>
     
@@ -302,8 +302,8 @@
   
   <entry>
     <title>C语言学习第五章T8</title>
-    <link href="http://fisher.lazybone.xyz/ck2isboge002gmoup68q4rcii.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isboge002gmoup68q4rcii.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqma002dstup83se8j2t.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqma002dstup83se8j2t.html</id>
     <published>2018-02-24T01:01:27.000Z</published>
     <updated>2019-10-31T13:39:45.480Z</updated>
     
@@ -324,8 +324,8 @@
   
   <entry>
     <title>C语言学习第五章T7</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogd002emoup7cinoxsw.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogd002emoup7cinoxsw.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm9002bstup3cqs8ee2.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm9002bstup3cqs8ee2.html</id>
     <published>2018-02-17T04:13:50.000Z</published>
     <updated>2019-10-31T13:40:03.325Z</updated>
     
@@ -346,8 +346,8 @@
   
   <entry>
     <title>C语言学习第五章T6</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbogc002cmoup648r56bu.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbogc002cmoup648r56bu.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm80029stupd0jqc50g.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm80029stupd0jqc50g.html</id>
     <published>2018-02-14T14:30:33.000Z</published>
     <updated>2019-10-31T13:40:25.242Z</updated>
     
@@ -368,8 +368,8 @@
   
   <entry>
     <title>C语言学习第五章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2isboga002amoupifw47tq8.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isboga002amoupifw47tq8.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm70027stupv22reide.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm70027stupv22reide.html</id>
     <published>2018-02-12T03:12:08.000Z</published>
     <updated>2019-10-31T13:40:46.145Z</updated>
     
@@ -390,8 +390,8 @@
   
   <entry>
     <title>C语言学习第五章T4</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbog90028moupy3dqt3xz.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbog90028moupy3dqt3xz.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm50025stupibi015ns.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm50025stupibi015ns.html</id>
     <published>2018-02-11T07:24:07.000Z</published>
     <updated>2019-10-31T13:41:06.863Z</updated>
     
@@ -412,8 +412,8 @@
   
   <entry>
     <title>C语言学习第五章T3</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbog80026moupmkafqwlo.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbog80026moupmkafqwlo.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm40023stupzvrx1aj1.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm40023stupzvrx1aj1.html</id>
     <published>2018-02-10T02:59:17.000Z</published>
     <updated>2019-10-31T13:41:26.050Z</updated>
     
@@ -434,8 +434,8 @@
   
   <entry>
     <title>C语言学习第五章T2</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbog70024moupkvcbl5q3.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbog70024moupkvcbl5q3.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm20021stupyadz4ad9.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm20021stupyadz4ad9.html</id>
     <published>2018-02-08T02:26:57.000Z</published>
     <updated>2019-10-31T13:41:49.726Z</updated>
     
@@ -456,8 +456,8 @@
   
   <entry>
     <title>C语言学习第五章T1</title>
-    <link href="http://fisher.lazybone.xyz/ck2isbog60022moups8nywh7t.html"/>
-    <id>http://fisher.lazybone.xyz/ck2isbog60022moups8nywh7t.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2jxzqm0001xstup05ctbysc.html"/>
+    <id>http://fisher.lazybone.xyz/ck2jxzqm0001xstup05ctbysc.html</id>
     <published>2018-02-08T02:26:40.000Z</published>
     <updated>2019-10-31T13:42:18.060Z</updated>
     
