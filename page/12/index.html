@@ -198,7 +198,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2n3p2gz0005ccwa3ox6ejij.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ndqrkm00066owawwjkgvn5.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -212,7 +212,79 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2n3p2gz0005ccwa3ox6ejij.html" class="post-title-link" itemprop="url">C语言学习第一章T1</a>
+            <a href="/ck2ndqrkm00066owawwjkgvn5.html" class="post-title-link" itemprop="url">C语言学习第一章T2</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-12-21 12:05:01" itemprop="dateCreated datePublished" datetime="2017-12-21T12:05:01+08:00">2017-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-31 21:50:53" itemprop="dateModified" datetime="2019-10-31T21:50:53+08:00">2019-10-31</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目-输入三个整数，求它们的和与积"><a href="#题目-输入三个整数，求它们的和与积" class="headerlink" title="题目:输入三个整数，求它们的和与积"></a>题目:输入三个整数，求它们的和与积</h2><h3 id="主要代码"><a href="#主要代码" class="headerlink" title="主要代码:"></a>主要代码:</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;  </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span> <span class="params">(<span class="keyword">int</span> ,<span class="keyword">int</span> ,<span class="keyword">int</span>)</span></span>;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multi</span> <span class="params">(<span class="keyword">int</span> ,<span class="keyword">int</span> ,<span class="keyword">int</span>)</span></span>;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> x,y,z;  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"press x,y,z \n\n"</span>);  </span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;x,&amp;y,&amp;z);  </span><br><span class="line">    <span class="keyword">int</span> s1,s2;  </span><br><span class="line">    s1 = add(x,y,z);  </span><br><span class="line">    s2 = multi(x,y,z);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"add result:%d \n\n"</span>,s1);  </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"multi result:%d \n\n"</span>,s2);  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span> <span class="params">(<span class="keyword">int</span> a ,<span class="keyword">int</span> b ,<span class="keyword">int</span> c)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> result;  </span><br><span class="line">    result = a + b + c;  </span><br><span class="line">    <span class="keyword">return</span> result;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multi</span> <span class="params">(<span class="keyword">int</span> a ,<span class="keyword">int</span> b ,<span class="keyword">int</span> c)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> result;  </span><br><span class="line">    result = a * b * c;  </span><br><span class="line">    <span class="keyword">return</span> result;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/ck2ndqrkm00066owawwjkgvn5.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ndqrkh00036owa0wcmrw69.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/ck2ndqrkh00036owa0wcmrw69.html" class="post-title-link" itemprop="url">C语言学习第一章T1</a>
         </h1>
 
         <div class="post-meta">
@@ -262,7 +334,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2n3p2iw0031ccwag8h1uf8q.html">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/ck2ndqrme002z6owawv7fmcz6.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -276,7 +348,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/ck2n3p2iw0031ccwag8h1uf8q.html" class="post-title-link" itemprop="url">Hello Blog</a>
+            <a href="/ck2ndqrme002z6owawv7fmcz6.html" class="post-title-link" itemprop="url">Hello Blog</a>
         </h1>
 
         <div class="post-meta">
@@ -371,7 +443,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

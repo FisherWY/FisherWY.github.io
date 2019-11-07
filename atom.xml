@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2019-11-06T08:31:26.549Z</updated>
+  <updated>2019-11-06T14:35:41.368Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -17,9 +17,29 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Hexo文章中添加本地图片</title>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmc002u6owaggj31jcv.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmc002u6owaggj31jcv.html</id>
+    <published>2019-11-06T10:05:48.000Z</published>
+    <updated>2019-11-06T14:35:41.368Z</updated>
+    
+    <content type="html"><![CDATA[<p>在写博客的过程中，我们经常需要添加一些图片。但是Hexo框架默认将<code>images</code>文件夹放在<code>source</code>文件夹目录下，与<code>_posts</code>文件夹中的推送不在同一级目录下，因此添加本地图片。生成静态网页文件之后<code>images</code>文件夹却与推送在同一级目录下。导致图片在本地编辑时能够预览，而发布之后不能预览，为了解决这一问题，我使用了文件夹的软连接功能。</p><a id="more"></a><p>首先，进入博客根目录，在<code>_posts</code>文件夹下创建一个<code>images</code>文件夹，将图片全部放到该文件夹下</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">source</span>/_posts</span><br><span class="line">mkdir images</span><br></pre></td></tr></table></figure><p>接着在<code>source</code>文件夹下创建软连接，注意文件夹目录要使用绝对路径</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /Users/fisher/blog/<span class="built_in">source</span>/_posts/images /Users/fisher/blog/<span class="built_in">source</span>/_posts</span><br></pre></td></tr></table></figure><p>这样子在<code>source</code>文件夹下就可以看到一个类似于快捷方式的文件夹</p><p><img src="images/blogtek/linkfolder.png" alt="images文件夹链接"></p><p>添加图片的时候，路径直接填写本地路径即可</p><p><img src="images/blogtek/localpic.png" alt="本地路径"></p><p>部署到服务器上不需要更改路径也能显示</p><p><img src="images/blogtek/onlinepic.png" alt="在线路径"></p><p>整个<code>source</code>文件夹的结构如下</p><p><img src="images/blogtek/foldertree.png" alt="文件夹结构"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在写博客的过程中，我们经常需要添加一些图片。但是Hexo框架默认将&lt;code&gt;images&lt;/code&gt;文件夹放在&lt;code&gt;source&lt;/code&gt;文件夹目录下，与&lt;code&gt;_posts&lt;/code&gt;文件夹中的推送不在同一级目录下，因此添加本地图片。生成静态网页文件之后&lt;code&gt;images&lt;/code&gt;文件夹却与推送在同一级目录下。导致图片在本地编辑时能够预览，而发布之后不能预览，为了解决这一问题，我使用了文件夹的软连接功能。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="博客相关" scheme="http://fisher.lazybone.xyz/tags/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CS:GO服务器搭建脚本</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2it002wccwaqntznp63.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2it002wccwaqntznp63.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmd002w6owakzc6pk2q.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmd002w6owakzc6pk2q.html</id>
     <published>2019-11-06T08:20:02.000Z</published>
     <updated>2019-11-06T08:31:26.549Z</updated>
     
@@ -40,8 +60,8 @@
   
   <entry>
     <title>CS:GO私人服务器搭建</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2iu002yccwayphb814p.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2iu002yccwayphb814p.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmf00316owabmyp4bts.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmf00316owabmyp4bts.html</id>
     <published>2019-11-06T07:39:00.000Z</published>
     <updated>2019-11-06T08:16:33.496Z</updated>
     
@@ -62,8 +82,8 @@
   
   <entry>
     <title>VMware装OpenWrt</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2iz0035ccwam2jkxjln.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2iz0035ccwam2jkxjln.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmi00366owa4xvai2k1.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmi00366owa4xvai2k1.html</id>
     <published>2019-11-04T12:27:24.000Z</published>
     <updated>2019-11-04T14:31:41.482Z</updated>
     
@@ -84,8 +104,8 @@
   
   <entry>
     <title>OpenWrt编译</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2iy0033ccwag06zfc2p.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2iy0033ccwag06zfc2p.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmg00336owa12kbe3yk.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmg00336owa12kbe3yk.html</id>
     <published>2019-11-03T14:12:18.000Z</published>
     <updated>2019-11-04T14:19:35.195Z</updated>
     
@@ -106,8 +126,8 @@
   
   <entry>
     <title>小程序获取QQ音乐播放链接插件</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2j5003dccwa8hov839n.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2j5003dccwa8hov839n.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmn003d6owalm9488ea.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmn003d6owalm9488ea.html</id>
     <published>2019-11-03T08:27:15.000Z</published>
     <updated>2019-11-04T04:45:54.883Z</updated>
     
@@ -128,8 +148,8 @@
   
   <entry>
     <title>使用Nginx搭建下载服务器</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2j3003accwahws37iw1.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2j3003accwahws37iw1.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmm003b6owa8gi7uf23.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmm003b6owa8gi7uf23.html</id>
     <published>2019-11-01T12:19:30.000Z</published>
     <updated>2019-11-04T14:28:24.602Z</updated>
     
@@ -152,8 +172,8 @@
   
   <entry>
     <title>从Github迁移Hexo博客</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2j10038ccwasmabrwow.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2j10038ccwasmabrwow.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmk00386owahjmr89as.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmk00386owahjmr89as.html</id>
     <published>2019-10-31T14:29:01.000Z</published>
     <updated>2019-10-31T16:05:51.025Z</updated>
     
@@ -194,8 +214,8 @@
   
   <entry>
     <title>Aria2配合FRP使用</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2gv0003ccwa5z5t672y.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2gv0003ccwa5z5t672y.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrkd00016owa25e4qa99.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrkd00016owa25e4qa99.html</id>
     <published>2018-10-25T10:47:20.000Z</published>
     <updated>2019-11-03T07:43:09.294Z</updated>
     
@@ -216,8 +236,8 @@
   
   <entry>
     <title>FRP内网穿透配置</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2gr0001ccwak6r804pe.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2gr0001ccwak6r804pe.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrkl00056owa5ghycaub.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrkl00056owa5ghycaub.html</id>
     <published>2018-10-24T07:18:31.000Z</published>
     <updated>2019-11-01T12:22:58.413Z</updated>
     
@@ -242,8 +262,8 @@
   
   <entry>
     <title>C语言学习第六章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2ir002uccwagv1pgux0.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2ir002uccwagv1pgux0.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrmb002s6owa9ngb7vwr.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrmb002s6owa9ngb7vwr.html</id>
     <published>2018-03-11T07:20:52.000Z</published>
     <updated>2019-10-31T13:36:42.474Z</updated>
     
@@ -264,8 +284,8 @@
   
   <entry>
     <title>C语言学习第六章T4</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2iq002sccwafna8r35d.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2iq002sccwafna8r35d.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrma002q6owauux9d1og.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrma002q6owauux9d1og.html</id>
     <published>2018-03-05T11:52:25.000Z</published>
     <updated>2019-10-31T13:37:03.166Z</updated>
     
@@ -286,8 +306,8 @@
   
   <entry>
     <title>C语言学习第六章T3</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2io002qccwam0jeu7nv.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2io002qccwam0jeu7nv.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm9002o6owaymempjq2.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm9002o6owaymempjq2.html</id>
     <published>2018-03-04T12:33:20.000Z</published>
     <updated>2019-10-31T13:37:16.830Z</updated>
     
@@ -308,8 +328,8 @@
   
   <entry>
     <title>C语言学习第六章T2</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2in002occwav19p3g5z.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2in002occwav19p3g5z.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm8002m6owawur65bt3.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm8002m6owawur65bt3.html</id>
     <published>2018-03-02T13:25:32.000Z</published>
     <updated>2019-10-31T13:37:55.125Z</updated>
     
@@ -330,8 +350,8 @@
   
   <entry>
     <title>C语言学习第六章T1</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2im002mccwaa3slcfrw.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2im002mccwaa3slcfrw.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm7002k6owabnteyni8.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm7002k6owabnteyni8.html</id>
     <published>2018-02-28T07:46:28.000Z</published>
     <updated>2019-10-31T13:38:25.634Z</updated>
     
@@ -350,8 +370,8 @@
   
   <entry>
     <title>C语言第五章T10</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2il002kccwa6zbo89tx.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2il002kccwa6zbo89tx.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm4002g6owaazbow1ov.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm4002g6owaazbow1ov.html</id>
     <published>2018-02-26T10:36:10.000Z</published>
     <updated>2019-10-31T13:38:50.659Z</updated>
     
@@ -370,8 +390,8 @@
   
   <entry>
     <title>C语言学习第五章T9</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2ik002iccwavcbrkdt0.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2ik002iccwavcbrkdt0.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm5002i6owafrt45jus.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm5002i6owafrt45jus.html</id>
     <published>2018-02-25T07:55:58.000Z</published>
     <updated>2019-10-31T13:39:13.940Z</updated>
     
@@ -390,8 +410,8 @@
   
   <entry>
     <title>C语言学习第五章T8</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2ij002gccwa491o8d0s.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2ij002gccwa491o8d0s.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm3002e6owabzzs3utf.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm3002e6owabzzs3utf.html</id>
     <published>2018-02-24T01:01:27.000Z</published>
     <updated>2019-10-31T13:39:45.480Z</updated>
     
@@ -412,8 +432,8 @@
   
   <entry>
     <title>C语言学习第五章T7</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2ii002eccwa5m1p47rk.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2ii002eccwa5m1p47rk.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm2002c6owaaklnm5xa.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm2002c6owaaklnm5xa.html</id>
     <published>2018-02-17T04:13:50.000Z</published>
     <updated>2019-10-31T13:40:03.325Z</updated>
     
@@ -434,8 +454,8 @@
   
   <entry>
     <title>C语言学习第五章T6</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2ig002cccwamq7lzcr5.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2ig002cccwamq7lzcr5.html</id>
+    <link href="http://fisher.lazybone.xyz/ck2ndqrm0002a6owalphbi2gb.html"/>
+    <id>http://fisher.lazybone.xyz/ck2ndqrm0002a6owalphbi2gb.html</id>
     <published>2018-02-14T14:30:33.000Z</published>
     <updated>2019-10-31T13:40:25.242Z</updated>
     
@@ -446,28 +466,6 @@
       &lt;h2 id=&quot;题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&quot;&gt;&lt;a href=&quot;#题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&quot; class=&quot;headerlink&quot; title=&quot;题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&quot;&gt;&lt;/a&gt;题目：编写一个函数计算具有NROWS和NCOOLS列的二维数组中指定列的平均值以及数组各行的和的最小值。&lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;NROWS和NCOOLS为常量名。&lt;/p&gt;
 &lt;/blockquote&gt;&lt;h3 id=&quot;主要代码：&quot;&gt;&lt;a href=&quot;#主要代码：&quot; class=&quot;headerlink&quot; title=&quot;主要代码：&quot;&gt;&lt;/a&gt;主要代码：&lt;/h3&gt;&lt;figure class=&quot;highlight lsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;# inlcude &amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main (void)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int a[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;][&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;],x,y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;input a 5*5 matrix:&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (x=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;x&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;x++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;input line%d:&quot;&lt;/span&gt;,x+&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;//printf(&quot;input column%d:&quot;,y+1);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&lt;span class=&quot;string&quot;&gt;&quot;%d&quot;&lt;/span&gt;,&amp;amp;a[x][y]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;inputs:&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (x=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;x&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;x++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printf(&lt;span class=&quot;string&quot;&gt;&quot;%4d&quot;&lt;/span&gt;,a[x][y]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;type&quot;&gt;float&lt;/span&gt; avg,sum=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int i,min=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,t=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//avg column:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;which column do you want to avg(1-5):&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&lt;span class=&quot;string&quot;&gt;&quot;%d&quot;&lt;/span&gt;,&amp;amp;i);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if (i&amp;lt;&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; || i&amp;gt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;error!&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    else &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;//avg = favg(i,a[5][5]);&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (x=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;x&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;x++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            sum = sum + a[x][i&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        avg = sum/&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&lt;span class=&quot;string&quot;&gt;&quot;avg=%2f&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;,avg);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//min line:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        min = min + a[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;][y];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for (x=&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;x&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;x++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (y=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;y&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;y++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            t = t + a[x][y];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (t&amp;lt;min)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            min = t;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    printf(&lt;span class=&quot;string&quot;&gt;&quot;min line:%d&lt;span class=&quot;subst&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;,min);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="C语言学习笔记" scheme="http://fisher.lazybone.xyz/tags/c%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C语言学习第五章T5</title>
-    <link href="http://fisher.lazybone.xyz/ck2n3p2if002accwa9tf2iboz.html"/>
-    <id>http://fisher.lazybone.xyz/ck2n3p2if002accwa9tf2iboz.html</id>
-    <published>2018-02-12T03:12:08.000Z</published>
-    <updated>2019-10-31T13:40:46.145Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="题目：查找，替换数字并输出下标。"><a href="#题目：查找，替换数字并输出下标。" class="headerlink" title="题目：查找，替换数字并输出下标。"></a>题目：查找，替换数字并输出下标。</h2><blockquote><p>输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。 </p></blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight rsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># include &lt;stdio.h&gt;</span></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int a[<span class="number">5</span>],<span class="built_in">max</span>,<span class="built_in">min</span>,i,x,y,t;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//input:</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input 5 numbers:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"start:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%4d"</span>,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//judge:</span></span><br><span class="line">    <span class="built_in">max</span> = a[<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">min</span> = a[<span class="number">0</span>];</span><br><span class="line">    x = y = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">1</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i]&gt;<span class="built_in">max</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">max</span> = a[i];</span><br><span class="line">            x = i+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (a[i]&lt;<span class="built_in">min</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">min</span> = a[i];</span><br><span class="line">            y = i+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//exchange:</span></span><br><span class="line">    t = a[x<span class="number">-1</span>];</span><br><span class="line">    a[x<span class="number">-1</span>] = a[y<span class="number">-1</span>];</span><br><span class="line">    a[y<span class="number">-1</span>] = t;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//output:</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"max is the %d number,max=%d\n"</span>,x,<span class="built_in">max</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"min is the %d number,min=%d\n"</span>,y,<span class="built_in">min</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"after exchange:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%4d"</span>,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a><h2 id="运行结果："><a href="#运行结果：" class="headerlink" title="运行结果："></a>运行结果：</h2><p><img src="images/c/c5p5.png" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;题目：查找，替换数字并输出下标。&quot;&gt;&lt;a href=&quot;#题目：查找，替换数字并输出下标。&quot; class=&quot;headerlink&quot; title=&quot;题目：查找，替换数字并输出下标。&quot;&gt;&lt;/a&gt;题目：查找，替换数字并输出下标。&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。 &lt;/p&gt;
-&lt;/blockquote&gt;&lt;h3 id=&quot;主要代码：&quot;&gt;&lt;a href=&quot;#主要代码：&quot; class=&quot;headerlink&quot; title=&quot;主要代码：&quot;&gt;&lt;/a&gt;主要代码：&lt;/h3&gt;&lt;figure class=&quot;highlight rsl&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;# include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main (void)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int a[&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;],&lt;span class=&quot;built_in&quot;&gt;max&lt;/span&gt;,&lt;span class=&quot;built_in&quot;&gt;min&lt;/span&gt;,i,x,y,t;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//input:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;input 5 numbers:&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;i&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;i++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&lt;span class=&quot;string&quot;&gt;&quot;%d&quot;&lt;/span&gt;,&amp;amp;a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;start:&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;i&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;i++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;%4d&quot;&lt;/span&gt;,a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;\n&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//judge:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;max&lt;/span&gt; = a[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;min&lt;/span&gt; = a[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    x = y = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i=&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;i&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;i++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (a[i]&amp;gt;&lt;span class=&quot;built_in&quot;&gt;max&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;max&lt;/span&gt; = a[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            x = i+&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (a[i]&amp;lt;&lt;span class=&quot;built_in&quot;&gt;min&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;min&lt;/span&gt; = a[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            y = i+&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//exchange:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    t = a[x&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    a[x&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;] = a[y&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    a[y&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;] = t;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;//output:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;max is the %d number,max=%d\n&quot;&lt;/span&gt;,x,&lt;span class=&quot;built_in&quot;&gt;max&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;min is the %d number,min=%d\n&quot;&lt;/span&gt;,y,&lt;span class=&quot;built_in&quot;&gt;min&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;after exchange:&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i=&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;i&amp;lt;&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;i++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;%4d&quot;&lt;/span&gt;,a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;\n&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
