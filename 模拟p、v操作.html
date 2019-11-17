@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实验三：模拟P、V操作">
+<meta property="og:url" content="http://fisher.lazybone.xyz/模拟p、v操作.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/semaphorecompile.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/semaphorehelp.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/semaphoredetail.png">
+<meta property="og:updated_time" content="2019-11-17T12:17:40.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统实验三：模拟P、V操作">
+<meta name="twitter:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/os/semaphorecompile.png">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/模拟p、v操作.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>操作系统实验三：模拟P、V操作 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/模拟p、v操作.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统实验三：模拟P、V操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-17 19:20:31 / 修改时间：20:17:40" itemprop="dateCreated datePublished" datetime="2019-11-17T19:20:31+08:00">2019-11-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>操作系统系列博客的所有实验源自于课程<code>&quot;操作系统原理与实践检验&quot;</code>，代码是参考老师给的<code>&quot;软件工程专业操作系统实验指导书&quot;</code>文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法</p><a id="more"></a>
+<h1 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h1><ol>
+<li>理解信号量相关理论</li>
+<li>掌握记录型信号量结构</li>
+<li>掌握 P、V 原语实现机制</li>
+</ol>
+<h1 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h1><p>本实验针对操作系统中信号量的相关理论进行实验，要求实验者输入实验指导书提供的代码并进行测试。代码主要模拟信号量的P（down）、V（up）操作</p>
+<ul>
+<li><p>信号量</p>
+<p>信号量也称为信号锁，主要应用于进程间的同步和互斥，在用于互斥时，信号量通常作为资源锁。信号量通过两个原子操作P（down）和V（up）来访问。down操作使信号量的值-1，up操作使信号量的值+1</p>
+</li>
+<li><p>记录型信号量</p>
+<p>记录型信号量采用了“让权等待”的策略，当存在多个资源访问同一个临界资源的情况时，记录型信号量可以使用一个等待链来存放等待使用资源的进程。在本次实验中，我们使用的是记录型信号量</p>
+</li>
+</ul>
+<h1 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h1><ul>
+<li>对于P（down）操作。首先我们需要判断申请的临界资源是否存在。若该资源存在，接下来我们要判断该资源是否被其他进程使用中。如果其他进程使用中，我们将申请使用该资源的进程添加到等待链表中，并且信号量-1。如果没有其他进程使用中，则信号量-1，并将该资源标识为该进程使用中</li>
+<li>对于V（up）操作。首先我们需要判断释放的临界资源是否存在。若该资源存在，接下来我们可以释放该资源，并查看等待链表中是否有正在等待使用资源的进程。如果没有等待使用资源的进程，则该资源的信号量+1，如果有等待使用资源的进程，我们将其从等待链表移入到正在使用的列表中，同时信号量+1</li>
+</ul>
+<h1 id="代码汇总"><a href="#代码汇总" class="headerlink" title="代码汇总"></a>代码汇总</h1><p><code>basicpcb.h</code>已经定义了关于信号量的结构体，我们只需要创建<code>semaphore.cpp</code>，并实现P、V操作</p>
+<h2 id="P操作"><a href="#P操作" class="headerlink" title="P操作"></a>P操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 申请资源 -&gt; P操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">char</span> *sname, <span class="keyword">int</span> pid)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * sflag: 信号量找到标志</span></span><br><span class="line"><span class="comment">	 * pflag: 进程找到标志</span></span><br><span class="line"><span class="comment">	 * p: 找到的进程节点</span></span><br><span class="line"><span class="comment">	 * s: 找到的信号量节点</span></span><br><span class="line"><span class="comment">	 **/</span></span><br><span class="line">    <span class="keyword">int</span> sflag = <span class="number">0</span>, pflag = <span class="number">0</span>;</span><br><span class="line">    pnode *p;</span><br><span class="line">    semaphore *s;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据名字查找信号量</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SEMAPHORE_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(sem[i].name, sname))</span><br><span class="line">        &#123;</span><br><span class="line">            s = &amp;sem[i];</span><br><span class="line">            sflag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据进程ID查找进程</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (pr[i]-&gt;node-&gt;pid == pid)</span><br><span class="line">        &#123;</span><br><span class="line">            p = pr[i];</span><br><span class="line">            pflag = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 目标信号量或进程未找到</span></span><br><span class="line">    <span class="keyword">if</span> (!sflag || !pflag)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Semaphore %s not exist or Process %d not exist.\n"</span>, sname, pid);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Semaphore find result: %d. Process find result: %d\n"</span>, sflag, pflag);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 信号量-1</span></span><br><span class="line">    s-&gt;count--;</span><br><span class="line">    <span class="comment">// 临界资源仍足够</span></span><br><span class="line">    <span class="keyword">if</span> (s-&gt;count &gt;= <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        s-&gt;curpid = p-&gt;node-&gt;pid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 临界资源不足</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 添加到等待列表</span></span><br><span class="line">        <span class="keyword">if</span> (s-&gt;wlist != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            pnode *tmp = s-&gt;wlist;</span><br><span class="line">            <span class="keyword">while</span> (tmp-&gt;next != <span class="literal">NULL</span>)</span><br><span class="line">                tmp = tmp-&gt;next;</span><br><span class="line">            tmp-&gt;next = p;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            s-&gt;wlist = p;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="V操作"><a href="#V操作" class="headerlink" title="V操作"></a>V操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 释放资源 -&gt; V操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">char</span> *sname)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * sflag: 信号量找到标志</span></span><br><span class="line"><span class="comment">	 * spos: 信号量位置</span></span><br><span class="line"><span class="comment">	 **/</span></span><br><span class="line">    <span class="keyword">int</span> sflag = <span class="number">0</span>, spos;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查找信号量</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SEMAPHORE_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(sem[i].name, sname))</span><br><span class="line">        &#123;</span><br><span class="line">            sflag = <span class="number">1</span>;</span><br><span class="line">            spos = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 信号量未找到</span></span><br><span class="line">    <span class="keyword">if</span> (!sflag)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Semaphore %s not found\n"</span>, sname);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 释放资源</span></span><br><span class="line"><span class="comment">	 * 如果等待列表中有进程，count数量不变，等待列表入队</span></span><br><span class="line"><span class="comment">	 * 如果等待列表中无进程，count数量++</span></span><br><span class="line"><span class="comment">	 **/</span></span><br><span class="line">    <span class="keyword">if</span> (sem[spos].wlist != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sem[spos].curpid = sem[spos].wlist-&gt;node-&gt;pid;</span><br><span class="line">        sem[spos].wlist = sem[spos].wlist-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        sem[spos].count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="其他完善程序的函数"><a href="#其他完善程序的函数" class="headerlink" title="其他完善程序的函数"></a>其他完善程序的函数</h2><p>我们需要完善<code>showdetail()</code>，<code>help()</code>，<code>init()</code>，<code>terminal()</code>函数来让整个程序跑起来</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在程序的最开始定义宏</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> SEMAPHORE_NUMBER 5</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> PROCESS_NUMBER 20</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义5个信号量</span></span><br><span class="line">semaphore sem[SEMAPHORE_NUMBER];</span><br><span class="line"><span class="comment">// 定义0-19一共20个进程</span></span><br><span class="line">pnode *pr[PROCESS_NUMBER];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查看临界资源使用状态</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showdetail</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n===================================================\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SEMAPHORE_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (sem[i].count &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%s (Current process id: %d) | Wait list: "</span>, sem[i].name, sem[i].curpid);</span><br><span class="line">            pnode *p = sem[i].wlist;</span><br><span class="line">            <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%5d -&gt;"</span>, p-&gt;node-&gt;pid);</span><br><span class="line">                p = p-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"   List end\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%s now avaliable\n"</span>, sem[i].name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"===================================================\n\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 帮助命令</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">help</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n===================================================\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"sname: 临界资源名称  pid: 进程ID\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"申请资源: down(sname,pid)\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"释放资源: up(sname)\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"查看当前资源使用情况: showdetail\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"获取帮助: help\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"退出: exit\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"===================================================\n\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化信号量semaphore</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; SEMAPHORE_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">char</span> sname[] = &#123;<span class="string">'s'</span>, i+<span class="number">48</span>, <span class="string">'\0'</span>&#125;;</span><br><span class="line">        <span class="built_in">strcat</span>(sem[i].name, sname);</span><br><span class="line">        sem[i].wlist = <span class="literal">NULL</span>;</span><br><span class="line">        sem[i].count = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化进程</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS_NUMBER; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        pr[i] = <span class="keyword">new</span> pnode;</span><br><span class="line">        pr[i]-&gt;node = <span class="keyword">new</span> pcb;</span><br><span class="line">        pr[i]-&gt;node-&gt;pid = i;</span><br><span class="line">        pr[i]-&gt;brother = <span class="literal">NULL</span>;</span><br><span class="line">        pr[i]-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        pr[i]-&gt;sub = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">terminal</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">short</span> cflag, pflag;</span><br><span class="line">    <span class="keyword">char</span> cmdstr[<span class="number">32</span>];</span><br><span class="line"></span><br><span class="line">    initerror();</span><br><span class="line">    init();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        cflag = <span class="number">0</span>;</span><br><span class="line">        pflag = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"cmd: "</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%s"</span>, cmdstr);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"exit"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"showdetail"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            cflag = <span class="number">1</span>;</span><br><span class="line">            pflag = <span class="number">1</span>;</span><br><span class="line">            showdetail();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"help"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            cflag = <span class="number">1</span>;</span><br><span class="line">            pflag = <span class="number">1</span>;</span><br><span class="line">            help();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strstr</span>(cmdstr, <span class="string">"down"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            cflag = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">char</span> *sname = substr(cmdstr, instr(cmdstr, <span class="string">'('</span>)+<span class="number">1</span>, instr(cmdstr, <span class="string">','</span>)<span class="number">-1</span>);</span><br><span class="line">            <span class="keyword">char</span> *pid = substr(cmdstr, instr(cmdstr, <span class="string">','</span>)+<span class="number">1</span>, instr(cmdstr, <span class="string">')'</span>)<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (sname &amp;&amp; pid)</span><br><span class="line">            &#123;</span><br><span class="line">                down(sname, atoi(pid));</span><br><span class="line">                pflag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strstr</span>(cmdstr, <span class="string">"up"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            cflag = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">char</span> *sname = substr(cmdstr, instr(cmdstr, <span class="string">'('</span>)+<span class="number">1</span>, instr(cmdstr, <span class="string">')'</span>)<span class="number">-1</span>);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (sname)</span><br><span class="line">            &#123;</span><br><span class="line">                up(sname);</span><br><span class="line">                pflag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 输入错误或参数错误</span></span><br><span class="line">        <span class="keyword">if</span> (!cflag)</span><br><span class="line">            geterror(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (!pflag)</span><br><span class="line">            geterror(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 整个semaphore.cpp程序的入口</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    terminal();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="实验测试"><a href="#实验测试" class="headerlink" title="实验测试"></a>实验测试</h1><ol>
+<li><p>编译并运行程序</p>
+<p><code>g++ semaphore.cpp -o semaphore &amp;&amp; ./semaphore</code></p>
+<p><img src="images/os/semaphorecompile.png" alt="编译运行"></p>
+</li>
+<li><p>使用<code>help</code>命令查看帮助</p>
+<p><img src="images/os/semaphorehelp.png" alt="查看帮助"></p>
+</li>
+<li><p>使用<code>down</code>命令申请资源，使用<code>up</code>命令释放资源，使用<code>showdetail</code>查看资源使用情况</p>
+<p><img src="images/os/semaphoredetail.png" alt="PV操作"></p>
+<p>从上图中可以看到，我们申请了临界资源，程序会判断临界资源和进程是否同时存在，再进行P操作，释放资源也是如此。但是我们的程序有一个缺点，就是PV操作必须要成对地进行，而且一个进程不能多次申请同一个临界资源，因为我们没有对其进行限制。这是程序不完美的地方</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在本次的实验中，我们模拟进行了进程的P、V操作。PV操作解决了临界资源的分配问题，进程可以通过一个等待列表来先后使用需要的资源，但是PV操作存在一个问题就是：如果A进程占用了1号资源，需要再申请占用2号资源才能运行；而B进程占用了2号资源，需要再申请占用1号资源才能运行。这就造成了死锁的问题，对于该问题的解决方案，人们提出了“银行家算法”，在计算进程申请资源后是否会造成死锁问题后，选择不会形成死锁的解决方案来分配进程，破坏进程死锁产生的条件。该算法虽然会影响系统的性能，但与死锁造成的资源浪费、产生死锁后再解决问题相比，“银行家算法”显然是一个比较好的解决方案</p>
+<h1 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h1><ol>
+<li><p>如何修改<code>down</code>操作，使之能一次申请多个信号量？</p>
+<p>将<code>down</code>函数的信号量参数改为一个信号量数组之后，进程能一次申请多个信号量。这会同时带来进程的死锁问题，为了避免该问题，其中一个解决方案：将信号量的申请改为<code>&amp;&amp;</code>关系，即该进程的一次申请中，所有要申请的临界资源都能使用，才能正式分配资源</p>
+</li>
+<li><p>在某个时刻，一个进程最多可以等待多少个信号量？</p>
+<p>从理论上来说，一个进程最多可以等待很多个信号量。但是如果等待的信号量越多，产生死锁的可能性就越来越大，为了避免死锁的产生，进程最好是不需要等待信号量，或者在可控范围下等待信号量</p>
+</li>
+</ol>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/模拟进程的撤销.html" rel="next" title="操作系统实验二：模拟进程的撤销">
+                  <i class="fa fa-chevron-left"></i> 操作系统实验二：模拟进程的撤销
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验目的"><span class="nav-number">2.</span> <span class="nav-text">实验目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验内容"><span class="nav-number">3.</span> <span class="nav-text">实验内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验过程"><span class="nav-number">4.</span> <span class="nav-text">实验过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码汇总"><span class="nav-number">5.</span> <span class="nav-text">代码汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P操作"><span class="nav-number">5.1.</span> <span class="nav-text">P操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V操作"><span class="nav-number">5.2.</span> <span class="nav-text">V操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他完善程序的函数"><span class="nav-number">5.3.</span> <span class="nav-text">其他完善程序的函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验测试"><span class="nav-number">6.</span> <span class="nav-text">实验测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#课后思考"><span class="nav-number">8.</span> <span class="nav-text">课后思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
