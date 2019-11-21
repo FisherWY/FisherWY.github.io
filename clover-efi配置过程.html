@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
+<meta name="keywords" content="Hackintosh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clover EFI配置过程">
+<meta property="og:url" content="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/clover.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/kexts.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/ACPI.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/BOOT.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/DEVICE.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/UEFI.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/KERNEL.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/MODEL.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/SYSTEM.png">
+<meta property="og:updated_time" content="2019-11-21T13:53:05.929Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clover EFI配置过程">
+<meta name="twitter:description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
+<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/hackintosh/clover.png">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Clover EFI配置过程 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Clover EFI配置过程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-21 19:46:34 / 修改时间：21:53:05" itemprop="dateCreated datePublished" datetime="2019-11-21T19:46:34+08:00">2019-11-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块<code>PM981a</code>，拿到手后还没装上电脑呢，一查发现<code>PM981</code>系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下<code>Clover EFI</code>，黑苹果相关的主板、驱动配置，自己弄了一套适合自己机型的<code>Clover EFI</code>配置。前天新固态到了之后就开始装机，第一次启动的时候提示机型设置的太新了，不兼容<code>10.13.6</code>，然后我换了一套17年的iMac机型，剩下的安装一气呵成</p><a id="more"></a>
+<p>这篇博客是用来记录我的<code>Clover EFI</code>配置的过程</p>
+<h1 id="硬件信息"><a href="#硬件信息" class="headerlink" title="硬件信息"></a>硬件信息</h1><p>不同的硬件需要的驱动不一样，可以自己上网查查硬件需要什么驱动，一般查<code>型号+Hackintosh</code>就能找到相关的资料</p>
+<p>我的硬件配置如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">硬件类型</th>
+<th style="text-align:center">型号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">主板</td>
+<td style="text-align:center">Asus Rog Strix B360-i Mini ITX</td>
+</tr>
+<tr>
+<td style="text-align:center">处理器</td>
+<td style="text-align:center">Intel Core i5-8500</td>
+</tr>
+<tr>
+<td style="text-align:center">内存</td>
+<td style="text-align:center">Crucial By Micron DDR4 2666MHz 8GB + Corsair LPX DDR4 3000MHz 8GB(运行在2666MHz)</td>
+</tr>
+<tr>
+<td style="text-align:center">显卡</td>
+<td style="text-align:center">Nvidia GeForce GTX 1060 3GB</td>
+</tr>
+<tr>
+<td style="text-align:center">硬盘</td>
+<td style="text-align:center">Asgard AN2 NVMe 250GB</td>
+</tr>
+</tbody>
+</table>
+<p>型号接近的或者同一个系列的应该可以通用，但有一些需要特别的配置，比如华硕主板需要勾选<code>Fix Shutdown</code>，不同声卡注入ID不同……</p>
+<h1 id="EFI配置"><a href="#EFI配置" class="headerlink" title="EFI配置"></a>EFI配置</h1><p>EFI用于引导系统的启动，在Hackintosh中，Clover EFI还负责向macOS中注入我们添加的驱动</p>
+<h2 id="下载Clover"><a href="#下载Clover" class="headerlink" title="下载Clover"></a>下载Clover</h2><p>前往GitHub中的<a href="https://github.com/CloverHackyColor/CloverBootloader/releases" target="_blank" rel="noopener">Clover Bootloader Release</a>中下载最新版的Clover，解压之后我们会看到如下的文件目录：</p>
+<p><img src="images/hackintosh/clover.png" alt="Clover目录结构"></p>
+<p>我们只将其中的<code>EFI</code>文件夹解压出来，接下来我们要添加适合自己的驱动</p>
+<h2 id="添加驱动"><a href="#添加驱动" class="headerlink" title="添加驱动"></a>添加驱动</h2><p>接下来我们要添加黑苹果必须的驱动，macOS的驱动都以<code>kext</code>为后缀名，我们需要将其放在<code>EFI/CLOVER/kexts/Other/</code>文件夹中</p>
+<p>我们需要的驱动基本都能在<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>或者<a href="https://bitbucket.org/RehabMan/" target="_blank" rel="noopener">Rehabman</a>的仓库中找到，可以在Github或者Google中直接搜索驱动的名称，一般第一个链接就是仓库地址</p>
+<p>驱动的列表及其功能介绍如下，来自<a href="https://github.com/daliansky/Hackintosh/blob/master/LinkList.md" target="_blank" rel="noopener">daliansky</a>的GitHub仓库，根据我的配置查找相应的驱动：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">驱动名称(名称排序)</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AppleALC.kext</td>
+<td style="text-align:center">声卡注入框架</td>
+</tr>
+<tr>
+<td style="text-align:center">BT4LEContinuityFixup.kext</td>
+<td style="text-align:center">博通网卡AirDrop、Handoff功能修复，说不定以后会换网卡，先添加了</td>
+</tr>
+<tr>
+<td style="text-align:center">CodecCommander.kext</td>
+<td style="text-align:center">解决睡眠唤醒之后声卡无声问题</td>
+</tr>
+<tr>
+<td style="text-align:center">CPUFriend.kext</td>
+<td style="text-align:center">注入动态电源数据</td>
+</tr>
+<tr>
+<td style="text-align:center">FakePCIID_Intel_GbX.kext</td>
+<td style="text-align:center">不清楚作用，但与FakePCIID在同一个包中，所以就放进来了</td>
+</tr>
+<tr>
+<td style="text-align:center">FakePCIID_XHCIMux.kext</td>
+<td style="text-align:center">老版本的USB驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">FakePCIID.kext</td>
+<td style="text-align:center">硬件ID仿冒驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">FakeSMC.kext</td>
+<td style="text-align:center">仿冒SMC设备驱动，黑苹果必备驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">GenericUSBXHCI.kext</td>
+<td style="text-align:center">通用的USB3.0驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">HibernationFixup.kext</td>
+<td style="text-align:center">修复睡眠后无法唤醒、死机、黑屏等问题</td>
+</tr>
+<tr>
+<td style="text-align:center">IntelMausiEthernet.kext</td>
+<td style="text-align:center">Intel有线网卡驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">Lilu.kext</td>
+<td style="text-align:center">驱动注入框架，AppleALC, WhateverGreen, VirtualSMC等驱动的依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">NVWebDriverLibValFix.kext</td>
+<td style="text-align:center">修复Nvidia Web驱动安装时提示Lib库错误的问题</td>
+</tr>
+<tr>
+<td style="text-align:center">VoodooPS2Controller.kext</td>
+<td style="text-align:center">键盘、鼠标、触摸板万能驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">WhateverGreen.kext</td>
+<td style="text-align:center">显卡核心驱动，已经合并了AMD、Nvidia、Intel显卡修复的驱动</td>
+</tr>
+<tr>
+<td style="text-align:center">XHCI-300-series-injector.kext</td>
+<td style="text-align:center">对应B360主板的SATA修复</td>
+</tr>
+<tr>
+<td style="text-align:center">USBInjectAll.kext</td>
+<td style="text-align:center">修复USB3.0 USB3.1的U盘无法识别的问题</td>
+</tr>
+</tbody>
+</table>
+<p>我的机型所需的驱动就是以上的列表，添加驱动之后我的文件夹如下图所示：</p>
+<p><img src="images/hackintosh/kexts.png" alt="驱动文件夹"></p>
+<h2 id="配置config-plist"><a href="#配置config-plist" class="headerlink" title="配置config.plist"></a>配置config.plist</h2><p><code>CLOVER</code>文件夹中已经给我们提供了一份<code>config-sample.plist</code>文件，我并没有基于这份配置文件进行修改，而是使用了3月份的时候，第一次成功吃到黑苹果的<code>config.plist</code>文件。我比较建议从网上找一份和自己型号相似的配置文件，然后基于那份配置文件再进行修改，这样子可以避免很多弯路</p>
+<p>首先我们需要下载<code>Clover Configurator</code>，这个软件用来图形化配置<code>config.plist</code>文件，有Mac版和Win版，我使用的是Mac版，下载地址在<a href="https://mackie100projects.altervista.org/download-clover-configurator/" target="_blank" rel="noopener">这里</a></p>
+<ol>
+<li><p>打开<code>Clover Configurator</code>，点击左下角，使用<code>Clover Configurator</code>打开配置文件</p>
+</li>
+<li><p>ACPI设置：对于我的主板，我需要勾选<code>修复关机</code>，修复<code>HDA</code>，SSDT的生成选项中勾选<code>插件类型</code></p>
+<p><img src="images/hackintosh/ACPI.png" alt="ACPI设置"></p>
+</li>
+<li><p>引导参数设置：默认引导卷名修改为<code>MX200</code>，右边的框填<code>PBR</code></p>
+<p><code>-v</code>：启动啰嗦模式，安装的时候方便查看失败原因，安装启动成功后可以去掉</p>
+<p><code>dart=0</code>：具体功能不清楚</p>
+<p><code>darkwake=1</code>：修复华硕主板声卡<code>ASUS SUPREMEFX S1220A</code>无声的问题</p>
+<p><code>nvda_drv=1</code>：启用Nvidia Web Driver驱动</p>
+<p><img src="images/hackintosh/BOOT.png" alt="BOOT设置"></p>
+</li>
+<li><p>设备设置：勾选<code>USB注入</code>、Audio注入值修改为<code>7</code>，同时勾选<code>重置HDA</code>、勾选<code>LAN注入</code></p>
+<p><img src="images/hackintosh/DEVICE.png" alt="DEVICE设置"></p>
+</li>
+<li><p>引导界面设置：我的配置如下，可以根据自己需要修改</p>
+<p><img src="images/hackintosh/UEFI.png" alt="UEFI"></p>
+</li>
+<li><p>内核和驱动补丁设置：这里面的参数我照用了之前的配置，没做任何修改</p>
+<p><img src="images/hackintosh/KERNEL.png" alt="KERNEL配置"></p>
+</li>
+<li><p>机型设置：根据自己的配置以及要安装的系统版本进行配置，选择与自己配置最为接近的型号，并且所选型号支持将要安装的系统</p>
+<p>点击右下角选择机型，然后点击<code>检查覆盖范围</code>，保证使用的序列号在苹果官网无法查到。如果查到了就点击左下角按钮生成新的序列号</p>
+<p><img src="images/hackintosh/MODEL.png" alt="MODEL设置"></p>
+</li>
+<li><p>系统设置：点击生成一个<code>UUID</code>，勾选<code>注入System ID</code>和<code>NavidiaWeb</code></p>
+<p><img src="images/hackintosh/SYSTEM.png" alt="SYSTEM设置"></p>
+</li>
+</ol>
+<p><strong>保存配置文件，将其命名为<code>config.plist</code>并放在<code>COLVER</code>文件夹下。至此EFI的配置就完成了，接下来写入EFI分区之后就可以开始安装测试了</strong></p>
+<h1 id="替换EFI文件"><a href="#替换EFI文件" class="headerlink" title="替换EFI文件"></a>替换EFI文件</h1><p>将系统镜像写入U盘之后，U盘会有一个隐藏的EFI分区，我们使用工具将其挂载，打开分区，将里面的EFI文件夹备份出来，然后把我们刚配置好的EFI文件夹放进去，就可以开始系统的安装了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hackintosh/" rel="tag"># Hackintosh</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/csgo服务器更新失败的解决方法.html" rel="next" title="CSGO服务器更新失败的解决方法">
+                  <i class="fa fa-chevron-left"></i> CSGO服务器更新失败的解决方法
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件信息"><span class="nav-number">2.</span> <span class="nav-text">硬件信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EFI配置"><span class="nav-number">3.</span> <span class="nav-text">EFI配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载Clover"><span class="nav-number">3.1.</span> <span class="nav-text">下载Clover</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加驱动"><span class="nav-number">3.2.</span> <span class="nav-text">添加驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置config-plist"><span class="nav-number">3.3.</span> <span class="nav-text">配置config.plist</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#替换EFI文件"><span class="nav-number">4.</span> <span class="nav-text">替换EFI文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
