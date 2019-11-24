@@ -67,7 +67,7 @@
 <meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/KERNEL.png">
 <meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/MODEL.png">
 <meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/SYSTEM.png">
-<meta property="og:updated_time" content="2019-11-21T13:53:05.929Z">
+<meta property="og:updated_time" content="2019-11-22T07:11:20.569Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clover EFI配置过程">
 <meta name="twitter:description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
@@ -232,10 +232,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-21 19:46:34 / 修改时间：21:53:05" itemprop="dateCreated datePublished" datetime="2019-11-21T19:46:34+08:00">2019-11-21</time>
+              <time title="创建时间：2019-11-21 19:46:34" itemprop="dateCreated datePublished" datetime="2019-11-21T19:46:34+08:00">2019-11-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-22 15:11:20" itemprop="dateModified" datetime="2019-11-22T15:11:20+08:00">2019-11-22</time>
+              </span>
 
           
 
@@ -378,7 +384,7 @@
 <li><p>ACPI设置：对于我的主板，我需要勾选<code>修复关机</code>，修复<code>HDA</code>，SSDT的生成选项中勾选<code>插件类型</code></p>
 <p><img src="images/hackintosh/ACPI.png" alt="ACPI设置"></p>
 </li>
-<li><p>引导参数设置：默认引导卷名修改为<code>MX200</code>，右边的框填<code>PBR</code></p>
+<li><p>引导参数设置：默认引导卷名修改为自己想要默认使用的卷，右边的框填<code>PBR</code></p>
 <p><code>-v</code>：启动啰嗦模式，安装的时候方便查看失败原因，安装启动成功后可以去掉</p>
 <p><code>dart=0</code>：具体功能不清楚</p>
 <p><code>darkwake=1</code>：修复华硕主板声卡<code>ASUS SUPREMEFX S1220A</code>无声的问题</p>
@@ -428,6 +434,9 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+                <a href="/hackintosh安装过程记录.html" rel="prev" title="Hackintosh安装过程记录">
+                  Hackintosh安装过程记录 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
       </footer>
@@ -481,7 +490,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
