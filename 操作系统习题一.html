@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="第一章一、设计现代OS的主要目标是什么？  现代OS的主要目标有4个：方便性、有效性、可扩充性、开放性  方便性：系统将用户采用高级语言编写的程序翻译成机器码，或直接通过OS所提供的各种命令操纵计算机系统，方便了用户，使计算机变得易学易用  有效性：提高了系统资源的利用率，提高系统的吞吐量，缩短程序运行周期  可扩充性：能够方便地添加新功能和模块，以及对原有的功能和模块进行修改  开放性：能够遵循">
+<meta name="keywords" content="操作系统,学习总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统习题一">
+<meta property="og:url" content="http://fisher.lazybone.xyz/操作系统习题一.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="第一章一、设计现代OS的主要目标是什么？  现代OS的主要目标有4个：方便性、有效性、可扩充性、开放性  方便性：系统将用户采用高级语言编写的程序翻译成机器码，或直接通过OS所提供的各种命令操纵计算机系统，方便了用户，使计算机变得易学易用  有效性：提高了系统资源的利用率，提高系统的吞吐量，缩短程序运行周期  可扩充性：能够方便地添加新功能和模块，以及对原有的功能和模块进行修改  开放性：能够遵循">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T14:26:53.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统习题一">
+<meta name="twitter:description" content="第一章一、设计现代OS的主要目标是什么？  现代OS的主要目标有4个：方便性、有效性、可扩充性、开放性  方便性：系统将用户采用高级语言编写的程序翻译成机器码，或直接通过OS所提供的各种命令操纵计算机系统，方便了用户，使计算机变得易学易用  有效性：提高了系统资源的利用率，提高系统的吞吐量，缩短程序运行周期  可扩充性：能够方便地添加新功能和模块，以及对原有的功能和模块进行修改  开放性：能够遵循">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/操作系统习题一.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>操作系统习题一 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/操作系统习题一.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统习题一
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-09 21:43:39 / 修改时间：22:26:53" itemprop="dateCreated datePublished" datetime="2019-12-09T21:43:39+08:00">2019-12-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><p>一、设计现代OS的主要目标是什么？<br>  现代OS的主要目标有4个：方便性、有效性、可扩充性、开放性<br>  方便性：系统将用户采用高级语言编写的程序翻译成机器码，或直接通过OS所提供的各种命令操纵计算机系统，方便了用户，使计算机变得易学易用<br>  有效性：提高了系统资源的利用率，提高系统的吞吐量，缩短程序运行周期<br>  可扩充性：能够方便地添加新功能和模块，以及对原有的功能和模块进行修改<br>  开放性：能够遵循国际标准开发硬件和软件，都能彼此兼容，方便地实现互联</p><a id="more"></a>
+<p>二、为什么说操作系统实现了对计算机资源的抽象？<br>  操作系统在裸机上覆盖了一层设备管理软件，隐藏了物理接口的实现细节。用户无需关心或了解某些功能具体是如何实现的，但也能够很好地利用计算机的资源，操作系统在这里就是实现了对计算机资源的抽象</p>
+<p>三、OS有哪几大特征，其最基本的特征是什么？<br>  OS有并发、共享、虚拟、异步，这4大特征<br>  并发：指两个或多个事件在同一时间间隔内发生，在微观上就是多个程序交替执行<br>  共享：系统中的资源可供内存中多个并发执行的进程共同使用<br>  虚拟：通过某种技术将一个物理实体变为若干个逻辑上的对应物<br>  异步：异步使得处理器不需要等待进程IO，继续执行下一个程序，在程序IO中断完成后通过回调函数继续执行</p>
+<p>四、是什么原因使操作系统具有异步性特征？<br>  为了提高CPU资源的利用率，在程序IO阻塞的过程中，如果没有异步执行的概念，CPU将会一直等待进程IO完成，这浪费了大量的CPU资源</p>
+<p>五、处理机管理有哪些主要功能？其主要任务是什么？<br>  进程控制：为作业创建进程、撤销已结束的进程，控制进程在运行过程中的转换<br>  进程同步：保证多个进程运行时的协调，确保系统资源的合理分配<br>  进程通信：实现相互合作的进程之间的信息互换<br>  调度：包括作业调度和进程调度。作业调度的基本任务是从后背队列中按照一定的算法选择出若干个作业，为他们分配运行时所需的资源。进程调度的任务是从进程的就绪队列中按照一定的算法选出一个进程，将处理机分配给该进程</p>
+<p>六、内存管理有哪些主要功能？其主要任务是什么？<br>  内存分配：为每道程序动态或静态地分配内存空间，提高储存器的利用率<br>  内存保护：确保每道程序仅在自己的内存空间内运行，互不干扰。不允许用户程序访问操作系统的程序和数据，也不允许用户程序转移到非共享的其他用户程序中去执行<br>  地址映射：将地址空间中的逻辑地址转换为内存空间中与之对应的物理地址<br>  内存扩充：借助虚拟储存技术，从逻辑上扩大内存，其中包括了请求掉入功能和置换功能</p>
+<p>七、设备管理有哪些主要功能？其主要任务是什么？<br>  缓冲管理：在IO设备和CPU之间引入缓冲，缓解了CPU和IO设备速度不匹配的矛盾<br>  设备分配：根据用户的请求、系统现有资源情况以及按照某种预设分配策略，为之分配所需的设备<br>  设备处理：实现CPU和设备控制器之间的通信，又称为驱动程序</p>
+<p>八、文件管理有哪些主要功能？其主要任务是什么？<br>  文件储存空间的管理：对文件以及文件的储存空间进行统一的管理<br>  目录管理：为每个文件建立一个目录项，提高检索文件的速度<br>  文件的读/写保护：防止系统中的文件被非法盗取和破坏，对读/写中的文件提供保护</p>
+<p>九、什么是微内核OS？<br>  微内核OS是将系统服务的实现与系统的基本操作规则区分开来，让服务之间互相独立，减少了系统的耦合度，系统也可以根据功能的需要添加或更换模块使系统功能更具有弹性</p>
+<h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><p>一、为什么程序并发执行会产生间断性特征？<br>  程序在并发执行时，由于他们共享系统资源，以及为完成同一项任务而相互合作，致使在这些并发执行的程序之间形成了相互制约的关系。这种相互制约的关系导致并发程序具有“执行——暂停——执行”这种间断性规律</p>
+<p>二、程序并发执行时为什么会失去封闭性和可再现性？<br>  系统中的资源被多个程序共享使用时，其中任一程序改变资源的状态时，其他程序也会受到影响，因此而失去了封闭性。程序失去封闭性后，并发执行的过程中会发生许多意想不到的状态值修改，也就是失去了可再现性</p>
+<p>三、PCB提供了进程管理和进程调度所需要的哪些信息？<br>  进程管理：通用寄存器、指令计数器、程序状态字、用户栈指针<br>  进程调度：进程状态、进程优先级、事件、其他信息</p>
+<p>四、进程控制块的组织方式有哪几种？<br>  线性方式、链接方式、索引方式</p>
+<p>五、何谓操作系统的内核？内核的主要功能是什么？<br>  操作系统内核是一些与硬件紧密相关的模块（中断处理程序）、各种常用设备的驱动程序以及运行频率较高的模块（时钟管理、进程调度和许多公用模块），它们都常驻内存，主要提供以下功能：<br>  支撑功能：中断处理、时钟管理、原语操作<br>  资源管理功能：进程管理、储存器管理、设备管理</p>
+<p>六、试说明进程在三个基本状态之间转换的典型原因。<br>  就绪 -&gt; 执行：进程获得分配的CPU时间片，开始执行<br>  执行 -&gt; 阻塞：执行中的进程发生IO中断，因而无法继续执行，此时进程又执行状态变为阻塞状态<br>  阻塞 -&gt; 就绪：进程IO完成，但还未分配到CPU时间片，因此转为就绪状态</p>
+<p>七、试从调度性、并发性、拥有资源及系统开销方面对进程和线程进行比较。<br>  调度性：进程的调度包括了上下文的切换，开销较大。而线程的调度仅需保存和设置少量寄存器内容，切换的代价小于进程。在同一进程中的线程切换不会引起上下文的切换，但不同进程中的线程切换会引起上下文的切换<br>  并发性：同一进程不能并发，而同一进程中的不同线程可以并发。不同进程之间可以并发，不同进程的不同线程可以并发<br>  拥有资源：进程可以拥有资源，而线程本身不拥有系统资源，仅有保证独立运行的资源。线程的资源可以共享该进程拥有的资源<br>  系统开销：线程的创建、切换和撤销的花销都比进程要小得多</p>
+<h1 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h1><p>一、高级调度与低级调度的主要任务是什么？为什么要引入中级调度？<br>  高级调度：调度对象是作业，根据某种算法，决定将外存上处于后备队列中的哪几个作业调入内存，为他们创建进程、分配必要的资源，并将他们放入就绪队列<br>  低级调度：调度对象是进程，根据某种算法，决定就绪队列中的哪个进程应获得处理机，并由分派程序将处理机分配给被选中的进程<br>  引入中级调度的目的：提高内存的利用率和系统的吞吐量。将暂时不能运行的进程调至外存等待，当具备运行条件时重新调入内存</p>
+<p>二、处理机调度算法的共同目标是什么？批处理系统的调度目标又是什么？</p>
+<p>  处理机调度算法的共同目标：</p>
+<ul>
+<li>提高系统资源利用率</li>
+<li>提高公平性，使进程都获得合理CPU时间</li>
+<li>保持系统资源使用的平衡</li>
+<li><p>制订的策略强制执行</p>
+<p>批处理系统的调度目标：</p>
+</li>
+<li>缩短平均周转时间</li>
+<li>提高系统的吞吐量</li>
+<li>提高处理机利用率</li>
+</ul>
+<p>三、在作业调度中应如何确定接纳多少个作业和接纳哪些作业？<br>  接纳作业的数量根据系统规模、运行速度、作业大小、以及能否获得较好的系统性能等情况作出适当的抉择<br>  接纳哪些作业根据不同的调度算法来判断，最简单的是先来先服务调度算法，较常用的是短作业优先调度算法和基于作业优先级的调度算法</p>
+<p>四、试说明低级调度的主要功能。<br>  根据某种算法，决定就绪队列中的哪个进程应获得处理机，并由分派程序将处理机分配给被选中的进程</p>
+<p>五、在选择调度方式和调度算法时，应遵循的准则是什么？<br>  应尽量保证公平，每个进程分得的CPU时间片应尽量平衡。保持系统资源使用的平衡性</p>
+<p>六、试比较FCFS和SJF两种进程调度算法。<br>  先来先服务（FCFS）算法：每次从就绪队列中选择一个最先进入该队列的进程，为之分配处理机，使之投入运行，该进程一直运行到完成或发生某时间而阻塞后，进程调度程序才将处理机分配给其他进程<br>  短作业优先（SJF）算法：按照作业的长短来计算优先级，作业越短，优先级越高<br>  与FCFS比，SJF需要预知作业的运行时间，而且对长作业非常不利，两种算法都不能实现人机交互，SJF没有考虑作业的紧迫程度，不能保证紧迫性作业能够得到及时的处理</p>
+<p>七、在时间片轮转法中，应如何确定时间片的大小？<br>  一个较为可取的时间片大小是略大于一次典型的交互所需要的时间，时间片过长会导致算法退化为FCFS，过短会增加系统执行进程调度的开销</p>
+<p>八、为什么说多级反馈队列调度算法能较好地满足各个方面用户的需要？<br>  多级反馈队列调度算法不必事先知道各种进程所需的执行时间，不同类型的进程放在不同优先级的就绪队列中，每个队列采用FCFS算法，这种算法能够较好地满足各种类型进程的需要，因此能够很好地满足各个方面用户的需要</p>
+<p>九、什么是最低松弛度优先调度算法？举例说明之。<br>  根据任务的紧急程度确定任务的优先级，紧急程度越高，该任务的优先级就越高<br>  例如：若一个任务A在200ms时必须完成，它本身运行所需的时间是100ms，因此调度程序必须在100ms之前调度执行，该任务的紧急程度为100ms。而另一个任务B在400ms时必须完成，它本身运行所需的时间是150ms，则松弛程度为250ms。根据算法可知，最低松弛度的任务是A，接下来应该执行A任务</p>
+<p>十、何谓“优先级倒置”现象，可采取什么方法来解决？<br>  优先级倒置：低优先级的任务占有了高优先级任务的资源，导致高优先级任务阻塞，可采取优先级继承的方法解决</p>
+<p>十一、试分别说明可重用资源和可消耗资源的性质。<br>  可重用资源：可供用户重复使用多次的资源，每一个可重用的资源只能分配给一个进程使用。进程在使用可重用资源时，必须参照：请求资源、使用资源、解放资源的顺序使用。系统中的可重用资源数量相对是固定的<br>  可消耗资源：又称临时性资源，是在进程运行期间不断变化的。进程在运行期间可以不断创造可消耗性资源的单元，在进程结束后可消耗资源也跟着消失</p>
+<p>十二、试举例说明竞争不可抢占资源引起的死锁。<br>  假设A进程运行需要1号和2号资源，目前1号资源已经申请成功，由A进程占用。而B进程的运行也需要1号和2号资源，且B进程已经申请占用了2号资源。两个进程都在等待对方释放资源，从而引起了进程的死锁</p>
+<p>十三、为了破坏“请求和保持”条件而提出了两种协议，试比较这两种协议。<br>  第一种协议：进程在运行之前必须一次性申请在整个运行过程中所需的全部资源。其优点是简单、易行且安全，但资源被严重浪费，并且进程会经常发生饥饿现象<br>  第二种协议：是第一种协议的改进，它允许一个进程只获得运行初期所需的资源后，便开始运行，运行过程中再逐步释放已分配给自己的、且已用毕的全部资源，然后再请求新的所需资源。第二种协议不仅能使进程更快地完成任务，提高设备的利用率，还可以减少进程发生饥饿的概率</p>
+<p>十四、何谓死锁？产生死锁的原因和必要条件是什么？<br>  如果一组进程中的每一个进程都在等待仅由该组进程中的其他进程才能引发的事件，那么该组进程是死锁的<br>  产生死锁的原因有：竞争不可抢占性资源引起死锁，竞争可消耗资源引起死锁<br>  产生死锁的必要条件：互斥条件-&gt;进程对所分配到的资源进行排他性使用；请求和保持条件-&gt;进程已经保持了至少一个资源，但又提出了新的资源请求；不可抢占条件-&gt;进程已获得的资源在未使用完之前不能被抢占；循环等待条件-&gt;在发生死锁时，必然存在一个进程——资源的循环链</p>
+<p>十五、在解决死锁问题的几个方法中，哪种方法最易于实现？哪种方法使资源利用率最高？<br>  解决死锁问题有预防和解除2种思路。预防死锁有：破坏“请求和保持”条件，破坏“循环等待”条件，保持系统处于安全状态，银行家算法等方法。解除死锁有：终止进程，抢占资源等方法<br>  这几种方法中，破坏死锁产生的条件最容易实现，银行家算法和保持系统处于安全状态的资源利用率最高</p>
+<p>十六、请详细说明可通过哪些途径预防死锁。<br>  破坏“请求和保持”条件：进程逐步申请、释放资源<br>  破坏“循环等待”条件：进程占有的资源可以被抢占<br>  保持系统处于安全状态：在分配资源之前计算资源分配的安全性<br>  银行家算法：在分配资源之前计算剩余资源的可用情况</p>
+<p>十七、在银行家算法的例子中，如果P0发出的请求向量由Request(0,2,0)改为Request(0,1,0)，问系统可否将资源分配给它？<br>  假设资源分配给了P0，则剩余情况如下：Avalibale(2, 2, 0)。可以找到一个安全序列：{P1, P3, P2, P0, P4}，因此系统能将资源分配给他</p>
+<p>十八、在银行家算法中，若出现下述资源分配情况，试问：</p>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Allocation</th>
+<th>Need</th>
+<th>Available</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>0 0 3 2</td>
+<td>0 0 1 2</td>
+<td>1 6 2 2</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>1 0 0 0</td>
+<td>1 7 5 0</td>
+<td></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>1 3 5 4</td>
+<td>2 3 5 6</td>
+<td></td>
+</tr>
+<tr>
+<td>P3</td>
+<td>0 3 3 2</td>
+<td>0 6 5 2</td>
+<td></td>
+</tr>
+<tr>
+<td>P4</td>
+<td>0 0 1 4</td>
+<td>0 6 5 6</td>
+</tr>
+</tbody>
+</table>
+<p>（1）该状态是否安全？<br>​ 可以找到一个安全序列：{P0, P3, P1, P2, P4}，因此该状态是安全的<br>（2）若进程P2提出请求Request(1,2,2,2)后，系统能否将资源分配给它？<br>​ 因为Need(2,3,5,6)&lt;Request(1,2,2,2)且Request(1,2,2,2)&lt;Avaliable(1,6,2,2)。暂且认为可以分配之后，可用资源为Avaliable(0,4,0,0)，无法找到一个安全序列，因此系统不能将资源分配给它</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+              <a href="/tags/学习总结/" rel="tag"># 学习总结</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/带优先级的时间片轮换的进程调度算法.html" rel="next" title="操作系统实验四：带优先级的时间片轮换的进程调度算法的实现">
+                  <i class="fa fa-chevron-left"></i> 操作系统实验四：带优先级的时间片轮换的进程调度算法的实现
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一章"><span class="nav-number">1.</span> <span class="nav-text">第一章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二章"><span class="nav-number">2.</span> <span class="nav-text">第二章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三章"><span class="nav-number">3.</span> <span class="nav-text">第三章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
