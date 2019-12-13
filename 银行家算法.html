@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实验五：银行家算法">
+<meta property="og:url" content="http://fisher.lazybone.xyz/银行家算法.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/bankhelp.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/bankps.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/bankrequest.png">
+<meta property="og:updated_time" content="2019-12-13T11:41:05.969Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统实验五：银行家算法">
+<meta name="twitter:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/os/bankhelp.png">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/银行家算法.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>操作系统实验五：银行家算法 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/银行家算法.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统实验五：银行家算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-11 19:35:43" itemprop="dateCreated datePublished" datetime="2019-12-11T19:35:43+08:00">2019-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-13 19:41:05" itemprop="dateModified" datetime="2019-12-13T19:41:05+08:00">2019-12-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>操作系统系列博客的所有实验源自于课程<code>&quot;操作系统原理与实践检验&quot;</code>，代码是参考老师给的<code>&quot;软件工程专业操作系统实验指导书&quot;</code>文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法</p><a id="more"></a>
+<h1 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h1><ol>
+<li>进一步理解利用银行家算法避免死锁的问题</li>
+<li>在了解和掌握银行家算法的基础上，编制银行家算法通用程序，将调试结果显示在计算机屏幕上，再检测和笔算的一致性</li>
+<li>理解和掌握安全序列、安全性算法</li>
+</ol>
+<h1 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h1><ol>
+<li>了解和理解死锁</li>
+<li>理解利用银行家算法避免死锁的原理</li>
+</ol>
+<h1 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h1><ul>
+<li><p>数据结构：</p>
+<p>Available：一维数组，系统可用资源列表</p>
+<p>Max：二维数组，进程运行完成所需要的资源总数</p>
+<p>Need：二维数组，进程到达就绪状态还需要的资源数</p>
+<p>Allocation：二维数组，进程已经获得的资源数</p>
+</li>
+<li><p>安全状态</p>
+<p>首先要了解的是：什么是系统的安全状态？</p>
+<p>安全状态是指：在当前情况下，系统能够按照某种执行顺序，为每个进程分配足够的资源，使它们能够顺利完成</p>
+</li>
+<li><p>银行家算法</p>
+<p>顾名思义，银行家算法的就是把计算机系统比喻为银行，进程比喻为来贷款的人。要发放贷款最基本的要求是银行金库中还有钱，并且贷款的人有能力还款，这对应了计算机系统中的剩余资源和进程申请资源时不能超过进程需要的最大资源。核心的要求是银行在发放了贷款之后，能通过某种还款顺序保证不出现坏账，对应计算机系统中就是进程能够以某种安全序列完成任务</p>
+<p>其中安全检查的步骤如下：</p>
+<ol>
+<li><p>如果<code>Request_i &lt;= Need_i</code>，则继续以下检查，否则显示需求申请超过该进程最大需求值的错误</p>
+</li>
+<li><p>如果<code>Request &lt;= Available</code>，则继续以下检查，否则显示系统无足够资源，该进程需要继续阻塞等待</p>
+</li>
+<li><p>系统试着把资源先分配给该进程，并修改相应的数据结构值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// i是进程ID的索引，j是资源的索引</span></span><br><span class="line">Available[j] -= Request[j];</span><br><span class="line">Allocation[i][j] += Request[j];</span><br><span class="line">Need[i][j] -= Request[j];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>系统执行安全性算法，检查此次资源分配之后，系统是否处于安全状态。若系统找到了一个安全序列，则本次分配正式结束。若系统找不到安全序列，则本次分配作废，系统恢复到未分配之前的状态</p>
+</li>
+</ol>
+</li>
+<li><p>安全性算法</p>
+<p>安全性算法就是判断系统能否找到一个安全序列的算法。在本次实验中，我们使用了两个数组变量：</p>
+<ul>
+<li>工作向量<code>Work</code>：它表示系统可用资源的数目，在安全算法刚开始时，<code>Work = Available</code></li>
+<li>标记向量<code>Finish</code>：它表示系统能否有足够的资源分配给进程，使进程运行完成，同时也记录了安全序列</li>
+</ul>
+<p>从进程集合中找到一个能满足下述条件的进程，若找到则执行下一步</p>
+<ul>
+<li><code>Finish[i] = false</code></li>
+<li><code>Need[i][j] &lt;= Work[j]</code></li>
+</ul>
+<p>当进程获得资源后，该进程可顺利运行至完成，并释放出分配给该进程的所有资源，此时可回收资源：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Work[j] += Allocation[i][j];</span><br><span class="line">Finish[i] = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>重复执行上两个步骤，如果所有进程都完成了，则表示系统处于安全状态，否则系统处于不安全状态</p>
+</li>
+</ul>
+<h1 id="代码汇总"><a href="#代码汇总" class="headerlink" title="代码汇总"></a>代码汇总</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调试模式</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> DEBUG true</span></span><br><span class="line"><span class="comment">// 系统资源的数量</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> RESOURCES 3</span></span><br><span class="line"><span class="comment">// 系统进程数量</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> PROCESS 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 系统可用资源列表</span></span><br><span class="line"><span class="keyword">int</span> Available[RESOURCES] = &#123;<span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="comment">// 进程运行所需要的总资源</span></span><br><span class="line"><span class="keyword">int</span> Max[PROCESS][RESOURCES] = &#123;&#123;<span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>&#125;,&#123;<span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>&#125;,&#123;<span class="number">9</span>, <span class="number">0</span>, <span class="number">2</span>&#125;,&#123;<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>&#125;,&#123;<span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>&#125;&#125;;</span><br><span class="line"><span class="comment">// 进程达到就绪状态还需要的资源</span></span><br><span class="line"><span class="keyword">int</span> Need[PROCESS][RESOURCES] = &#123;&#123;<span class="number">7</span>, <span class="number">4</span>, <span class="number">3</span>&#125;,&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>&#125;,&#123;<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>&#125;,&#123;<span class="number">4</span>, <span class="number">3</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line"><span class="comment">// 已经分配给进程的资源</span></span><br><span class="line"><span class="keyword">int</span> Allocation[PROCESS][RESOURCES] = &#123;&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>&#125;,&#123;<span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>&#125;,&#123;<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>&#125;,&#123;<span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>&#125;,&#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 系统初始化</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DEBUG)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Debug模式，银行家账本使用书中的例子\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"非Debug模式，银行家账本随机生成\n"</span>);</span><br><span class="line">        <span class="comment">// 随机产生资源和使用情况</span></span><br><span class="line">        srand(time(<span class="literal">NULL</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; RESOURCES; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                Available[j] = rand() % <span class="number">5</span> + <span class="number">15</span>;</span><br><span class="line">                Max[i][j] = rand() % <span class="number">7</span> + <span class="number">1</span>;</span><br><span class="line">                Allocation[i][j] = rand() % <span class="number">3</span> + <span class="number">1</span>;</span><br><span class="line">                Need[i][j] = Max[i][j] - Allocation[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查看当前账本</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ps</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n====================银行家账本===================\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\nAvailable: "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%3d "</span>, Available[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\nProcess | Allocation | Need\n"</span>);</span><br><span class="line">    <span class="comment">// Process</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%5d |"</span>, i);</span><br><span class="line">        <span class="comment">// Allocation</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; RESOURCES; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%3d"</span>, Allocation[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" | "</span>);</span><br><span class="line">        <span class="comment">// Need</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; RESOURCES; k++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%3d"</span>, Need[i][k]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"=================================================\n\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 银行家算法</span></span><br><span class="line"><span class="comment"> * pid：当前要运行的进程</span></span><br><span class="line"><span class="comment"> * no：当前运行的进程顺序</span></span><br><span class="line"><span class="comment"> * work：当前系统可用资源</span></span><br><span class="line"><span class="comment"> * finish：记录进程完成状态和顺序</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">bank</span><span class="params">(<span class="keyword">int</span> pid, <span class="keyword">int</span> no, <span class="keyword">int</span> work[], <span class="keyword">int</span> finish[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"新一轮运行尝试，尝试的pid: %d，no: %d\n"</span>, pid, no);</span><br><span class="line">    <span class="comment">// 判断当前系统资源能否满足当前进程运行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 不满足运行条件，终止本次尝试，向上回溯</span></span><br><span class="line">        <span class="keyword">if</span> (work[i] &lt; Need[pid][i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"当前pid: %d, 可用的资源: %d, 需要的资源: %d。不满足运行条件！\n"</span>, pid, work[i], Need[pid][i]);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 当前资源满足了当前进程运行</span></span><br><span class="line">    <span class="comment">// 标记当前进程已完成</span></span><br><span class="line">    finish[pid] = no;</span><br><span class="line">    <span class="comment">// 释放资源</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        work[i] += Allocation[pid][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"当前进程成功运行完成: %d, 是第 %d 个完成的进程。寻找下一个可运行的进程......\n"</span>, pid, no);</span><br><span class="line">    <span class="comment">// 判断系统是否运行完成</span></span><br><span class="line">    <span class="keyword">if</span> (no &gt;= PROCESS)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"分配完毕，系统安全！安全序列："</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= PROCESS; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; PROCESS; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (finish[j] == i)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">printf</span>(<span class="string">"%d -&gt; "</span>, j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"finish\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 寻找下一个未完成的进程</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!finish[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">bool</span> flag = bank(i, no + <span class="number">1</span>, work, finish);</span><br><span class="line">            <span class="keyword">if</span> (flag)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 没有下一个可以运行的进程了，系统进入不安全状态，往上回溯</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        work[i] -= Allocation[pid][i];</span><br><span class="line">    &#125;</span><br><span class="line">    finish[pid] = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"没有下一个可以运行的进程了，系统进入不安全状态，往上回溯。当前进程pid:%d,no:%d\n"</span>, pid, no);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 申请使用资源</span></span><br><span class="line"><span class="comment"> * pid：申请资源的进程ID</span></span><br><span class="line"><span class="comment"> * req_list：申请的资源列表</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">request</span><span class="params">(<span class="keyword">int</span> pid, <span class="keyword">int</span> req_list[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// pid校验</span></span><br><span class="line">    <span class="keyword">if</span> (pid &gt;= PROCESS)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"进程ID非法！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// req_list校验</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (req_list[i] &gt; Need[pid][i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"请求了过多的资源，分配终止！\n"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (req_list[i] &gt; Available[i])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"系统可用资源不足，无法分配！\n"</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 使用银行家算法判断系统是否安全</span></span><br><span class="line">    <span class="keyword">int</span> work[RESOURCES], finish[PROCESS];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        finish[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 试探性分配，然后检查是否安全</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Available[i] -= req_list[i];</span><br><span class="line">        Allocation[pid][i] += req_list[i];</span><br><span class="line">        Need[pid][i] -= req_list[i];</span><br><span class="line">        work[i] = Available[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 检查是否安全</span></span><br><span class="line">    <span class="keyword">bool</span> safe = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; PROCESS; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (bank(i, <span class="number">1</span>, work, finish))</span><br><span class="line">        &#123;</span><br><span class="line">            safe = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果系统安全，则本次分配完成</span></span><br><span class="line">    <span class="keyword">if</span> (safe)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"本次分配完成！\n"</span>);</span><br><span class="line">        ps();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 分配不安全，本次分配作废</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RESOURCES; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Available[i] += req_list[i];</span><br><span class="line">            Allocation[pid][i] -= req_list[i];</span><br><span class="line">            Need[pid][i] += req_list[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"没有安全的分配方案，请求资源失败！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">terminal</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> cmdstr[<span class="number">32</span>];</span><br><span class="line">    <span class="keyword">int</span> cmd, req_id, req_list[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"cmd: "</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%s"</span>, cmdstr);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"exit"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"help"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n=================================================\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"请求资源: request\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"查看当前银行家账本: ps\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"获取帮助: help\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"退出: exit\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"=================================================\n\n"</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"ps"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            ps();</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"request"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"要申请资源的进程ID: "</span>);</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;req_id);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"要申请的资源的数量: "</span>);</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;req_list[<span class="number">0</span>], &amp;req_list[<span class="number">1</span>], &amp;req_list[<span class="number">2</span>]);</span><br><span class="line">            request(req_id, req_list);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"cmd: 未知的命令！\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    ps();</span><br><span class="line">    terminal();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="实验测试"><a href="#实验测试" class="headerlink" title="实验测试"></a>实验测试</h1><ol>
+<li><p>编译运行程序，这里就不放截图了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g++ bank.cpp -o bank</span><br><span class="line">./bank</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>help</code>命令查看帮助信息</p>
+<p><img src="images/os/bankhelp.png" alt="帮助信息"></p>
+</li>
+<li><p>使用<code>ps</code>命令查看当前账本</p>
+<p><img src="images/os/bankps.png" alt="ps命令"></p>
+</li>
+<li><p>使用<code>request</code>申请资源，查看系统运行过程</p>
+<p><img src="images/os/bankrequest.png" alt="申请资源"></p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本次实验我们实现了银行家算法，了解了系统为了防止死锁发生所做的工作。在现代的商业系统中，可能有许多的进程，要防止死锁的代价是非常高的，所以这些系统都采取了消极的措施，就是不管死锁的发生，也不去处理，在真正出现问题的时候，重启还是一个比较快的方法。但在一些高可靠性的系统中，可能系统的进程数量比较少，而且因为业务的要求，系统必须采取措施来防止死锁的发生，这时候银行家算法就有用武之地了</p>
+<h1 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h1><ol>
+<li><p>在编程中遇到了哪些问题？你是如何解决的？</p>
+<p>一开始想要以非递归的方法实现安全性检测，但是发现代码十分混乱而且比较难理解，改用递归的方法之后就好很多了。有了思路之后，实现算法的速度还是挺快的</p>
+</li>
+<li><p>在安全性算法中，为什么不用变量<code>Available</code>，而又定义一个临时变量<code>Work</code>？</p>
+<p>因为在递归调用安全性检测的算法过程中，一直需要对系统可用资源进行调整，直接用<code>Available</code>变量会导致算法在找到安全序列之后还要向上回溯，恢复<code>Available</code>的值，因此定义一个临时变量<code>Work</code>更为方便    </p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/操作系统习题一.html" rel="next" title="操作系统习题一">
+                  <i class="fa fa-chevron-left"></i> 操作系统习题一
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验目的"><span class="nav-number">2.</span> <span class="nav-text">实验目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验内容"><span class="nav-number">3.</span> <span class="nav-text">实验内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验过程"><span class="nav-number">4.</span> <span class="nav-text">实验过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码汇总"><span class="nav-number">5.</span> <span class="nav-text">代码汇总</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验测试"><span class="nav-number">6.</span> <span class="nav-text">实验测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#课后思考"><span class="nav-number">8.</span> <span class="nav-text">课后思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
