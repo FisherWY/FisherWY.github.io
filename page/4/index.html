@@ -198,6 +198,72 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/cs-go服务器搭建脚本.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/cs-go服务器搭建脚本.html" class="post-title-link" itemprop="url">CS:GO服务器搭建脚本</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-06 16:20:02 / 修改时间：16:31:26" itemprop="dateCreated datePublished" datetime="2019-11-06T16:20:02+08:00">2019-11-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这篇文章首发于<a href="https://www.jianshu.com/p/b2cde3ba7908" target="_blank" rel="noopener">Fisher的简书</a></p><p>在我意识到shell编程的重要性之后，我便开始想着学习shell，但是拿什么练手呢？我想到了CSGO服务器的搭建，于是这个一键安装CSGO服务器的脚本就诞生了</p><h1 id="前期的准备"><a href="#前期的准备" class="headerlink" title="前期的准备"></a>前期的准备</h1><p><strong>首先我们需要获取steam服务器的登录令牌。没有该令牌的服务器只能在本地网络中进行连接，在社区服务器浏览器中也不会显示</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/cs-go服务器搭建脚本.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/cs-go私人服务器搭建.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -470,78 +536,6 @@
   
   
 
-        
-  
-  
-  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/使用nginx搭建下载服务器.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/使用nginx搭建下载服务器.html" class="post-title-link" itemprop="url">使用Nginx搭建下载服务器</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-01 20:19:30" itemprop="dateCreated datePublished" datetime="2019-11-01T20:19:30+08:00">2019-11-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-04 22:28:24" itemprop="dateModified" datetime="2019-11-04T22:28:24+08:00">2019-11-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="使用Nginx搭建下载服务器"><a href="#使用Nginx搭建下载服务器" class="headerlink" title="使用Nginx搭建下载服务器"></a>使用Nginx搭建下载服务器</h1><p>下载服务器主要用于存放自己日常使用的安装包和文件</p><h2 id="1-创建文件存放根目录"><a href="#1-创建文件存放根目录" class="headerlink" title="1. 创建文件存放根目录"></a>1. 创建文件存放根目录</h2><p>使用<code>ssh</code>登录服务器，创建文件夹。在这里我使用的是自己的用户和自己用户的根目录，方便文件的管理</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">mkdir downloads</span><br></pre></td></tr></table></figure><h2 id="2-修改Nginx配置文件"><a href="#2-修改Nginx配置文件" class="headerlink" title="2. 修改Nginx配置文件"></a>2. 修改Nginx配置文件</h2><p>修改Nginx配置文件，将文件夹添加为下载根目录</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/使用nginx搭建下载服务器.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -591,7 +585,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

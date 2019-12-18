@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="第四章一、为什么要配置层次式储存器？为了使存储器跟上处理机的运行速度，提高处理机的使用率，同时尽量降低存储器的成本，采用多层结构的存储器系统是性价比最高的方案二、可采用哪几种方式将程序装入内存？它们分别适合用于何种场合？绝对装入方式：将目标模块装入到内存中事先指定的位置，计算机系统很小时，完全有可能知道程序将驻留在内存的什么位置。因此可采用绝对装入的方式将程序装入内存指定位置中">
+<meta name="keywords" content="操作系统,学习总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统习题二">
+<meta property="og:url" content="http://fisher.lazybone.xyz/操作系统习题二.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="第四章一、为什么要配置层次式储存器？为了使存储器跟上处理机的运行速度，提高处理机的使用率，同时尽量降低存储器的成本，采用多层结构的存储器系统是性价比最高的方案二、可采用哪几种方式将程序装入内存？它们分别适合用于何种场合？绝对装入方式：将目标模块装入到内存中事先指定的位置，计算机系统很小时，完全有可能知道程序将驻留在内存的什么位置。因此可采用绝对装入的方式将程序装入内存指定位置中">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-18T11:31:35.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统习题二">
+<meta name="twitter:description" content="第四章一、为什么要配置层次式储存器？为了使存储器跟上处理机的运行速度，提高处理机的使用率，同时尽量降低存储器的成本，采用多层结构的存储器系统是性价比最高的方案二、可采用哪几种方式将程序装入内存？它们分别适合用于何种场合？绝对装入方式：将目标模块装入到内存中事先指定的位置，计算机系统很小时，完全有可能知道程序将驻留在内存的什么位置。因此可采用绝对装入的方式将程序装入内存指定位置中">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/操作系统习题二.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>操作系统习题二 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/操作系统习题二.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统习题二
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-18 19:23:49 / 修改时间：19:31:35" itemprop="dateCreated datePublished" datetime="2019-12-18T19:23:49+08:00">2019-12-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="第四章"><a href="#第四章" class="headerlink" title="第四章"></a>第四章</h1><p>一、为什么要配置层次式储存器？</p><p>为了使存储器跟上处理机的运行速度，提高处理机的使用率，同时尽量降低存储器的成本，采用多层结构的存储器系统是性价比最高的方案</p><p>二、可采用哪几种方式将程序装入内存？它们分别适合用于何种场合？</p><p>绝对装入方式：将目标模块装入到内存中事先指定的位置，计算机系统很小时，完全有可能知道程序将驻留在内存的什么位置。因此可采用绝对装入的方式将程序装入内存指定位置中</p><a id="more"></a>
+
+
+
+<p>可重定位装入方式：可以根据内存使用的具体情况将装入模块装入到内存的适当位置，但不允许程序运行时在内存中移动位置，这种方式适用于在多道程序环境下</p>
+<p>动态运行时的装入方式：程序在运行过程中，内存的位置因为页面的置换而经常发生改变，这种方式适用于拥有段页式储存管理的操作系统中</p>
+<p>三、何谓静态链接？静态链接时需要解决两个什么问题？</p>
+<p>在程序运行之前，先将各目标模块及它们所需的库函数链接成一个完整的装配模块，以后不再拆开。静态链接时需要解决对相对地址进行修改和变换外部调用符号这两个问题</p>
+<p>对相对地址进行修改：编译产生的模块中，内存地址都是从0开始，在装入内存时需要进行内存偏移操作，即加上相对地址L</p>
+<p>变换外部调用符号：将每个模块中所用的外部调用符号变换为相对地址</p>
+<p>四、何谓装入时动态链接？装入时动态链接方式有何优点？</p>
+<p>用户将源程序编译后所得的一组目标模块，在装入内存时，采用边装入边链接的方式。该方式便于修改和更新库函数，便于实现对库函数模块的共享</p>
+<p>五、何谓运行时动态链接？运行时动态链接方式有何优点？</p>
+<p>对某些模块和链接推迟到程序执行时才进行，这种方式不仅能加快程序的装入过程，还能节省大量的内存空间</p>
+<p>六、在动态分区分配方式中，应如何将各空闲分区连接成空闲分区链？</p>
+<p>使用空闲分区表：在系统中设置一张空闲分区表，用于记录每个空闲分区的情况</p>
+<p>使用空闲分区链：对每一个分区设置一个前向指针和后向指针，用于链接前一个空闲分区和后一个空闲分区</p>
+<p>七、为什么要引入动态重定位？如何实现？</p>
+<p>为了充分利用内存空间中的碎片空间，并且降低计算机整理内存的频次，由此引入了动态重定位。动态重定位使用了一个重定位寄存器，用于记录偏移的地址量，在每次取址时用程序的逻辑地址加上重定位寄存器中的地址，得到内存中的物理地址，在进行内存碎片整理之后，只需要修改重定位寄存器中的地址即可</p>
+<p>八、什么是基于顺序搜索的动态分区分配算法？它可以分为哪几种？</p>
+<p>在内存空闲链中，依次搜索空闲分区上的空闲分区，寻找一个大小能满足要求的分区，它可以分为以下4种算法：</p>
+<ul>
+<li>首次适应（first     fit, FF）算法：该算法要求空闲分区链以地址递增的次序链接，在分配内存时从链的头部开始寻找，直至找到一个大小能满足要求的空闲分区</li>
+<li>循环首次适应算法（next     fit, NF）：为避免低地址部分留下许多很小的空闲分区，该算法从上次找到的空闲分区开始向后寻找，直至找到一个能满足要求的空闲分区</li>
+<li>最佳适应（best     fit, BF）算法：该算法要求将所有的空闲分区按照容量从小到大的顺序形成空闲分区链。总是把能满足要求的、又是最小的空闲分区分配给作业</li>
+<li>最坏适应（worst     fir, WF）算法：与最佳适应算法相反，总是把最大的空闲区分割一部分存储空间给作业使用</li>
+</ul>
+<p>九、在采用首次适应算法回收内存时，可能出现哪几种情况？应该怎样处理这种情况？</p>
+<p>回收区与插入点的前一个空闲分区相邻接：此时应该将回收区与插入点的前一分区合并</p>
+<p>回收区与插入点的后一个空闲分区相邻接：此时应该将两个分区合并，回收区的首地址作为新空闲区的地址，更新空闲分区链表信息</p>
+<p>回收区同时与插入点的前、后两个空闲分区邻接：此时将三个分区合并，使用前分区的地址作为新空闲区的地址，更新空闲分区链表信息</p>
+<p>回收区与前后空闲分区不邻接：此时应单独为回收区新建一个表项，并插入到空闲分区链表中的适当位置</p>
+<p>十、什么是基于索引搜索的动态分区分配算法？它可分为哪几种？</p>
+<p>利用空闲分区索引快速搜索空闲分区，分配空闲分区的算法，它可以分为以下三种算法：</p>
+<ul>
+<li>快速适应（quick fit）算法：又称为分类搜索法，对于每一类具有相同容量的所有空闲分区，单独设立一张管理索引表。首先根据进程长度，从索引表中找到能够容纳它的最小空闲区链表，再从链表中取下第一块进行分配。该算法的优点是分配速度快，但缺点是内存回收整理时算法十分复杂</li>
+<li>伙伴系统（buddy system）：将所有分区划分为大小均为2的k次幂的空间，将相同大小空间的分区使用双向链表建立索引。在伙伴系统中，空间的分配和回收性能取决于查找空闲分区的位置和分割、合并空闲分区所花费的时间。该算法比快速适应算法好，比顺序搜索算法略差</li>
+<li>哈希算法：利用哈希快速查找的优点，以及空闲分区在可利用空闲区表中的分布规律，建立哈希函数，构造哈希表。当空闲分区进行分配时，根据所需空闲分区大小，通过哈希函数计算，获得分区在哈希表中的位置，从而得到相应的空闲分区链表，实现最佳分配策略</li>
+</ul>
+<p>十一、分区储存管理中常用哪些分配策略？比较它们的优缺点。</p>
+<p>常用的分配策略：首次适应算法，循环首次适应算法，最佳适应算法，最坏适应算法</p>
+<ul>
+<li>首次适应算法：保留了高位地址部分较大的储存空间，有利于后来的大型作业分配，但同时低位地址不断被划分，碎片化更加严重</li>
+<li>循环首次适应算法：内存空间分配均匀，减少了系统查找的开销，但缺乏大空间内存区域，导致不能装入大型作业</li>
+<li>最佳适应算法：每次给进程分配的空间区域都最适合该进程，在内存中留下难以利用的空间</li>
+<li>最坏适应算法：剩下的空间都不太小，产生碎片的几率小，对中小型作业的分配有利，但不利于大型作业的分配</li>
+</ul>
+<p>十二、为什么要引入对换？对换可分为哪几种类型？</p>
+<p>一方面由于内存中的某些进程由于某事件尚未发生而被阻塞运行，却占用了大量的内存空间，导致内存空间不足，使系统的吞吐量下降，为了解决这个问题而引入了对换功能。对换可以分为：整体对换，页面对换</p>
+<p>十三、对文件区管理的目标和对对换空间管理的目标有何不同？</p>
+<p>对文件区的管理目标：首先是提高文件储存空间的利用率，然后才是提高对文件的访问速度</p>
+<p>对对换空间的管理目标：提高进程换入和换出的速度，然后才是提高文件储存空间的利用率</p>
+<p>十四、为实现对换，系统应具备哪几方面的功能？</p>
+<p>系统应具备的功能：进程的换出，进程的换入，对换空间管理</p>
+<p>十五、在以进程为单位进行对换时，每次是否将整个进程换出？为什么？</p>
+<p>不一定将整个进程换出，因为进程中包含了进程信息，程序代码和数据。其中的数据可能由几个进程共享使用，因此不一定将整个进程换出</p>
+<p>十六、基于离散分配时所用的基本单位不同，可将离散分配分为哪几种？</p>
+<p>可分为：分页储存管理，分段储存管理，段页式储存管理</p>
+<p>十七、什么是页面？什么是物理块？页面的大小应如何确定？</p>
+<p>页面是进程逻辑地址空间的划分，一个进程可以划分为若干个页面</p>
+<p>物理块是内存物理地址空间的划分，并对每个块加以编号</p>
+<p>页面太小会导致页表过长，占用内存且降低效率，页面太长会导致内存空间的浪费，降低换进换出的效率。因此页面一般划分为1KB～8KB</p>
+<p>十八、什么是页表？页表的作用是什么？</p>
+<p>页表中记录了每个页面所对应的物理块，实现了从页号到物理块号的地址映射</p>
+<p>十九、为实现分页存储管理，需要哪些硬件支持？</p>
+<p>动态重定位技术，虚拟储存技术，多道程序设计技术</p>
+<p>二十、在分页系统中是如何实现地址变换的？</p>
+<p>首先通过页表去寻找该进程的内存基址，然后检查该地址是否合法，最后通过内存偏移计算，得出逻辑地址</p>
+<p>二十一、具有快表时是如何实现地址变换的？</p>
+<p>在CPU给出有效地址之后，由地址变换机构自动地将页号P送入高速缓冲寄存器，并将此页号与高速缓存中的所有页号进行比较，若其中有与此相匹配的也好，便表示所要访问的页表在快表中，则可以直接从快表中读出该页所对应的物理块号，并送到物理地址寄存器中。如在快表中未找到对应的页表项，则需要访问内存中的页表，找到之后把页表读出的物理块号送往地址寄存器，同时更新快表项</p>
+<p>二十二、在具有快表的段页式存储管理方式中，如何实现地址变换？</p>
+<p>首先通过快表直接查找目标块号，若越界则执行中断操作，如果找到则直接送往地址寄存器，未找到则在内存页表中查找，找到之后送往地址寄存器</p>
+<p>二十三、为什么说分段系统比分页系统更易于实现信息的共享和保护？</p>
+<p>分页系统中的“页”只是单纯地存放物理信息，并没有完整的数据逻辑意义，而段是信息的逻辑单位，因此更容易实现信息的共享和保护</p>
+<p>二十四、分页和分段存储管理有何区别？</p>
+<p>页是信息的物理单位，分页是为了实现离散的分配方式，而段是信息的逻辑单位，其包含了有意义的、完整的信息。页的大小由系统决定，而段的大小是不确定的。分页的地址空间是一维的，只需要一个记忆符号就可以表示一个地址，段的地址空间是二位的，需要同时给出段名和段内地址</p>
+<h1 id="第五章"><a href="#第五章" class="headerlink" title="第五章"></a>第五章</h1><p>一、常规储存器管理方式具有哪两大特征？它对系统性能有何影响？</p>
+<p>一次性：作业必须一次性地全部装入内存后才能开始运行</p>
+<p>驻留性：作业被装入内存之后，整个作业需要一直驻留在内存中，直至作业运行结束</p>
+<p>这两个特征占据了大量的内存空间，使得一些需要运行的作业因为内存不足而无法装入运行，降低了系统的吞吐量</p>
+<p>二、什么是程序运行时的时间局限性和空间局限性？</p>
+<p>时间局限性：如果程序中的某条指令被执行，则不久以后该指令可能再次执行。产生的原因是在程序中存在着大量的循环操作</p>
+<p>空间局限性：一旦程序访问了某个储存单元，在不久之后，其附近的储存单元也将被访问，典型的情况便是程序的顺序执行</p>
+<p>三、虚拟存储器有哪些特征？其中最本质的特征是什么？</p>
+<p>多次性：作业不需要一次性地装入内存后运行，而是将当前要运行的一部分装入运行，通过多次的装入完成整个作业的运行</p>
+<p>对换性：允许作业在运行过程中，在内存与外存之间换入换出</p>
+<p>虚拟性：能够从逻辑上扩充内存容量，使小容量的内存能够运行比它容量更大的程序</p>
+<p>其中多次性是最本质的特征，有了多次性的特征，作业能够在内存和外存之间交换</p>
+<p>四、实现虚拟存储器需要哪些硬件支持？</p>
+<p>请求分页的页表机制和请求分段的段表机制</p>
+<p>缺页中断机构和缺段中断机构</p>
+<p>地址变换机构</p>
+<p>五、实现虚拟存储器需要哪几个关键技术？</p>
+<p>请求调页的软件和实现页面置换的软件，请求调段的软件和实现段置换的软件</p>
+<p>六、在请求分页系统中，页表应包括哪些数据项？每项的作用是什么？</p>
+<p>页号：分页系统中的页面号码</p>
+<p>物理块号：内存中的物理地址</p>
+<p>状态位P：表示该页是否已调入内存，供程序访问时参考</p>
+<p>访问字段A：记录本页在一段时间内被访问的次数</p>
+<p>修改位M：标示该页在调入内存后是否被修改过</p>
+<p>外存地址：指出该页在外存上的地址，通常是物理块号</p>
+<p>七、在请求分页系统中，应从何处将所需页面调入内存？</p>
+<p>分为以下三种情况：</p>
+<ul>
+<li>系统拥有足够的对换区空间：这时可以全部从对换区调入所需页面，以提高调页的速度</li>
+<li>系统缺少足够的对换区空间：这时凡是不会被修改的文件，都直接从文件区调入；而当换出这些页面时，由于它们未被修改，则不必再将它们重写到磁盘，以后都直接调入。但对于那些可能被修改的部分，在将它们换出时便需要调到对换区，以后需要时再从对换区调入</li>
+<li>UNIX方式：由于与进程有关的文件都放在文件区，故凡是未运行过的页面，都应该从文件区调入。而对于曾经运行过但又被换出的页面就放在对换区，在下次调入时从对换区调入</li>
+</ul>
+<p>八、试说明在请求分页系统中页面的调入过程。</p>
+<p>首先向CPU发出缺页中断，中断处理程序保留当前运行环境，分析中断原因后转入缺页中断处理程序。该程序通过查找页表得到该页在外存的物理块后，如果此时内存能够容纳新页，则启动磁盘I/O，将所缺页面调入内存，然后修改页表。如果内存已满，则需要先按照某种置换算法，从内存中选出一页准备换出，如果该页面的修改位为1，则需要将其写入对换区中，如果修改位为0，则可以直接将要换入的页面写到该页面上，然后修改页表。最后程序将页表写入到快表中，同时形成所要访问数据的物理地址，再去访问内存数据</p>
+<p>九、在请求分页系统中，常采用哪几种页面置换算法？</p>
+<p>最佳置换（Optimal）算法：选择的被淘汰的页面将是以后永不使用的，或者是未来最长时间内不会被访问的页面。但由于程序运行无法预知，因此该算法无法实现</p>
+<p>先进先出（FIFO）算法：总是淘汰最先进入内存的页面，即在内存驻留最久的页面将被淘汰</p>
+<p>最近最久未使用（LRU）算法：选择最近一段时间内最久没有被访问的页面，然后将其淘汰</p>
+<p>最少使用（LFU）算法：选择最少使用的页面予以淘汰</p>
+<p>十、在一个请求分页系统中，采用FIFO页面置换算法时，假如一个作业的页面走向为4、3、2、1、4、3、5、4、3、2、1、5，当分配给该作业的物理块数M分别为3和4时，试计算在访问过程中所发生的缺页次数和缺页率，并比较所得结果。</p>
+<p>M为3时，总共发生了10次缺页，缺页率为83.4%</p>
+<p>M为4时，总共发生了7次缺页，缺页率为58.4%</p>
+<p>十一、试说明改进型Clock置换算法的基本原理。</p>
+<p>在简单的Clock置换算法的基础上再添加一个“置换代价”因素，描述该因素的字段是修改位，也就是优先选择最近即未被访问、又未被修改的页面作为淘汰页面。整个算法的过程就是，在页表中检查表项，如果有未访问的页面，则将其选择为被淘汰页面，如果该页面已被防伪，则在检查下一项的同时将检查到的表项的访问位置0。这样子一轮下来，整个页表的访问位都会被重置为0，第二次寻找修改位为0的页面即可。如果仍然选不出淘汰页面，则在第三次寻找时选修改位为1的页面，此时一定可以选出淘汰页面</p>
+<p>十二、在请求分页系统中，产生“抖动”的原因是什么？</p>
+<p>同时在系统中运行的进程太多，分配给每一个进程的页面太少，致使每个进程在运行时频繁地发生缺页，系统频繁地进行页面换入换出，而因为磁盘I/O较慢的原因，每个进程把大量时间用于页面的置换，几乎不能有效地工作，导致处理机的利用率极具下降并趋近于0</p>
+<p>十三、何谓工作集？它是基于什么原理确定的？</p>
+<p>工作集是只某段时间间隔中，进程实际所要访问的页面的集合。它是基于程序访问页面的序列和窗口大小确定的</p>
+<p>十四、当前可以利用哪几种方法来防止“抖动”？</p>
+<p>采用局部置换策略，把工作集算法融入到处理机调度中，利用“L=S”准则调节缺页率，选择暂停的进程</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+              <a href="/tags/学习总结/" rel="tag"># 学习总结</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/银行家算法.html" rel="next" title="操作系统实验五：银行家算法">
+                  <i class="fa fa-chevron-left"></i> 操作系统实验五：银行家算法
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第四章"><span class="nav-number">1.</span> <span class="nav-text">第四章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第五章"><span class="nav-number">2.</span> <span class="nav-text">第五章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
