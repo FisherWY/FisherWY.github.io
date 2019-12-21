@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实验六：连续动态内存管理">
+<meta property="og:url" content="http://fisher.lazybone.xyz/连续动态内存管理.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/memoryhelp.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/memoryps.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/memoryallocate.png">
+<meta property="og:image" content="http://fisher.lazybone.xyz/images/os/memoryrelease.png">
+<meta property="og:updated_time" content="2019-12-21T09:12:18.446Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统实验六：连续动态内存管理">
+<meta name="twitter:description" content="前言操作系统系列博客的所有实验源自于课程&amp;quot;操作系统原理与实践检验&amp;quot;，代码是参考老师给的&amp;quot;软件工程专业操作系统实验指导书&amp;quot;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法">
+<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/os/memoryhelp.png">
+
+<link rel="canonical" href="http://fisher.lazybone.xyz/连续动态内存管理.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>操作系统实验六：连续动态内存管理 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/连续动态内存管理.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统实验六：连续动态内存管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-21 16:02:37 / 修改时间：17:12:18" itemprop="dateCreated datePublished" datetime="2019-12-21T16:02:37+08:00">2019-12-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>操作系统系列博客的所有实验源自于课程<code>&quot;操作系统原理与实践检验&quot;</code>，代码是参考老师给的<code>&quot;软件工程专业操作系统实验指导书&quot;</code>文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法</p><a id="more"></a>
+<h1 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h1><ol>
+<li>理解内存管理相关理论</li>
+<li>掌握连续内存管理理论</li>
+<li>掌握动态连续内存管理理论</li>
+</ol>
+<h1 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h1><p>本实验主要针对操作系统中内存管理相关理论进行实验，要求实验者编写一个程序，该程序管理一块虚拟内存，实现内存分配和回收功能</p>
+<ul>
+<li>模拟管理64M的内存块</li>
+<li>设计内存分配函数</li>
+<li>设计内存回收函数</li>
+<li>实现动态分配和回收操作</li>
+<li>可动态显示每个内存块信息</li>
+</ul>
+<h1 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h1><p>数据结构，本次实验使用了三种数据结构，构成了2张表，1个双向链表，其定义如下：</p>
+<ul>
+<li>空闲分区表：起始地址（startAddr）、大小（size）、使用情况（status）</li>
+<li>已使用内存表：起始地址（startAddr）、大小（size）</li>
+<li>空闲分区双向链表：空闲分区表项（table）、上一节点（previous）、下一节点（next）</li>
+</ul>
+<p>内存分配算法：本次实验中使用了首次适应算法，该算法总是从内存的低地址出发，寻找第一个满足申请空间要求的空闲分区，然后将其分配给申请的进程。该算法思路简单，实现也比较简单，但是由于申请释放总是从低地址开始，因此低地址的内存碎片化会越来越严重，而高地址的内存使用次数却过少，在商业操作系统中，一般会将几种分配算法综合在一起使用。该算法的实现在下面代码汇总中的<code>allocate</code>函数</p>
+<p>内存回收算法：在回收内存空间时，需要考虑以下四种情况，以达到合并连续空闲内存空间的目的</p>
+<ul>
+<li>回收区与插入点的前一个空闲分区相邻：回收区与前一个空闲分区合并，此时只需要修改前一个空闲分区的大小（size）即可</li>
+<li>回收区与插入点的后一个空闲分区相邻：回收区与后一个空闲分区合并，此时需要修改后一个空闲分区的起始地址（startAddr）和大小（size）</li>
+<li>回收区与插入点的前后空闲分区都相邻：此时需要把前后空闲分区和回收区一起合并，合并到前一空闲分区中，需要修改前一空闲分区的大小（size），同时删除后一空闲分区表项</li>
+<li>回收区不与任何空闲分区相邻：为回收区新建一个空闲分区表项，插入到空闲分区表的对应位置中</li>
+</ul>
+<h1 id="代码汇总"><a href="#代码汇总" class="headerlink" title="代码汇总"></a>代码汇总</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="comment">// 内存容量，单位为kb</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> RAM_SIZE 65536</span></span><br><span class="line"><span class="comment">// 不可再分割的内存大小</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">define</span> ALLOC_MIN_SIZE 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 空闲分区表-数据结构(Free Partition table)</span></span><br><span class="line"><span class="comment"> * 起始地址(内存地址-kb) | 大小(kb) | 使用情况(0:未使用 1:使用中)</span></span><br><span class="line"><span class="comment"> * startAddr | size | status</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">fpTable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> startAddr;</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">int</span> status;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 空闲分区链-数据结构(Free Partition chain)</span></span><br><span class="line"><span class="comment"> * table: 指向对应的空闲分区表地址</span></span><br><span class="line"><span class="comment"> * previous: 双向链表的上一项</span></span><br><span class="line"><span class="comment"> * next: 双向链表的下一项</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">fpChain</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    fpTable *table;</span><br><span class="line">    fpChain *previous;</span><br><span class="line">    fpChain *next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 已使用的内存</span></span><br><span class="line"><span class="comment"> * 起始地址(内存地址-kb) | 大小(kb)</span></span><br><span class="line"><span class="comment"> * startAddr | size</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">used</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> startAddr;</span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 空闲分区表</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;fpTable *&gt; ramTable;</span><br><span class="line"><span class="comment">// 已使用分区表</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;used *&gt; usedTable;</span><br><span class="line"><span class="comment">// 空闲分区链</span></span><br><span class="line">fpChain *ramChain;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 系统初始化</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化空闲分区表</span></span><br><span class="line">    fpTable *tableNode = <span class="keyword">new</span> fpTable;</span><br><span class="line">    tableNode-&gt;startAddr = <span class="number">0</span>;</span><br><span class="line">    tableNode-&gt;size = RAM_SIZE;</span><br><span class="line">    tableNode-&gt;status = <span class="number">0</span>;</span><br><span class="line">    ramTable.push_back(tableNode);</span><br><span class="line">    <span class="comment">// 初始化空闲分区链</span></span><br><span class="line">    fpChain *chainNode = <span class="keyword">new</span> fpChain;</span><br><span class="line">    chainNode-&gt;table = tableNode;</span><br><span class="line">    chainNode-&gt;previous = chainNode;</span><br><span class="line">    chainNode-&gt;next = chainNode;</span><br><span class="line">    ramChain = chainNode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 查看内存使用情况</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ps</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n=====空闲分区表================\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"起始地址 | 大小(kb) | 使用情况\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ramTable.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%8d | %8d | %5d\n"</span>, ramTable[i]-&gt;startAddr, ramTable[i]-&gt;size, ramTable[i]-&gt;status);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"===============================\n\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"=====已使用的分区表==========\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"进程号 | 起始地址 | 大小(kb)\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; usedTable.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%6d | %8d | %8d\n"</span>, i, usedTable[i]-&gt;startAddr, usedTable[i]-&gt;size);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"=============================\n\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 申请内存分配</span></span><br><span class="line"><span class="comment"> * s: 申请的内存大小</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">allocate</span><span class="params">(<span class="keyword">int</span> s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 参数错误</span></span><br><span class="line">    <span class="keyword">if</span> (s &lt;= <span class="number">0</span> || s &gt; RAM_SIZE)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"ERROR: 参数错误！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 没有空闲内存了</span></span><br><span class="line">    <span class="keyword">if</span> (ramTable.size() == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"ERROR: 内存已分配完毕，申请失败！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 寻找满足要求的空闲内存块</span></span><br><span class="line">    <span class="keyword">bool</span> find = <span class="literal">false</span>;</span><br><span class="line">    fpChain *chainPointer = ramChain;</span><br><span class="line">    fpTable *tablePointer = chainPointer-&gt;table;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((tablePointer-&gt;size - s) &gt;= ALLOC_MIN_SIZE)</span><br><span class="line">        &#123;</span><br><span class="line">            find = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            chainPointer = chainPointer-&gt;next;</span><br><span class="line">            tablePointer = chainPointer-&gt;table;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">while</span>(chainPointer != ramChain);</span><br><span class="line">    <span class="comment">// 内存空间不足</span></span><br><span class="line">    <span class="keyword">if</span> (!find)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"ERROR: 内存空间不足，申请失败！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 分配空间，添加到已使用分区表，修改空闲分区表、空闲分区链</span></span><br><span class="line">    used *usedPointer = <span class="keyword">new</span> used;</span><br><span class="line">    usedPointer-&gt;startAddr = tablePointer-&gt;startAddr;</span><br><span class="line">    usedPointer-&gt;size = s;</span><br><span class="line">    usedTable.push_back(usedPointer);</span><br><span class="line">    <span class="comment">// 寻找要修改的表项位置</span></span><br><span class="line">    <span class="keyword">int</span> pos = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ramTable.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ramTable[i]-&gt;startAddr == tablePointer-&gt;startAddr)</span><br><span class="line">        &#123;</span><br><span class="line">            pos = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 空间刚好分配完，删除分区表和分区链中对应表项</span></span><br><span class="line">    <span class="keyword">if</span> (tablePointer-&gt;size == s)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"INFO: 该块内存分配完毕，删除空闲分区表和分区链中对应项\n"</span>);</span><br><span class="line">        <span class="comment">// 删除表项</span></span><br><span class="line">        ramTable.erase(ramTable.begin() + pos);</span><br><span class="line">        <span class="comment">// 摘链</span></span><br><span class="line">        <span class="keyword">if</span> (ramTable.size() == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"INFO: 已无空闲分区，将空闲链表置为NULL\n"</span>);</span><br><span class="line">            ramChain = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果刚好是双向链表的头部，则使用下一节点作为链表头部</span></span><br><span class="line">            <span class="keyword">if</span> (chainPointer == ramChain)</span><br><span class="line">            &#123;</span><br><span class="line">                ramChain = chainPointer-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            chainPointer-&gt;next-&gt;previous = chainPointer-&gt;previous;</span><br><span class="line">            chainPointer-&gt;previous-&gt;next = chainPointer-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> chainPointer;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>	<span class="comment">// 分配之后仍有剩余空间</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"INFO: 该块内存仍有剩余空间，修改空闲分区表大小\n"</span>);</span><br><span class="line">        tablePointer-&gt;size -= s;</span><br><span class="line">        tablePointer-&gt;startAddr += s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 释放内存</span></span><br><span class="line"><span class="comment"> * index: 要释放内存的进程号</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> index)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= usedTable.size())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"ERROR: 参数错误！\n"</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取要释放的内存块</span></span><br><span class="line">    used *usedPointer = usedTable[index];</span><br><span class="line">    <span class="comment">// 空链情况，直接新建空闲分区并插入</span></span><br><span class="line">    <span class="keyword">if</span> (ramChain == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        fpTable *tableNode = <span class="keyword">new</span> fpTable;</span><br><span class="line">        tableNode-&gt;startAddr = usedPointer-&gt;startAddr;</span><br><span class="line">        tableNode-&gt;size = usedPointer-&gt;size;</span><br><span class="line">        tableNode-&gt;status = <span class="number">0</span>;</span><br><span class="line">        ramTable.push_back(tableNode);</span><br><span class="line">        fpChain *chainNode = <span class="keyword">new</span> fpChain;</span><br><span class="line">        chainNode-&gt;table = tableNode;</span><br><span class="line">        chainNode-&gt;previous = chainNode;</span><br><span class="line">        chainNode-&gt;next = chainNode;</span><br><span class="line">        ramChain = chainNode;</span><br><span class="line">        usedTable.erase(usedTable.begin() + index);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 非空链情况，寻求与前后空闲分区合并</span></span><br><span class="line">    fpChain *chainPointer = ramChain;</span><br><span class="line">    fpTable *tablePointer = chainPointer-&gt;table;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// 与前后空闲分区都相邻，合并前后空闲分区</span></span><br><span class="line">        <span class="keyword">if</span> ((tablePointer-&gt;startAddr + tablePointer-&gt;size == usedPointer-&gt;startAddr) &amp;&amp;</span><br><span class="line">            (usedPointer-&gt;startAddr + usedPointer-&gt;size == chainPointer-&gt;next-&gt;table-&gt;startAddr))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"INFO: 与前后空闲分区都相邻\n"</span>);</span><br><span class="line">            tablePointer-&gt;size = tablePointer-&gt;size + usedPointer-&gt;size + chainPointer-&gt;next-&gt;table-&gt;size;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ramTable.size(); i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (chainPointer-&gt;next-&gt;table-&gt;startAddr == ramTable[i]-&gt;startAddr)</span><br><span class="line">                &#123;</span><br><span class="line">                    ramTable.erase(ramTable.begin() + i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            chainPointer-&gt;next-&gt;next-&gt;previous = chainPointer-&gt;next-&gt;previous;</span><br><span class="line">            chainPointer-&gt;next = chainPointer-&gt;next-&gt;next;</span><br><span class="line">            usedTable.erase(usedTable.begin() + index);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 与前面空闲分区相邻，前面空闲分区空间增大</span></span><br><span class="line">        <span class="keyword">if</span> (tablePointer-&gt;startAddr + tablePointer-&gt;size == usedPointer-&gt;startAddr)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"INFO: 与前面空闲分区相邻\n"</span>);</span><br><span class="line">            tablePointer-&gt;size += usedPointer-&gt;size;</span><br><span class="line">            usedTable.erase(usedTable.begin() + index);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 与后面空闲分区相邻，后面空闲分区内存起址前移，扩大分区空间</span></span><br><span class="line">        <span class="keyword">if</span> (usedPointer-&gt;startAddr + usedPointer-&gt;size == tablePointer-&gt;startAddr)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"INFO: 与后面空闲分区相邻\n"</span>);</span><br><span class="line">            tablePointer-&gt;startAddr = usedPointer-&gt;startAddr;</span><br><span class="line">            tablePointer-&gt;size += usedPointer-&gt;size;</span><br><span class="line">            usedTable.erase(usedTable.begin() + index);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        chainPointer = chainPointer-&gt;next;</span><br><span class="line">        tablePointer = chainPointer-&gt;table;</span><br><span class="line">    &#125; <span class="keyword">while</span>(chainPointer != ramChain);</span><br><span class="line">    <span class="comment">// 非空链情况，新建独立空闲分区</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"INFO: 非空链情况，新建独立空闲分区\n"</span>);</span><br><span class="line">    <span class="comment">// 寻找插入点</span></span><br><span class="line">    chainPointer = ramChain;</span><br><span class="line">    tablePointer = chainPointer-&gt;table;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (tablePointer-&gt;startAddr &gt; usedPointer-&gt;startAddr)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            chainPointer = chainPointer-&gt;next;</span><br><span class="line">            tablePointer = chainPointer-&gt;table;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">while</span>(chainPointer != ramChain);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"INFO: 插入点位于 %d\n"</span>, tablePointer-&gt;startAddr);</span><br><span class="line">    <span class="comment">// 新建分区并插入</span></span><br><span class="line">    fpTable *tableNode = <span class="keyword">new</span> fpTable;</span><br><span class="line">    tableNode-&gt;startAddr = usedPointer-&gt;startAddr;</span><br><span class="line">    tableNode-&gt;size = usedPointer-&gt;size;</span><br><span class="line">    tableNode-&gt;status = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ramTable.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ramTable[i]-&gt;startAddr == tablePointer-&gt;startAddr)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"INFO: 找到插入点 %d\n"</span>, i);</span><br><span class="line">            ramTable.insert(ramTable.begin() + i, tableNode);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 插入到双向链表中</span></span><br><span class="line">    fpChain *chainNode = <span class="keyword">new</span> fpChain;</span><br><span class="line">    chainNode-&gt;table = tableNode;</span><br><span class="line">    chainNode-&gt;next = chainPointer;</span><br><span class="line">    chainNode-&gt;previous = chainPointer-&gt;previous;</span><br><span class="line">    chainPointer-&gt;previous-&gt;next = chainNode;</span><br><span class="line">    chainPointer-&gt;previous = chainNode;</span><br><span class="line">    <span class="comment">// 修改链表头部</span></span><br><span class="line">    <span class="keyword">if</span> (chainPointer == ramChain)</span><br><span class="line">    &#123;</span><br><span class="line">        ramChain = chainNode;</span><br><span class="line">    &#125;</span><br><span class="line">    usedTable.erase(usedTable.begin() + index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 控制台</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">terminal</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> cmdstr[<span class="number">32</span>];</span><br><span class="line">    <span class="keyword">int</span> input;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"cmd: "</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%s"</span>, cmdstr);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"exit"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"help"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"\n=================================================\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"申请内存: allocate\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"释放内存: release\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"查看当前空余内存: ps\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"获取帮助: help\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"退出: exit\n"</span>);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"=================================================\n\n"</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"ps"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            ps();</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"allocate"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"要申请的内存大小(kb): "</span>);</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;input);</span><br><span class="line">            allocate(input);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(cmdstr, <span class="string">"release"</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"要释放内存的进程号: "</span>);</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;input);</span><br><span class="line">            release(input);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"cmd: 未知的命令！\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    ps();</span><br><span class="line">    terminal();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="实验测试"><a href="#实验测试" class="headerlink" title="实验测试"></a>实验测试</h1><ol>
+<li><p>编译运行程序</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">g++ memory.cpp -o memory</span><br><span class="line">./memory</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>help</code>命令查看帮助信息</p>
+<p><img src="images/os/memoryhelp.png" alt="help命令"></p>
+</li>
+<li><p>使用<code>ps</code>命令查看当前内存使用信息</p>
+<p><img src="images/os/memoryps.png" alt="ps命令"></p>
+</li>
+<li><p>使用<code>allocate</code>命令申请内存资源，指导书上要求至少进行10次内存申请</p>
+<p><img src="images/os/memoryallocate.png" alt="allocate命令"></p>
+</li>
+<li><p>使用<code>release</code>命令释放内存资源，可以看到在释放资源时，系统会判断并合并连续可用的内存空间</p>
+<p><img src="images/os/memoryrelease.png" alt="release命令"></p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本次实验中，我们通过使用首次适应算法（First Fit）实现了动态的内存分配回收，实现了该模块之后，编写程序时不需要再考虑申请内存的大小，只需要在运行时动态地申请和释放内存空间即可，这增强了程序的灵活性，再辅助上交换内存之后，我们就可以使用比较小的内存去运行比内存容量大的多的程序。在现代的操作系统中，内存的分配回收使用了段页式管理的方法，在保证了内存的灵活使用同时，尽量减少了内存碎片的产生，提高了系统的吞吐量，同时也提高了程序的灵活性、可移植性和兼容性</p>
+<h1 id="课后思考"><a href="#课后思考" class="headerlink" title="课后思考"></a>课后思考</h1><ol>
+<li><p>连续内存分配和离散内存分配相比有何优缺点？</p>
+<p>连续内存分配提高了内存的利用率，同时便于程序在运行过程中动态地申请和释放内存，在程序的眼中，内存空间就像是无限大，编写程序时不必考虑内存容量的限制。连续内存分配也便于程序之间的信息共享，适用于多道程序系统</p>
+</li>
+<li><p>动态连续内存分配的难点是什么？</p>
+<p>内存的动态分配策略和回收策略，如果系统没有选择一个好的分配回收算法，随着系统运行时间的加长，内存的碎片化会越来越严重，系统花费在维护内存分配表上的时间越来越多，导致系统吞吐量降低，甚至出现死机等问题</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/操作系统习题二.html" rel="next" title="操作系统习题二">
+                  <i class="fa fa-chevron-left"></i> 操作系统习题二
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验目的"><span class="nav-number">2.</span> <span class="nav-text">实验目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验内容"><span class="nav-number">3.</span> <span class="nav-text">实验内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验过程"><span class="nav-number">4.</span> <span class="nav-text">实验过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码汇总"><span class="nav-number">5.</span> <span class="nav-text">代码汇总</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验测试"><span class="nav-number">6.</span> <span class="nav-text">实验测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#课后思考"><span class="nav-number">8.</span> <span class="nav-text">课后思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher" src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":75,"height":150},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
