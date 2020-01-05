@@ -198,6 +198,78 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/openwrt编译.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/openwrt编译.html" class="post-title-link" itemprop="url">OpenWrt编译</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-03 22:12:18" itemprop="dateCreated datePublished" datetime="2019-11-03T22:12:18+08:00">2019-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-04 22:19:35" itemprop="dateModified" datetime="2019-11-04T22:19:35+08:00">2019-11-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>“你们为什么不自己去尝试编译一个OpenWrt研究一下呢？”</p><p>在操作系统课上，刘刚不止一次讲了这句话了。其实我之前给路由器刷过OpenWrt固件，但是编译还真没试过。恰好我对此也有兴趣，于是说干就干，自己编译一个OpenWrt固件！</p><h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>系统环境：Ubuntu 19.04 64-bit</p><p>安装依赖</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install subversion g++ zlib1g-dev build-essential git python python3</span><br><span class="line">sudo apt install libncurses5-dev gawk gettext unzip file libssl-dev wget</span><br><span class="line">sudo apt install libelf-dev ecj fastjar java-propose-classpath</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/openwrt编译.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/小程序获取qq音乐播放链接插件.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -504,82 +576,6 @@
   
   
 
-        
-  
-  
-  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/FRP内网穿透.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/FRP内网穿透.html" class="post-title-link" itemprop="url">FRP内网穿透配置</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-24 15:18:31" itemprop="dateCreated datePublished" datetime="2018-10-24T15:18:31+08:00">2018-10-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-08 19:57:09" itemprop="dateModified" datetime="2019-12-08T19:57:09+08:00">2019-12-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="FRP内网穿透配置"><a href="#FRP内网穿透配置" class="headerlink" title="FRP内网穿透配置"></a>FRP内网穿透配置</h1><h2 id="设备环境"><a href="#设备环境" class="headerlink" title="设备环境"></a>设备环境</h2><ul>
-<li>硬件：极路由3（HC5861，MT7620a）</li>
-<li>固件：H大Padavan的老毛子固件</li>
-<li>服务器：Aliyun学生服务器</li>
-</ul><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近学校换了新的网络，在每个宿舍装了个锐捷的路由器，顺便把旧的网口给关闭了。极3在接了新的网口后网络体验并不好，想着极3的保修日期已所剩无多，便申请了开发者模式刷了H大的padavan固件玩玩。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/FRP内网穿透.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -629,7 +625,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -669,7 +665,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
