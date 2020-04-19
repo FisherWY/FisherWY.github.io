@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://fisher.lazybone.xyz/hadoop%E4%B9%8Bhdfs%E6%90%AD%E5%BB%BA.html</loc>
+    <lastmod>2020-04-19</lastmod>
+  </url>  <url>
     <loc>http://fisher.lazybone.xyz/%E4%BD%BF%E7%94%A8mumble%E6%90%AD%E5%BB%BA%E8%AF%AD%E9%9F%B3%E6%9C%8D%E5%8A%A1%E5%99%A8.html</loc>
     <lastmod>2020-03-19</lastmod>
   </url>  <url>
@@ -45,9 +48,6 @@
   </url>  <url>
     <loc>http://fisher.lazybone.xyz/csgo%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9B%B4%E6%96%B0%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html</loc>
     <lastmod>2019-11-20</lastmod>
-  </url>  <url>
-    <loc>http://fisher.lazybone.xyz/hadoop%E4%B9%8Bhdfs%E6%90%AD%E5%BB%BA.html</loc>
-    <lastmod>2019-11-18</lastmod>
   </url>  <url>
     <loc>http://fisher.lazybone.xyz/%E6%A8%A1%E6%8B%9Fp%E3%80%81v%E6%93%8D%E4%BD%9C.html</loc>
     <lastmod>2019-11-17</lastmod>
