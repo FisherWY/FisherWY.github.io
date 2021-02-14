@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2020-07-19T08:04:02.237Z</updated>
+  <updated>2021-02-14T01:54:17.381Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JDK源码编译</title>
+    <link href="http://fisher.lazybone.xyz/jdk%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91.html"/>
+    <id>http://fisher.lazybone.xyz/jdk源码编译.html</id>
+    <published>2021-02-13T02:19:37.000Z</published>
+    <updated>2021-02-14T01:54:17.381Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>考完研之后，接下来要准备的就是实习了。我也想尝试一下去春招，做好两手准备，所以需要开始学习面试要用到的知识了。我做过的比较好的项目主要使用的是Java，但之前都仅限于使用Java语言，并没有去看过Java的源码。为了深入理解Java这门语言（其实是为了准备面试），我将尝试去看Java的源码，注释写上自己的理解，并将这份源码编译，然后作为自己编译的第一个JDK使用。</p><a id="more"></a><h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>前期的准备包括以下内容：</p><ul><li>源码和BootJDK的下载</li><li>检查和安装编译需要用到的Toolchain</li></ul><h2 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h2><p>源码下载很简单，去GitHub的<a href="https://github.com/openjdk" target="_blank" rel="noopener">OpenJDK</a>项目组里面找到需要编译的JDK版本对应的仓库，Clone下来即可</p><p>这里我编译的是JDK15，仓库地址在<a href="https://github.com/openjdk/jdk15" target="_blank" rel="noopener">这里</a>，这里我把源码Clone到Document中</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> Document</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/openjdk/jdk15.git</span><br></pre></td></tr></table></figure><h2 id="BootJDK下载"><a href="#BootJDK下载" class="headerlink" title="BootJDK下载"></a>BootJDK下载</h2><p>编译需要一个BootJDK，用这个BootJDK去编译一个新的JDK出来，这个就有点像鸡生蛋，蛋生鸡的问题了hh</p><p>可以用本机已有的JDK，但是如果版本太老的话也有可能出现编译失败的问题，为了保证编译能够成功，我这里下载了JDK15作为BootJDK</p><p>下载JDK的网址在<a href="https://jdk.java.net/" target="_blank" rel="noopener">这里</a>，找到对应的系统版本点下载就好了，下载完之后解压到自己记得的地方</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf openjdk-15.0.2_osx-x64_bin.tar.gz -C /Users/fisher/Document</span><br></pre></td></tr></table></figure><h2 id="检查和安装ToolChain"><a href="#检查和安装ToolChain" class="headerlink" title="检查和安装ToolChain"></a>检查和安装ToolChain</h2><p>macOS首先需要检查安装Xcode command line tool，可以选择在App Store中直接安装Xcode，也可以在终端中使用以下命令仅安装Command line tool</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure><p>接着检查clang，clang++，autoconf，make和freetype</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">clang --version</span><br><span class="line">clang++ --version</span><br><span class="line">autoconf --version</span><br><span class="line">make --version</span><br><span class="line">freetype-config --ftversion</span><br></pre></td></tr></table></figure><p>如果没有安装的话，使用homebrew安装即可，这里以freetype为例子</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install freetype</span><br></pre></td></tr></table></figure><p>其他系统的ToolChain检查安装，可以参考<a href="https://github.com/openjdk/jdk/blob/master/doc/building.md#native-compiler-toolchain-requirements" target="_blank" rel="noopener">这份</a>文档</p><h1 id="配置与编译"><a href="#配置与编译" class="headerlink" title="配置与编译"></a>配置与编译</h1><p>前期准备工作完成后，就可以开始配置和编译了</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>切换到源码的目录下，使用<code>bash configure</code>命令配置，这里我使用2个参数，分别是：目标系统位数，BootJDK位置</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> jdk15source</span><br><span class="line">bash configure --with-target-bits=64 --with-boot-jdk=/Users/fisher/Documents/jdk15/Contents/Home</span><br></pre></td></tr></table></figure><p>接着就开始滚屏了，如果中途出现缺少依赖等提示，安装提示安装对应的依赖即可。当看到以下界面的时候，就说明编译前的配置成功了，可以正式开始编译了</p><p><img src="images/jdk/configure.png" alt="编译配置成功"></p><h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>在源码跟目录下使用<code>make images</code>命令编译，等待一段时间就可以编译完了</p><p>Linux建议系统内存要8G以上，我的虚拟机6G内存在编译到JavaDoc的时候出现了内存不足编译失败的情况</p><p><img src="images/jdk/compile.png" alt="编译完成"></p><p>看到以上图片，就表示编译已经完成</p><h1 id="验证编译结果"><a href="#验证编译结果" class="headerlink" title="验证编译结果"></a>验证编译结果</h1><p>切换目录到<code>./build/macosx-x86_64-server-release/jdk</code>下，用<code>./bin/java --version</code>就能看到自己编译的成果了</p><p><img src="images/jdk/verification.png" alt="验证编译成果"></p><p>接下来在IDEA中添加自己刚刚编译的JDK，将<code>source</code>定位到编译JDK使用的源码，在写代码和debug的时候就能够边看自己写的注释边工作了</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;考完研之后，接下来要准备的就是实习了。我也想尝试一下去春招，做好两手准备，所以需要开始学习面试要用到的知识了。我做过的比较好的项目主要使用的是Java，但之前都仅限于使用Java语言，并没有去看过Java的源码。为了深入理解Java这门语言（其实是为了准备面试），我将尝试去看Java的源码，注释写上自己的理解，并将这份源码编译，然后作为自己编译的第一个JDK使用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://fisher.lazybone.xyz/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker容器更换国内软件源</title>
@@ -425,26 +445,6 @@
     
     
       <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo文章中添加本地图片</title>
-    <link href="http://fisher.lazybone.xyz/hexo%E6%96%87%E7%AB%A0%E4%B8%AD%E6%B7%BB%E5%8A%A0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87.html"/>
-    <id>http://fisher.lazybone.xyz/hexo文章中添加本地图片.html</id>
-    <published>2019-11-06T10:05:48.000Z</published>
-    <updated>2020-03-19T09:09:50.727Z</updated>
-    
-    <content type="html"><![CDATA[<p>在写博客的过程中，我们经常需要添加一些图片。但是Hexo框架默认将<code>images</code>文件夹放在<code>source</code>文件夹目录下，与<code>_posts</code>文件夹中的推送不在同一级目录下，因此添加本地图片。生成静态网页文件之后<code>images</code>文件夹却与推送在同一级目录下。导致图片在本地编辑时能够预览，而发布之后不能预览，为了解决这一问题，我使用了文件夹的软连接功能。</p><a id="more"></a><p>首先，进入博客根目录，在<code>_posts</code>文件夹下创建一个<code>images</code>文件夹，将图片全部放到该文件夹下</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">source</span>/_posts</span><br><span class="line">mkdir images</span><br></pre></td></tr></table></figure><p>接着在<code>source</code>文件夹下创建软连接，注意文件夹目录要使用绝对路径</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /Users/fisher/blog/<span class="built_in">source</span>/_posts/images /Users/fisher/blog/<span class="built_in">source</span>/</span><br></pre></td></tr></table></figure><p>这样子在<code>source</code>文件夹下就可以看到一个类似于快捷方式的文件夹</p><p><img src="images/blogtek/linkfolder.png" alt="images文件夹链接"></p><p>添加图片的时候，路径直接填写本地路径即可</p><p><img src="images/blogtek/localpic.png" alt="本地路径"></p><p>部署到服务器上不需要更改路径也能显示</p><p><img src="images/blogtek/onlinepic.png" alt="在线路径"></p><p>整个<code>source</code>文件夹的结构如下</p><p><img src="images/blogtek/foldertree.png" alt="文件夹结构"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在写博客的过程中，我们经常需要添加一些图片。但是Hexo框架默认将&lt;code&gt;images&lt;/code&gt;文件夹放在&lt;code&gt;source&lt;/code&gt;文件夹目录下，与&lt;code&gt;_posts&lt;/code&gt;文件夹中的推送不在同一级目录下，因此添加本地图片。生成静态网页文件之后&lt;code&gt;images&lt;/code&gt;文件夹却与推送在同一级目录下。导致图片在本地编辑时能够预览，而发布之后不能预览，为了解决这一问题，我使用了文件夹的软连接功能。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="博客相关" scheme="http://fisher.lazybone.xyz/tags/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/"/>
     
   </entry>
   
