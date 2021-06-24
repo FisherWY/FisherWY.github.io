@@ -198,6 +198,87 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/c-language-c6-053.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/c-language-c6-053.html" class="post-title-link" itemprop="url">C语言学习第六章T4</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-05 19:52:25" itemprop="dateCreated datePublished" datetime="2018-03-05T19:52:25+08:00">2018-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-31 21:37:03" itemprop="dateModified" datetime="2019-10-31T21:37:03+08:00">2019-10-31</time>
+              </span>
+
+          
+            <span id="/c-language-c6-053.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言学习第六章T4" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目：编写一个函数（参数用指针）将一个3×3矩阵转置。"><a href="#题目：编写一个函数（参数用指针）将一个3×3矩阵转置。" class="headerlink" title="题目：编写一个函数（参数用指针）将一个3×3矩阵转置。"></a>题目：编写一个函数（参数用指针）将一个3×3矩阵转置。</h2><blockquote>
+<p>例如：<br> 1 2 3  ———–&gt;  7 4 1<br> 4 5 6  转置后为  8 5 2<br> 7 8 9  ———–&gt;  9 6 3</p>
+</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="comment"># define n 3</span></span><br><span class="line">void fun(int (<span class="number">*a</span>)[n], int (<span class="number">*b</span>)[n]);</span><br><span class="line"></span><br><span class="line">int main ()</span><br><span class="line">&#123;</span><br><span class="line">    int a[n][n],b[n][n];</span><br><span class="line">    fun(a,b);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void fun(int (<span class="number">*a</span>)[3], int (<span class="number">*b</span>)[3])</span><br><span class="line">&#123;</span><br><span class="line">    int i,j;</span><br><span class="line">    printf(<span class="string">"input 9 numbers:\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="attribute">i</span>=0;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="attribute">j</span>=0;j&lt;n;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            scanf(<span class="string">"%d"</span>,(a[i]+j));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"start:\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="attribute">i</span>=0;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="attribute">j</span>=0;j&lt;n;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"%4d"</span>,*(a[i]+j));</span><br><span class="line">        &#125;</span><br><span class="line">        printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="attribute">i</span>=0;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="attribute">j</span>=0;j&lt;n;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            *(b[i]+j) = *(a[n-1-j]+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"after:\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="attribute">i</span>=0;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="attribute">j</span>=0;j&lt;n;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(<span class="string">"%4d"</span>,*(b[i]+j));</span><br><span class="line">        &#125;</span><br><span class="line">        printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/c-language-c6-053.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/c-language-c6-052.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -514,85 +595,6 @@
   
   
 
-        
-  
-  
-  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/c-language-c5-042.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/c-language-c5-042.html" class="post-title-link" itemprop="url">C语言学习第五章T9</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-02-25 15:55:58" itemprop="dateCreated datePublished" datetime="2018-02-25T15:55:58+08:00">2018-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-31 21:39:13" itemprop="dateModified" datetime="2019-10-31T21:39:13+08:00">2019-10-31</time>
-              </span>
-
-          
-            <span id="/c-language-c5-042.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言学习第五章T9" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目：判断101-200中的素数数量。"><a href="#题目：判断101-200中的素数数量。" class="headerlink" title="题目：判断101~200中的素数数量。"></a>题目：判断101~200中的素数数量。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">judge</span><span class="params">(<span class="keyword">int</span> a)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a,b,c=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (a=<span class="number">101</span>;a&lt;=<span class="number">200</span>;a++)</span><br><span class="line">    &#123;</span><br><span class="line">        b = judge(a);</span><br><span class="line">        <span class="comment">//printf("%d\n",b);</span></span><br><span class="line">        <span class="keyword">if</span> (b == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            c += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"101-200 have prime number:%d\n"</span>,c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">judge</span> <span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b,c,i;</span><br><span class="line">    b = <span class="built_in">sqrt</span>(a);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">2</span>;i&lt;=b;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a%i==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (i&gt;b)</span><br><span class="line">    &#123;</span><br><span class="line">        c = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        c = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/c-language-c5-042.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -642,7 +644,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-count">82</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
