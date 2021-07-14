@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2021-06-24T04:55:00.735Z</updated>
+  <updated>2021-07-14T13:54:08.874Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小米路由器4千兆版刷OpenWrt</title>
+    <link href="http://fisher.lazybone.xyz/%E5%B0%8F%E7%B1%B3%E8%B7%AF%E7%94%B1%E5%99%A84%E5%8D%83%E5%85%86%E7%89%88%E5%88%B7openwrt.html"/>
+    <id>http://fisher.lazybone.xyz/小米路由器4千兆版刷openwrt.html</id>
+    <published>2021-07-08T08:53:37.000Z</published>
+    <updated>2021-07-14T13:54:08.874Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在家用了一段时间的小米路由器4千兆版，使用一段时间之后就会发生网络不稳定，甚至无法连接网络等情况，怀疑是官方固件的问题。同时也有一些插件上的需求，于是就开始动手把OpenWrt固件刷入到小米路由器4千兆版中。</p><h1 id="刷机环境"><a href="#刷机环境" class="headerlink" title="刷机环境"></a>刷机环境</h1><ul><li>刷机使用的系统：macOS 11.4</li><li>编译OpenWrt使用的系统：Ubuntu 21.04</li><li>小米路由器4千兆版固件版本：MiWiFi 稳定版 2.28.58</li></ul><a id="more"></a><h1 id="开启SSH"><a href="#开启SSH" class="headerlink" title="开启SSH"></a>开启SSH</h1><p>开启路由器的SSH需要用到<a href="https://github.com/acecilia/OpenWRTInvasion" target="_blank" rel="noopener">OpenWRTInvasion</a>，首先克隆仓库，安装依赖。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆仓库</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/acecilia/OpenWRTInvasion.git</span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line"><span class="built_in">cd</span> OpenWRTInvasion/</span><br><span class="line">pip3 install -r requirements.txt</span><br></pre></td></tr></table></figure><p>接下来打开路由器管理界面，获取<code>stok</code>，<code>stok</code>在路由器的地址栏处，如下图所示，<code>stok=xxxx</code>一直到<code>/</code>前，那么<code>stok</code>就是<code>ff43b68c8e20a6bcd3d33377c0c889dd</code>。</p><p><img src="images/router/Mi4G_stok.png" alt="Stok"></p><p>运行<code>OpenWRTInvasion</code>中的<code>remote_command_execution_vulnerability.py</code>，输入路由器<code>IP地址</code>和<code>stok</code>，脚本会执行命令并开启SSH、Telnet和FTP。如果出现如下图提示，表示开启成功。</p><p><img src="images/router/Mi4G_ssh.png" alt="开启SSH成功"></p><p><strong>如果等了很久都没有反应，则有可能是下载<code>busybox</code>和<code>dropbear</code>时遇到了网络问题，此时需要手动修改一下<code>busybox</code>和<code>dropbear</code>的下载地址</strong>。</p><p>打开<code>OpenWRTInvasion</code>文件夹中的<code>script.sh</code>文件，找到<code>setup_busybox()</code>函数和<code>start_ssh()</code>函数中的<code>curl</code>命令，将其中的下载地址进行修改，这里我使用自己的服务器提供下载。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># setup_busybox函数</span></span><br><span class="line"><span class="comment"># Rationale for using --insecure: https://github.com/acecilia/OpenWRTInvasion/issues/31#issuecomment-690755250</span></span><br><span class="line">curl -L <span class="string">"https://fisher.lazybone.xyz/downloads/busybox-mipsel"</span> --insecure --output busybox</span><br><span class="line"></span><br><span class="line"><span class="comment"># start_ssh函数</span></span><br><span class="line"><span class="comment"># Donwload dropbear static mipsel binary</span></span><br><span class="line">curl -L <span class="string">"https://fisher.lazybone.xyz/downloads/dropbearStaticMipsel.tar.bz2"</span> --output dropbear.tar.bz2</span><br></pre></td></tr></table></figure><p>再次运行<code>OpenWRTInvasion</code>，网络状态良好的情况下能够正常开启ssh了。复制执行脚本给出的ssh命令，输入密码<code>root</code>，就能够ssh登录到路由器中了。</p><p><img src="images/router/Mi4G_login.png" alt="SSH登录"></p><h1 id="刷入Breed"><a href="#刷入Breed" class="headerlink" title="刷入Breed"></a>刷入Breed</h1><p>ssh登录路由器后，使用Curl下载Breed，将其重命名为breed.bin并进行md5校验，md5一致后才能刷Breed。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp/</span><br><span class="line">curl -o breed.bin https://breed.hackpascal.net/breed-mt7621-pbr-m1.bin</span><br><span class="line">md5sum breed.bin</span><br></pre></td></tr></table></figure><p>使用mtd将Breed刷入Bootloader分区中，此时路由器会自动重启。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mtd -r write /tmp/breed.bin Bootloader</span><br></pre></td></tr></table></figure><p><img src="images/router/Mi4G_breed.png" alt="刷入Breed"></p><p>使用网线连接路由器，待网卡正确获取到IP为<code>192.168.1.x</code>的地址后，路由器电源指示灯为淡紫色，表示正常进入Breed中了。</p><p><img src="images/router/Mi4G_breedindex.png" alt="进入Breed"></p><h1 id="编译OpenWrt"><a href="#编译OpenWrt" class="headerlink" title="编译OpenWrt"></a>编译OpenWrt</h1><p>如果从网上下载别人编译好的固件，这一步就可以省略了，下面说说我在编译固件时踩过的坑。</p><ul><li>首先是直接使用coolsnowwolf的<a href="https://github.com/coolsnowwolf/lede" target="_blank" rel="noopener">LEDE</a>编译出来的固件，用Breed刷入后是无法正常引导的，这里需要修改一下内存分区的源码，具体操作流程可参考恩山大佬的<a href="https://www.right.com.cn/forum/thread-4052254-1-1.html" target="_blank" rel="noopener">帖子</a>。</li><li>接着是编译后的固件没有2.4g无线网卡的驱动，这个需要在编译配置中勾选<code>kmod-mt7603</code>，以支持小米路由器4千兆版的2.4g无线网卡。</li></ul><h1 id="刷入OpenWrt"><a href="#刷入OpenWrt" class="headerlink" title="刷入OpenWrt"></a>刷入OpenWrt</h1><p>打开Breed的固件更新页面，选择要刷入的Openwrt固件，直接刷入即可。</p><p><img src="images/router/Mi4G_overview.png" alt="OpenWrt"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在家用了一段时间的小米路由器4千兆版，使用一段时间之后就会发生网络不稳定，甚至无法连接网络等情况，怀疑是官方固件的问题。同时也有一些插件上的需求，于是就开始动手把OpenWrt固件刷入到小米路由器4千兆版中。&lt;/p&gt;&lt;h1 id=&quot;刷机环境&quot;&gt;&lt;a href=&quot;#刷机环境&quot; class=&quot;headerlink&quot; title=&quot;刷机环境&quot;&gt;&lt;/a&gt;刷机环境&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;刷机使用的系统：macOS 11.4&lt;/li&gt;
+&lt;li&gt;编译OpenWrt使用的系统：Ubuntu 21.04&lt;/li&gt;
+&lt;li&gt;小米路由器4千兆版固件版本：MiWiFi 稳定版 2.28.58&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="http://fisher.lazybone.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="路由器" scheme="http://fisher.lazybone.xyz/tags/%E8%B7%AF%E7%94%B1%E5%99%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>SCNU校园网IPv6配置</title>
@@ -427,26 +453,6 @@
     
     
       <category term="Hackintosh" scheme="http://fisher.lazybone.xyz/tags/hackintosh/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CSGO服务器更新失败的解决方法</title>
-    <link href="http://fisher.lazybone.xyz/csgo%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9B%B4%E6%96%B0%E5%A4%B1%E8%B4%A5%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.html"/>
-    <id>http://fisher.lazybone.xyz/csgo服务器更新失败的解决方法.html</id>
-    <published>2019-11-20T01:50:29.000Z</published>
-    <updated>2019-11-20T02:08:31.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>CSGO裂网大行动更新之后，我也迫不及待地要更新自己的CSGO服务器了。但是一运行更新脚本，就发现了Steamcmd报错，具体信息为：<code>ERROR! Timed out waiting for AppInfo update.</code></p><p><img src="images/csgo/server/updatefail.png" alt="更新失败"></p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>上网查了一圈之后发现，这个问题是因为Steam中的<code>appinfo.vdf</code>更新失败造成的。这个文件的具体目录位于<code>Steam/appcache</code>中。我们可以将其删除，然后就可以更新了</p><a id="more"></a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Steam/appcache</span><br><span class="line">rm appinfo.vdf</span><br><span class="line"><span class="built_in">cd</span> ~/steamcmd/</span><br><span class="line">./csgo_server_update.sh</span><br></pre></td></tr></table></figure><p><img src="images/csgo/server/updatesuccess.png" alt="更新成功"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h1&gt;&lt;p&gt;CSGO裂网大行动更新之后，我也迫不及待地要更新自己的CSGO服务器了。但是一运行更新脚本，就发现了Steamcmd报错，具体信息为：&lt;code&gt;ERROR! Timed out waiting for AppInfo update.&lt;/code&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;images/csgo/server/updatefail.png&quot; alt=&quot;更新失败&quot;&gt;&lt;/p&gt;&lt;h1 id=&quot;解决方法&quot;&gt;&lt;a href=&quot;#解决方法&quot; class=&quot;headerlink&quot; title=&quot;解决方法&quot;&gt;&lt;/a&gt;解决方法&lt;/h1&gt;&lt;p&gt;上网查了一圈之后发现，这个问题是因为Steam中的&lt;code&gt;appinfo.vdf&lt;/code&gt;更新失败造成的。这个文件的具体目录位于&lt;code&gt;Steam/appcache&lt;/code&gt;中。我们可以将其删除，然后就可以更新了&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="游戏" scheme="http://fisher.lazybone.xyz/tags/%E6%B8%B8%E6%88%8F/"/>
     
   </entry>
   

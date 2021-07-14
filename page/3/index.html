@@ -198,6 +198,79 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/连续动态内存管理.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/连续动态内存管理.html" class="post-title-link" itemprop="url">操作系统实验六：连续动态内存管理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-21 16:02:37 / 修改时间：17:12:18" itemprop="dateCreated datePublished" datetime="2019-12-21T16:02:37+08:00">2019-12-21</time>
+            </span>
+
+          
+            <span id="/连续动态内存管理.html" class="post-meta-item leancloud_visitors" data-flag-title="操作系统实验六：连续动态内存管理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>操作系统系列博客的所有实验源自于课程<code>&quot;操作系统原理与实践检验&quot;</code>，代码是参考老师给的<code>&quot;软件工程专业操作系统实验指导书&quot;</code>文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/连续动态内存管理.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/操作系统习题二.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -504,79 +577,6 @@
   
   
 
-        
-  
-  
-  <article itemscope="" itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/vmware运行bin引导文件.html">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/vmware运行bin引导文件.html" class="post-title-link" itemprop="url">VMware运行bin引导文件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-12-01 15:26:24 / 修改时间：22:52:00" itemprop="dateCreated datePublished" datetime="2019-12-01T15:26:24+08:00">2019-12-01</time>
-            </span>
-
-          
-            <span id="/vmware运行bin引导文件.html" class="post-meta-item leancloud_visitors" data-flag-title="VMware运行bin引导文件" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近在看《自己动手写操作系统》这本书，其中第一章有一段简单的引导代码。书中的指导是将源代码文件<code>.asm</code>编译为二进制文件<code>.bin</code>后写入到软盘中，然后启动运行；又或者是使用<code>FloppyWriter</code>将二进制文件<code>.bin</code>写为镜像文件<code>.img</code>，再放到<code>Virtual PC</code>中运行。由于年代久远，现在的电脑已经没有软盘位，遗留下来的软盘也早被我小时候当玩具玩坏了，而且macOS已经不支持<code>Virtual PC</code>了，<code>FloppyWriter</code>也仅仅是在Windows平台下能够运行。由此看来，书上的运行方法已经全部行不通了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/vmware运行bin引导文件.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -626,7 +626,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
