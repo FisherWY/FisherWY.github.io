@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2021-08-06T06:01:19.153Z</updated>
+  <updated>2021-12-23T15:05:45.098Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>将SVN托管的SSH项目导入到IDEA中——以Scholat为例</title>
+    <link href="http://fisher.lazybone.xyz/%E5%B0%86svn%E6%89%98%E7%AE%A1%E7%9A%84ssh%E9%A1%B9%E7%9B%AE%E5%AF%BC%E5%85%A5%E5%88%B0idea%E4%B8%AD.html"/>
+    <id>http://fisher.lazybone.xyz/将svn托管的ssh项目导入到idea中.html</id>
+    <published>2021-12-23T14:42:33.000Z</published>
+    <updated>2021-12-23T15:05:45.098Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>由于要整合Scholat主站和Scholat+站点的资源，汤老师向我们提出了做单点登录的需求，因此需要对主站的登录功能部分做出改动。但主站项目是一个老项目，用的是SSH架构，没有Maven包管理，代码托管在SVN上，老师兄们用的都是MyEclipse开发，对于我这种人来说绝对忍不了，一定要用Intelij IDEA开发。经过一晚上的摸爬滚打和师兄的指点迷津后，现将导入的过程记录为文档，为以后师弟师妹的开发维护铺平道路。</p><a id="more"></a><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>首先需要准备以下的工具和对应的版本：</p><ul><li>Intelij IDEA Ultimate Edition 2021.2.1（旗舰版IDE，功能齐全，相比于师兄的旧版IDEA，导入过程中多了一些自动配置项，方便一些，下载地址点<a href="https://www.jetbrains.com/zh-cn/idea/download/#section=windows" target="_blank" rel="noopener">这里</a>）</li><li>Tortoise Subversion（SVN工具，下载地址点<a href="https://tortoisesvn.net/downloads.html" target="_blank" rel="noopener">这里</a>）</li><li>Apache Tomcat 7.0.82（Web容器，与主站使用的版本对应，8以上的不兼容JDK6，建议直接用这个版本，下载地址点<a href="https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.82/bin/" target="_blank" rel="noopener">这里</a>）</li><li>Java JDK6（需要注册一个Oracle账号，下载地址点<a href="https://www.oracle.com/java/technologies/javase-java-archive-javase6-downloads.html" target="_blank" rel="noopener">这里</a>）</li></ul><p>以上工具下载完成后安装，记住自己选择的安装路径。</p><h1 id="导入项目"><a href="#导入项目" class="headerlink" title="导入项目"></a>导入项目</h1><p>打开IDEA，在欢迎界面右上角点击<code>Get from VCS</code>。</p><p><img src="images/idea/get_from_vcs.png" alt="Get From VCS"></p><p>版本控制工具选<code>Subversion</code>，点击下面<code>+</code>号，输入仓库地址，账号密码找华哥要，<strong>选择记住账号密码</strong>（一定要记住账号密码，否则跑不起来的，项目会检查SVN配置），添加之后就能看到下图中的一个仓库地址了。</p><p><img src="images/idea/svn.png" alt="SVN"></p><p>点击<code>Check out</code>后，选择一个项目的存放地址，就开始拉取源码了。代码拉取完成后IDEA会自动打开项目，并提示发现了一个IDEA的配置文件，是否重复使用，这里我们点否，毕竟是别人的配置文件，这里我们不能照搬使用。</p><p>等项目索引完之后，关闭项目，打开项目存放的文件夹，将文件夹中的<code>.idea和trunk.iml</code>删掉，并将该项目从IDEA中移除（不是删除项目文件夹）。</p><p><img src="images/idea/delete_profile.png" alt="删除配置文件"></p><p><img src="images/idea/delete_project.png" alt="删除项目"></p><p>随便打开另外一个项目，在左上角选择<code>File -&gt; New -&gt; Project from Existing Sources</code>，导入刚刚拉取的代码。</p><p><img src="images/idea/import_project.png" alt="导入项目"></p><p>第一步直接选择<code>Create project from existing sources</code>，然后Next。</p><p><img src="images/idea/step1.png" alt="第一步"></p><p>第二步也不用改，除非想换个项目名称，然后Next。</p><p><img src="images/idea/step2.png" alt="第二步"></p><p>第三步，接着IDEA会扫描项目，并自动标记项目文件夹的类型，聪明的IDEA一般不会标记错的，这里选择<code>Mark All</code>，然后Next。</p><p><img src="images/idea/step3.png" alt="第三步"></p><p>第四步，IDEA会扫描依赖库文件夹，并自动添加为依赖库，如果这里搞不懂项目用到了哪些依赖的话，建议全部勾选，然后Next。</p><p><img src="images/idea/step4.png" alt="第四步"></p><p>第五步，也是跟项目依赖有关，直接按照IDEA给出的意见即可，点击Next。</p><p><img src="images/idea/step5.png" alt="第五步"></p><p>第六步，选择项目使用的JDK，这里我们选择刚刚安装JDK6，然后点Next。</p><p><img src="images/idea/step6.png" alt="第六步"></p><p>第七步，IDEA会扫描项目使用的框架，然后标记框架的配置文件，这里全部勾选即可，然后点Finish。</p><p><img src="images/idea/step7.png" alt="第七步"></p><p>到此，项目的导入部分到此完成，下一节中将介绍如何配置项目。</p><h1 id="配置项目"><a href="#配置项目" class="headerlink" title="配置项目"></a>配置项目</h1><h2 id="配置Project-Structure"><a href="#配置Project-Structure" class="headerlink" title="配置Project Structure"></a>配置Project Structure</h2><p>点击<code>File -&gt; Project Structure</code>，打开项目配置。</p><p>在Project页面确认使用的JDK版本为6，编译语言等级与JDK版本一致为6。</p><p><img src="images/idea/project.png" alt="Project配置"></p><p>在Modules页面，将conf文件夹标记为源码文件夹。</p><p><img src="images/idea/modules_sources.png" alt="Mudules页面"></p><p>在Libraries页面，将Tomcat中的<code>js-api.jar和servlet-api.jar</code>包添加到依赖库中，这两个包在Tomcat7安装路径的<code>./lib</code>目录下。</p><p><img src="images/idea/libraries.png" alt="Libraries页面"></p><p>在Facts页面，正常情况下，IDEA在导入时就已经自动配置好了，如果没有看到<code>Web</code>这项配置可以手动添加一下，因为还没有创建Artifacts，所以有个警告也是正常的。</p><p><img src="images/idea/facts.png" alt="Facts页面"></p><p>在Artifacts页面，点击<code>+ -&gt; WebApplication:Exploded -&gt; From modules...</code>，选择本项目配置好的Modules，点击OK。</p><p><img src="images/idea/Artifacts.png" alt="Artifacts页面"></p><p>项目有关的配置到此为止，接下来时配置启动项目的容器Tomcat</p><h2 id="配置Tomcat"><a href="#配置Tomcat" class="headerlink" title="配置Tomcat"></a>配置Tomcat</h2><p>点击IDEA界面右上角的<code>Add Configuration</code>，打开运行配置</p><p>在Server页面中点击<code>+ -&gt; Tomcat Server -&gt; Local</code>，名字自定义一个，点击Application server右边的Configure按钮，选择准备工作中下载的Tomcat7的解压位置。</p><p><img src="images/idea/tomcat1.png" alt="Tomcat配置1"></p><p>继续在Server页面中找到VM options，填入以下参数：<code>-Xms1024m -Xmx4096m -XX:PermSize=4096m -XX:MaxPermSize=4096m</code>。该参数防止Tomcat内存太小导致项目跑不起来。</p><p><img src="images/idea/tomcat2.png" alt="Tomcat配置2"></p><p>在Deployment页面中，点击<code>+ -&gt; Artifact</code>，将项目添加到容器中，同时Application context一定要改为<code>/scholat</code>。</p><p><img src="images/idea/tomcat3.png" alt="Tomcat配置3"></p><p>至此，所有的配置工作均已完成，尝试编译运行一下。</p><h1 id="跑起来"><a href="#跑起来" class="headerlink" title="跑起来"></a>跑起来</h1><p>点击小锤子编译，看看有没有编译出错等问题，如果没有问题，点击运行跑起来看看效果。</p><p><img src="images/idea/button.png" alt="按钮"></p><p>如果电脑配置不是很好的话，需要耐心等待一下，毕竟这项目还挺大的。</p><p><img src="images/idea/build.png" alt="编译"></p><p>编译没有错误的话，就可以启动容器看看能不能跑起来了，跑起来也需要耐心等待一下，要启动的东西还挺多的。</p><p><img src="images/idea/deploy.png" alt="运行"></p><h1 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h1><p>如果Tomcat运行输出的是乱码，则需要修改一下Tomcat的日志输出编码，打开Tomcat目录中的<code>conf/logging.properties</code>文件，将所有<code>UTF-8</code>全部改为<code>GBK</code>即可。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;由于要整合Scholat主站和Scholat+站点的资源，汤老师向我们提出了做单点登录的需求，因此需要对主站的登录功能部分做出改动。但主站项目是一个老项目，用的是SSH架构，没有Maven包管理，代码托管在SVN上，老师兄们用的都是MyEclipse开发，对于我这种人来说绝对忍不了，一定要用Intelij IDEA开发。经过一晚上的摸爬滚打和师兄的指点迷津后，现将导入的过程记录为文档，为以后师弟师妹的开发维护铺平道路。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://fisher.lazybone.xyz/tags/java/"/>
+    
+      <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
   
   <entry>
     <title>OpenWrt的DDNS配置</title>
@@ -435,26 +457,6 @@
       <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
     
       <category term="JavaScript" scheme="http://fisher.lazybone.xyz/tags/javascript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hackintosh安装过程记录</title>
-    <link href="http://fisher.lazybone.xyz/hackintosh%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95.html"/>
-    <id>http://fisher.lazybone.xyz/hackintosh安装过程记录.html</id>
-    <published>2019-11-22T07:09:30.000Z</published>
-    <updated>2019-11-24T13:30:30.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在上一篇的EFI文件准备工作完成之后，我们就可以正式开始装系统了。这篇博客用于记录我的安装过程以及安装过程中遇到的问题和解决方法</p><h1 id="制作启动盘"><a href="#制作启动盘" class="headerlink" title="制作启动盘"></a>制作启动盘</h1><p>首先我们需要准备一个8GB的U盘、macOS的镜像文件。我的镜像是从<code>黑果小兵</code>处下载的，他提供的镜像中自带了Clover，因此制作启动盘之后我们需要将自带的Clover替换掉</p><a id="more"></a><h2 id="写入镜像"><a href="#写入镜像" class="headerlink" title="写入镜像"></a>写入镜像</h2><p>我们使用<code>baleanEtcher</code>制作启动盘，这个软件界面界面简洁，操作也简单，分为3步：选择镜像，选择设备，写入镜像</p><p><img src="images/hackintosh/etcher.jpg" alt="Etcher"></p><h2 id="替换EFI"><a href="#替换EFI" class="headerlink" title="替换EFI"></a>替换EFI</h2><p>镜像写入完成之后，我们使用<code>Clover Configurator</code>挂载U盘的EFI分区，然后将其中的EFI文件替换。这样启动盘就制作完成了</p><p>挂载EFI分区：</p><p><img src="images/hackintosh/efi.png" alt="挂载EFI分区"></p><p>替换EFI文件夹，注意文件夹名字一定要一样：</p><p><img src="images/hackintosh/replaceefi.png" alt="替换EFI"></p><h1 id="Bios配置"><a href="#Bios配置" class="headerlink" title="Bios配置"></a>Bios配置</h1><p>Bios的配置参数我参考了网上的<code>华硕主板黑苹果设置</code>，如果你的主板没有某一项参数，忽略即可。具体配置如下：</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Boot -- Fast Boot -&gt; Disabled</span><br><span class="line">Advanced -- PCH Sorage Configuration -- SATA Mode Selection -&gt; AHCI</span><br><span class="line">Boot -- CSM(Compatibility Support Module) -&gt; Disabled</span><br><span class="line">Ai Tweaker -- Ai Overclock Tuner -&gt; XMP</span><br><span class="line">Advanced -- CPU configuration -- Intel Virtualization Technology -&gt; Disabled</span><br><span class="line">Advanced --<span class="built_in"> System </span>Agent (SA) Configuration -- VT-D -&gt; Disabled</span><br><span class="line">Advanced --<span class="built_in"> System </span>Agent (SA) Configuration -- Above 4G Decoding -&gt; Disabled</span><br><span class="line">Advanced -- PCH configruation - IOAPIC 24-119 Entries -&gt; Enabled</span><br><span class="line">Advanced -- PCH-FW Configuration -- TPM Device Selection -&gt; Discrete TPM</span><br><span class="line">Advanced -- APM Configuration -- ErP Ready -&gt; Disabled</span><br><span class="line">Advanced --<span class="built_in"> Network </span>Stack Configuration --<span class="built_in"> Network </span>Stack -&gt; Disabled</span><br><span class="line">Advanced -- Advanced PCH Configuration --<span class="built_in"> system </span>time <span class="keyword">and</span> alarm source -&gt; Legacy RTC</span><br><span class="line">Boot -- Secure Boot -- OS<span class="built_in"> Type </span>-- Other OS</span><br></pre></td></tr></table></figure><h1 id="安装macOS"><a href="#安装macOS" class="headerlink" title="安装macOS"></a>安装macOS</h1><p>接下来就是macOS的安装了，开机按F8选择启动盘为U盘，就可以看到如下界面：</p><p><img src="images/hackintosh/cloverboot.jpeg" alt="Clover界面"></p><p>选择<code>Boot macOS Install from Install macOS High Sierra</code>，跑了一段代码之后就会进入安装系统的界面：</p><p><img src="images/hackintosh/macosinstall.jpeg" alt="安装界面"></p><p>先打开磁盘工具，将新硬盘格式化为<code>APFS</code>文件系统（这里我用U盘作为示例，自行选择要格式化的硬盘）：</p><p><img src="images/hackintosh/reformatdisk.jpeg" alt="格式化硬盘"></p><p>然后返回安装界面，点击安装。如果这时候报错<code>应用程序副本已损坏，不能用来安装macOS</code>：</p><p><img src="images/hackintosh/installerror.jpeg" alt="报错信息"></p><p>这是因为证书已经过期，我们需要把系统时间调早一些。首先我们需要断开网络连接，然后左上角找到<code>实用工具</code>，打开<code>终端</code>，然后输入<code>date 0101010119</code>，终端会输出修改后的系统时间。这时候关闭终端，可以继续系统的安装了</p><p><img src="images/hackintosh/date.jpeg" alt="调时间"></p><h1 id="安装WebDriver，修改CPU显示型号"><a href="#安装WebDriver，修改CPU显示型号" class="headerlink" title="安装WebDriver，修改CPU显示型号"></a>安装WebDriver，修改CPU显示型号</h1><p>系统安装好后，我们需要安装显卡驱动。显卡驱动的安装也是很简单，需要注意的一点就是系统的版本要和驱动的版本对应，否则可能会出现无法驱动导致的开机黑屏问题。在<a href="https://www.tonymacx86.com/nvidia-drivers/" target="_blank" rel="noopener">tonymacx86</a>上有对应的列表，找到对应版本的驱动下载安装就好了</p><p>我安装的是<code>macOS 10.13.6(17G65)</code>，对应的Web Driver版本是<code>387.10.10.10.40.105</code></p><p><img src="images/hackintosh/driver.png" alt="对应驱动"></p><p>最后一个小地方就是关于本机中，处理器的型号显示为<code>Unknown</code>。这里我参考了<a href="https://www.sqlsec.com/2018/09/cpu.html" target="_blank" rel="noopener">国光的博客</a>，将其修改为自己定义的字符串</p><p><img src="images/hackintosh/about.png" alt="修改CPU型号"></p><p>大功告成！以后负担重的任务就交给Hackintosh，老Macbook Pro就拿来写写博客，享受退休生活！</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在上一篇的EFI文件准备工作完成之后，我们就可以正式开始装系统了。这篇博客用于记录我的安装过程以及安装过程中遇到的问题和解决方法&lt;/p&gt;&lt;h1 id=&quot;制作启动盘&quot;&gt;&lt;a href=&quot;#制作启动盘&quot; class=&quot;headerlink&quot; title=&quot;制作启动盘&quot;&gt;&lt;/a&gt;制作启动盘&lt;/h1&gt;&lt;p&gt;首先我们需要准备一个8GB的U盘、macOS的镜像文件。我的镜像是从&lt;code&gt;黑果小兵&lt;/code&gt;处下载的，他提供的镜像中自带了Clover，因此制作启动盘之后我们需要将自带的Clover替换掉&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Hackintosh" scheme="http://fisher.lazybone.xyz/tags/hackintosh/"/>
     
   </entry>
   
