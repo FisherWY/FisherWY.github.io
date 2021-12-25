@@ -72,6 +72,7 @@
 {"title":"使用Mumble搭建语音服务器","url":"/使用mumble搭建语音服务器.html"},
 {"title":"使用Nginx搭建下载服务器","url":"/使用nginx搭建下载服务器.html"},
 {"title":"基于Docker的Redis集群搭建","url":"/基于docker的redis集群搭建.html"},
+{"title":"将SVN托管的SSH项目导入到IDEA中——以Scholat为例","url":"/将svn托管的ssh项目导入到idea中.html"},
 {"title":"小程序获取QQ音乐播放链接插件","url":"/小程序获取qq音乐播放链接插件.html"},
 {"title":"小米路由器4千兆版刷OpenWrt","url":"/小米路由器4千兆版刷openwrt.html"},
 {"title":"操作系统实验四：带优先级的时间片轮换的进程调度算法的实现","url":"/带优先级的时间片轮换的进程调度算法.html"},

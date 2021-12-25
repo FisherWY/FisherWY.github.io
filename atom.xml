@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fisher.lazybone.xyz/"/>
-  <updated>2021-12-23T15:05:45.098Z</updated>
+  <updated>2021-12-25T02:11:38.405Z</updated>
   <id>http://fisher.lazybone.xyz/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用Git同步开发机与开发服务器的代码</title>
+    <link href="http://fisher.lazybone.xyz/%E4%BD%BF%E7%94%A8git%E5%90%8C%E6%AD%A5%E5%BC%80%E5%8F%91%E6%9C%BA%E4%B8%8E%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BB%A3%E7%A0%81.html"/>
+    <id>http://fisher.lazybone.xyz/使用git同步开发机与开发服务器的代码.html</id>
+    <published>2021-12-25T02:06:08.000Z</published>
+    <updated>2021-12-25T02:11:38.405Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在开发机上开发完成一个小版本的开发之后，需要将代码部署到开发服务器上，但由于代码仍在测试中，可能需要频繁修改代码，每次打包都会显得很麻烦，而每次手动将修改的代码复制到服务器上更是低效的做法，因此想到了用Git的钩子来解决这个痛点，下面是具体的操作。</p><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>首先是在开发机和服务器上都安装Git，我使用的Git版本如下：</p><a id="more"></a><ul><li>Windows开发机：<code>git version 2.33.0.windows.2</code></li><li>Linux开发服务器：<code>git version 2.17.1</code></li></ul><p>其次是配置本机的SSH密钥，生成密钥的命令如下：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa<span class="comment"># 一路回车即可</span></span><br></pre></td></tr></table></figure><p>然后将公钥复制到服务器的<code>~/.ssh/authorized_keys</code>文件上，当SSH连接服务器不需要输入密码时，表示这项配置成功，具体是怎么配置的这里就不说明了，上网查查大把教程。</p><h1 id="服务器的配置"><a href="#服务器的配置" class="headerlink" title="服务器的配置"></a>服务器的配置</h1><p>首先是建立一个Git裸库，用于保存提交信息，仓库建立的位置和名字可以自行修改，但需要记住，等会要用。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git init --bare repo.git</span><br></pre></td></tr></table></figure><p>接着建立一个空文件夹，用于存放从开发机同步过来的代码，文件夹创建的位置和名字可自行修改，但需要记住，也是要用的。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">mkdir code</span><br></pre></td></tr></table></figure><p>然后编写Git的Hooks脚本，这里用的是<code>post-receive</code>脚本，该脚本在仓库发生提交后自动执行，我们使用该脚本将仓库中最新的代码同步到代码文件夹中。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/repo.git/hooks/post-receive</span><br></pre></td></tr></table></figure><p>将以下语句写入钩子文件中，其中的两个路径，第一个是同步代码的文件夹所在位置，第二个是仓库的位置。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">git --work-tree=/home/fisher/code --git-dir=/home/fisher/repo.git checkout -f</span><br></pre></td></tr></table></figure><p>保存退出vim后，赋予该脚本执行权限。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /home/fisher/repo.git/hooks/post-receive</span><br></pre></td></tr></table></figure><p>至此，服务器端的配置完成，接下来是开发机的配置。</p><h1 id="开发机的配置"><a href="#开发机的配置" class="headerlink" title="开发机的配置"></a>开发机的配置</h1><p>如果开发机的项目不是Git项目，则需要进入项目的根目录，执行以下命令初始化为Git项目并提交一下，如果已经是Git项目，则这一步跳过，直接添加远程仓库地址即可。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commmit -m <span class="string">"Initial commit"</span></span><br></pre></td></tr></table></figure><p>接着添加远程仓库地址，其中<code>USER</code>表示你在服务器上使用的用户，<code>ADDRESS</code>表示服务器的地址，<code>:</code>接服务器上仓库的地址。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin USER@ADDRESS:/home/fisher/repo.git</span><br></pre></td></tr></table></figure><p>使用以下命令查看远程仓库地址的添加是否成功。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure><p>添加远程仓库地址之后，将代码提交到仓库中。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure><p>至此，开发机的配置也完成了，需要同步的时候，就用Git将代码提交到远程仓库即可。</p><h1 id="查看效果"><a href="#查看效果" class="headerlink" title="查看效果"></a>查看效果</h1><p>提交代码之后，在服务器的<code>~/code/</code>文件夹中应该能看到与开发机项目相同的目录结构，这时候就能够直接在服务器上部署测试的代码了，当本地开发机代码修改之后，使用Git提交到远程仓库，开发服务器上的代码也会同步修改了。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;在开发机上开发完成一个小版本的开发之后，需要将代码部署到开发服务器上，但由于代码仍在测试中，可能需要频繁修改代码，每次打包都会显得很麻烦，而每次手动将修改的代码复制到服务器上更是低效的做法，因此想到了用Git的钩子来解决这个痛点，下面是具体的操作。&lt;/p&gt;&lt;h1 id=&quot;准备工作&quot;&gt;&lt;a href=&quot;#准备工作&quot; class=&quot;headerlink&quot; title=&quot;准备工作&quot;&gt;&lt;/a&gt;准备工作&lt;/h1&gt;&lt;p&gt;首先是在开发机和服务器上都安装Git，我使用的Git版本如下：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="服务器配置" scheme="http://fisher.lazybone.xyz/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/"/>
+    
+      <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
   
   <entry>
     <title>将SVN托管的SSH项目导入到IDEA中——以Scholat为例</title>
@@ -288,9 +310,9 @@
     </summary>
     
     
-      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -330,9 +352,9 @@
     </summary>
     
     
-      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -372,9 +394,9 @@
     </summary>
     
     
-      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="操作系统" scheme="http://fisher.lazybone.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -435,28 +457,6 @@
     
     
       <category term="网络" scheme="http://fisher.lazybone.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>中级软件实作总结</title>
-    <link href="http://fisher.lazybone.xyz/%E4%B8%AD%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%AE%9E%E4%BD%9C%E6%80%BB%E7%BB%93.html"/>
-    <id>http://fisher.lazybone.xyz/中级软件实作总结.html</id>
-    <published>2019-11-26T08:34:01.000Z</published>
-    <updated>2019-11-26T12:59:56.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>为期一周的中级软件实作结束了。这一周以来，我们跟着老师的步伐，前端使用Bootstrap，后端使用Express框架完成了一个购物商城注册、首页的页面和功能。整个项目的下载地址在<a href="http://fisher.lazybone.xyz/downloads/document/%E4%B8%AD%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%AE%9E%E4%BD%9C.zip">这里</a>（因为项目只做DEMO，因此就不放上GitHub了），以下是我关于这一周笔记的总结</p><h1 id="后端笔记总结"><a href="#后端笔记总结" class="headerlink" title="后端笔记总结"></a>后端笔记总结</h1><h2 id="我的观点"><a href="#我的观点" class="headerlink" title="我的观点"></a>我的观点</h2><p>这次的中级软件实作和以往不一样，我们首次使用了Node.JS作为后端开发语言，相比于老一代的后端开发语言<code>Java/PHP/.NET</code>，新生代的后端开发语言<code>Node.JS/GO/Python</code>语法更加简单，配置十分简易，上手难度低</p><a id="more"></a><p>我认为，新生代的后端语言能够用于中小型项目的开发，随着第三方库的发展，越来越多的人能够上手开发属于自己的小项目</p><p>对于大型的项目，我认为目前还是老一代后端开发语言比较适合，经历了这么长时间的技术沉淀，老一代后端开发语言已经形成了许多应用于不同场景的技术框架，稳定性可靠性相对较高，但对于新手来说，了解学习这些框架需要一定的时间</p><h2 id="关于Node-JS"><a href="#关于Node-JS" class="headerlink" title="关于Node.JS"></a>关于Node.JS</h2><p><code>Node.JS</code>不是前端框架，是后端技术，遵循<code>CommonJS</code>规范。可用于在特定场合下取代PHP、Java等技术，实现文件IO、网络访问、数据库操作等</p><p><strong><code>Node.JS</code>特点：</strong></p><ol><li>语法基于JavaScript，但是功能是后台技术，可以实现IO、Network、DB等操作</li><li>单线程模型，避免了多线程并发的问题</li><li>异步的回调函数，避免了线程阻塞的问题</li><li>适合于IO密集型应用，不合适于CPU密集型应用</li></ol><p><strong>创建<code>Node.JS</code>项目的基本步骤：</strong></p><ol><li>在项目根目录下使用<code>npm create</code>创建项目描述文件<code>package.json</code>和<code>package-lock.json</code></li><li>使用<code>npm install &lt;package&gt;</code>下载项目所需要的第三方包</li><li>代码的编写。如果是Web项目，需要创建Web服务器，监听端口，提供响应消息</li></ol><p><strong>一问一答：</strong></p><ul><li><p>为什么数据库中的日期要用<code>bigint</code>储存？</p><p>答：因为不同国家地区使用的日期制式和时区不一样，单纯地使用”Date”或”DateTime”会导致日期格式固定单一，不利于国际化</p></li></ul><p><strong>HTTP协议中，请求消息的格式：</strong></p><ul><li><p>GET请求：</p><p>请求参数放在<code>req.query</code>中，浏览器地址栏可见</p><p>GET <code>/url?para1=1&amp;para2=2</code> HTTP/1.1</p><p>Content-Type: xxx</p></li><li><p>POST请求：</p><p>请求参数放在<code>req.body</code>中，浏览器地址栏不可见</p><p>POST <code>/url</code> HTTP/1.1</p><p>Content-Type: xxx</p><p>para1=1&amp;para2=2</p></li></ul><p><strong>ES6中的部分新特性：</strong></p><ul><li>反引号字符串，字符串可以换行</li><li>使用<code>${}</code>替换变量</li></ul><h1 id="前端笔记总结"><a href="#前端笔记总结" class="headerlink" title="前端笔记总结"></a>前端笔记总结</h1><h2 id="我的观点-1"><a href="#我的观点-1" class="headerlink" title="我的观点"></a>我的观点</h2><p>上个学期的期末大作业中，我第一次用到了Bootstrap。当时的我也了解到了栅格系统，但是并不会使用Bootstrap CSS。我还是傻乎乎地自己手写CSS文件，一开始还能保证页面是响应式的，一切的样式都使用%，但随着页面越来越复杂，以及没有清除默认样式导致的各种奇怪的问题，后面的代码就写烂了。到现在回看当初写的代码，根本就不想去修改哪怕是一行代码，再联想一下企业开发中，历史遗留下来的HTML页面，那简直就是陨石坑。因此我认为，即使HTML是标记性语言，我们也应该用工程化的思想和方法，去制定一些编写的规范，搭建开发的框架。这样不仅能降低开发维护的难度和成本，还能延长项目的生命周期</p><h2 id="关于Bootstrap"><a href="#关于Bootstrap" class="headerlink" title="关于Bootstrap"></a>关于Bootstrap</h2><p><strong>前端可用的技术栈：</strong></p><ul><li>HTML/CSS/JS</li><li>Bootstrap/jQuery/AJAX</li><li>Vue.js/Vue-Router/MintUI/Axios</li><li>Angular.js/Router/lonic/HttpClient</li><li>React/React-Native/Fetch</li></ul><p><strong>响应式网页：</strong></p><ul><li>也称为自适应式网页，一个页面可以根据不同浏览器设备而呈现不同的布局和外观</li><li>所有的尺寸都使用相对值（%,em），而不是绝对值（px）</li><li>布局容器宽度使用百分比，内部都使用百分比，浮动或者是弹性的</li><li>图片宽度都使用<code>max-width:100%</code>，防止图片失真</li><li>使用<code>CSS3 Media Query（媒体查询技术）</code>，针对不同尺寸的设备使用不同尺寸的图片，以及不同的样式</li></ul><p><strong>网页尺寸的定义：</strong></p><ul><li>PC：&gt;=992px</li><li>Pad：768~992px</li><li>Phone：&lt;768px</li></ul><p><strong>对于大型页面的CSS，我们使用以下方法降低开发维护难度：</strong></p><ul><li>样式重置（CSS Reset）：Normalize.css，一个重置页面默认样式的CSS文件</li><li>样式脚手架，例如Bootstrap</li><li>栅格布局系统</li><li>常用组件的复用：轮播、下拉、弹框</li><li>当前页面专有的头部、主体、尾部</li></ul><p><strong>关于Bootstrap框架：</strong></p><ul><li><p>Bootstrap是一个由Twitter维护的CSS框架，可用于编写响应式网页</p></li><li><p>Bootstrap把屏幕分为4类：</p><p>lg：Large，size&gt;=1200px，适用于PC</p><p>md：Medium，992px&lt;=size&lt;1200px，适用于高分辨率平板电脑</p><p>sm：Small，768px&lt;=size&lt;992px，适用于平板电脑</p><p>xs：Extra Small，size&lt;768px，适用于手机屏幕</p></li><li><p>Bootstrap栅格系统的示例：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container/container-fluid"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-xx-x"</span>&gt;</span></span><br><span class="line">            内容或者".row" ".col-xx-x"</span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></li></ul><h1 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h1><p>前后端都有一个共同的问题，那就是跨域请求的问题</p><ul><li><p>什么是跨域访问？</p><p>假设现在有2个资源：</p><ul><li>资源1: <a href="http://localhost:5500/index.html" target="_blank" rel="noopener">http://localhost:5500/index.html</a></li><li>资源2: <a href="http://localhost:8888/user/register" target="_blank" rel="noopener">http://localhost:8888/user/register</a></li></ul><p>浏览器中，如果访问的两个资源的<code>协议</code>、<code>主机名</code>或<code>端口号</code>三者之中只要有1项不同，就是跨域访问。注意：<code>localhost</code>和<code>127.0.0.1</code>是不同的域名，也属于跨域访问</p></li><li><p>默认情况下，有些内容默认允许跨域，如：<code>&lt;img&gt;、&lt;script&gt;、&lt;link&gt;、&lt;a&gt;</code></p></li><li><p>默认情况下，浏览器默认禁止XHR跨域访问</p></li><li><p>如何解决浏览器对XHR的跨域请求限制？（每种方法详细<a href="https://juejin.im/post/5c23993de51d457b8c1f4ee1" target="_blank" rel="noopener">解析</a>）</p><ul><li>JSONP</li><li>CORS</li><li>PostMessage</li><li>WebSocket</li><li>Node中间件代理</li><li>Nginx反向代理</li><li>window.name + iframe</li><li>location.hash + iframe</li><li>document.domain + iframe</li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;为期一周的中级软件实作结束了。这一周以来，我们跟着老师的步伐，前端使用Bootstrap，后端使用Express框架完成了一个购物商城注册、首页的页面和功能。整个项目的下载地址在&lt;a href=&quot;http://fisher.lazybone.xyz/downloads/document/%E4%B8%AD%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%AE%9E%E4%BD%9C.zip&quot;&gt;这里&lt;/a&gt;（因为项目只做DEMO，因此就不放上GitHub了），以下是我关于这一周笔记的总结&lt;/p&gt;&lt;h1 id=&quot;后端笔记总结&quot;&gt;&lt;a href=&quot;#后端笔记总结&quot; class=&quot;headerlink&quot; title=&quot;后端笔记总结&quot;&gt;&lt;/a&gt;后端笔记总结&lt;/h1&gt;&lt;h2 id=&quot;我的观点&quot;&gt;&lt;a href=&quot;#我的观点&quot; class=&quot;headerlink&quot; title=&quot;我的观点&quot;&gt;&lt;/a&gt;我的观点&lt;/h2&gt;&lt;p&gt;这次的中级软件实作和以往不一样，我们首次使用了Node.JS作为后端开发语言，相比于老一代的后端开发语言&lt;code&gt;Java/PHP/.NET&lt;/code&gt;，新生代的后端开发语言&lt;code&gt;Node.JS/GO/Python&lt;/code&gt;语法更加简单，配置十分简易，上手难度低&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习总结" scheme="http://fisher.lazybone.xyz/tags/%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="JavaScript" scheme="http://fisher.lazybone.xyz/tags/javascript/"/>
     
   </entry>
   
