@@ -54,32 +54,32 @@
 <meta name="keywords" content="Hackintosh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从Clover迁移到OpenCore">
-<meta property="og:url" content="http://fisher.lazybone.xyz/从clover迁移到opencore.html">
+<meta property="og:url" content="http://www.fisheryung.top/从clover迁移到opencore.html">
 <meta property="og:site_name" content="Fisher&#39;s Blog">
 <meta property="og:description" content="前言目前，OpenCore Bootloader已经开发了相当一段时间，已经趋近于稳定。OpenCore的启动方式更接近于原生macOS电脑，对系统的注入更少，越来越多的驱动都基于OpenCore适配开发。因此，将Bootloader从Clover迁移到OpenCore也是时候提上日程了。以下博客记录了我的迁移过程，并向大家分享一下我的迁移方法。不同于网上的纯ProperTree手动配置、纯Ope">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxsystemtype.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxkext.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxfirmwaredrivers.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxsuccess.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxdriverscopy.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxkextscopy.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occacpidownload.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occacpi.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occdeviceproperties.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occkerneladd.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occkernelpatch.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occmiscboot.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occmiscsecurity.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occnvram.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/occuefi.png">
-<meta property="og:updated_time" content="2021-04-11T04:18:30.877Z">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxsystemtype.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxkext.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxfirmwaredrivers.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxsuccess.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxdriverscopy.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/genxkextscopy.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occacpidownload.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occacpi.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occdeviceproperties.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occkerneladd.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occkernelpatch.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occmiscboot.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occmiscsecurity.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occnvram.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/occuefi.png">
+<meta property="og:updated_time" content="2021-04-11T04:18:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从Clover迁移到OpenCore">
 <meta name="twitter:description" content="前言目前，OpenCore Bootloader已经开发了相当一段时间，已经趋近于稳定。OpenCore的启动方式更接近于原生macOS电脑，对系统的注入更少，越来越多的驱动都基于OpenCore适配开发。因此，将Bootloader从Clover迁移到OpenCore也是时候提上日程了。以下博客记录了我的迁移过程，并向大家分享一下我的迁移方法。不同于网上的纯ProperTree手动配置、纯Ope">
-<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/hackintosh/genxsystemtype.png">
+<meta name="twitter:image" content="http://www.fisheryung.top/images/hackintosh/genxsystemtype.png">
 
-<link rel="canonical" href="http://fisher.lazybone.xyz/从clover迁移到opencore.html">
+<link rel="canonical" href="http://www.fisheryung.top/从clover迁移到opencore.html">
 
 
 <script id="page-configurations">
@@ -151,7 +151,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+        <p class="site-subtitle">自由尋覓快樂別人從沒法感受</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -216,7 +216,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/从clover迁移到opencore.html">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/从clover迁移到opencore.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -479,7 +479,7 @@
         <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:fisheryung@outlook.com" title="E-Mail &rarr; mailto:fisheryung@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -502,7 +502,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

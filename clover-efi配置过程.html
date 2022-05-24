@@ -54,26 +54,26 @@
 <meta name="keywords" content="Hackintosh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Clover EFI配置过程">
-<meta property="og:url" content="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+<meta property="og:url" content="http://www.fisheryung.top/clover-efi配置过程.html">
 <meta property="og:site_name" content="Fisher&#39;s Blog">
 <meta property="og:description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/clover.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/kexts.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/ACPI.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/BOOT.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/DEVICE.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/UEFI.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/KERNEL.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/MODEL.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/hackintosh/SYSTEM.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/clover.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/kexts.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/ACPI.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/BOOT.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/DEVICE.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/UEFI.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/KERNEL.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/MODEL.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/hackintosh/SYSTEM.png">
 <meta property="og:updated_time" content="2019-11-22T07:11:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clover EFI配置过程">
 <meta name="twitter:description" content="前言在今年3月份的时候，我用一块机械硬盘装了一次黑苹果。当时装系统的时候走了不少的弯路：卡加号，卡显卡驱动加载，进系统黑屏……历经千辛万苦，终于装成功了，但是机械硬盘的体验着实不咋地。于是双十一的时候先是买了一块PM981a，拿到手后还没装上电脑呢，一查发现PM981系列装黑苹果会卡死，因为主控的问题。好家伙，退货花了12块，等退款又花了几天，这几天之内我专心研究了一下Clover EFI，黑苹果">
-<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/hackintosh/clover.png">
+<meta name="twitter:image" content="http://www.fisheryung.top/images/hackintosh/clover.png">
 
-<link rel="canonical" href="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+<link rel="canonical" href="http://www.fisheryung.top/clover-efi配置过程.html">
 
 
 <script id="page-configurations">
@@ -145,7 +145,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+        <p class="site-subtitle">自由尋覓快樂別人從沒法感受</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -210,7 +210,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/clover-efi配置过程.html">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/clover-efi配置过程.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -514,7 +514,7 @@
         <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:fisheryung@outlook.com" title="E-Mail &rarr; mailto:fisheryung@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -537,7 +537,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

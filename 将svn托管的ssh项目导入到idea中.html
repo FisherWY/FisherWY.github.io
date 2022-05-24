@@ -54,40 +54,40 @@
 <meta name="keywords" content="Java,学习总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="将SVN托管的SSH项目导入到IDEA中——以Scholat为例">
-<meta property="og:url" content="http://fisher.lazybone.xyz/将svn托管的ssh项目导入到idea中.html">
+<meta property="og:url" content="http://www.fisheryung.top/将svn托管的ssh项目导入到idea中.html">
 <meta property="og:site_name" content="Fisher&#39;s Blog">
 <meta property="og:description" content="前言由于要整合Scholat主站和Scholat+站点的资源，汤老师向我们提出了做单点登录的需求，因此需要对主站的登录功能部分做出改动。但主站项目是一个老项目，用的是SSH架构，没有Maven包管理，代码托管在SVN上，老师兄们用的都是MyEclipse开发，对于我这种人来说绝对忍不了，一定要用Intelij IDEA开发。经过一晚上的摸爬滚打和师兄的指点迷津后，现将导入的过程记录为文档，为以后师">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/get_from_vcs.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/svn.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/delete_profile.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/delete_project.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/import_project.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step1.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step2.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step3.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step4.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step5.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step6.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/step7.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/project.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/modules_sources.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/libraries.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/facts.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/Artifacts.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/tomcat1.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/tomcat2.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/tomcat3.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/button.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/build.png">
-<meta property="og:image" content="http://fisher.lazybone.xyz/images/idea/deploy.png">
-<meta property="og:updated_time" content="2021-12-23T15:05:45.098Z">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/get_from_vcs.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/svn.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/delete_profile.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/delete_project.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/import_project.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step2.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step3.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step4.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step5.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step6.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/step7.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/project.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/modules_sources.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/libraries.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/facts.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/Artifacts.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/tomcat1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/tomcat2.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/tomcat3.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/button.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/build.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/idea/deploy.png">
+<meta property="og:updated_time" content="2021-12-23T15:05:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="将SVN托管的SSH项目导入到IDEA中——以Scholat为例">
 <meta name="twitter:description" content="前言由于要整合Scholat主站和Scholat+站点的资源，汤老师向我们提出了做单点登录的需求，因此需要对主站的登录功能部分做出改动。但主站项目是一个老项目，用的是SSH架构，没有Maven包管理，代码托管在SVN上，老师兄们用的都是MyEclipse开发，对于我这种人来说绝对忍不了，一定要用Intelij IDEA开发。经过一晚上的摸爬滚打和师兄的指点迷津后，现将导入的过程记录为文档，为以后师">
-<meta name="twitter:image" content="http://fisher.lazybone.xyz/images/idea/get_from_vcs.png">
+<meta name="twitter:image" content="http://www.fisheryung.top/images/idea/get_from_vcs.png">
 
-<link rel="canonical" href="http://fisher.lazybone.xyz/将svn托管的ssh项目导入到idea中.html">
+<link rel="canonical" href="http://www.fisheryung.top/将svn托管的ssh项目导入到idea中.html">
 
 
 <script id="page-configurations">
@@ -159,7 +159,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">大都会に僕はもう一人で  投げ捨てられた空きカンのようだ</p>
+        <p class="site-subtitle">自由尋覓快樂別人從沒法感受</p>
   </div>
 
   <div class="site-nav-toggle">
@@ -224,7 +224,7 @@
   
   
   <article itemscope="" itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://fisher.lazybone.xyz/将svn托管的ssh项目导入到idea中.html">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/将svn托管的ssh项目导入到idea中.html">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/icons/avatar.jpg">
@@ -428,7 +428,7 @@
         <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:wz1146923421@live.com" title="E-Mail &rarr; mailto:wz1146923421@live.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:fisheryung@outlook.com" title="E-Mail &rarr; mailto:fisheryung@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -451,7 +451,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
