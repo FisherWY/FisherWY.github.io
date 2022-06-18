@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.fisheryung.top/"/>
-  <updated>2022-05-26T11:29:14.480Z</updated>
+  <updated>2022-06-18T13:12:02.624Z</updated>
   <id>http://www.fisheryung.top/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>OSPP之旅（一）</title>
+    <link href="http://www.fisheryung.top/ospp%E4%B9%8B%E6%97%85%EF%BC%88%E4%B8%80%EF%BC%89.html"/>
+    <id>http://www.fisheryung.top/ospp之旅（一）.html</id>
+    <published>2022-06-18T03:08:14.000Z</published>
+    <updated>2022-06-18T13:12:02.624Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>世界上有能够学到技术、提升协作能力、拿丰厚奖金这种“三全其美”的事情吗？在以前我是不相信的，但自从师兄介绍了开源之夏（OSPP）这种活动之后，我第一次知道世界上还有这样一种顶级的活动，鱼和熊掌二者竟可得兼！</p><p>简单地介绍下OSPP吧，这是一个由中科院软件研究所“开源软件供应链点亮计划”发起并长期支持的一项暑期开源活动，旨在鼓励在校学生积极参与开源软件的开发维护，促进优秀开源软件社区的蓬勃发展，培养和发掘更多优秀的开发者。官网地址点<a href="https://summer-ospp.ac.cn/#/homepage" target="_blank" rel="noopener">这里</a>。</p><a id="more"></a><h1 id="申请过程"><a href="#申请过程" class="headerlink" title="申请过程"></a>申请过程</h1><h2 id="选定项目"><a href="#选定项目" class="headerlink" title="选定项目"></a>选定项目</h2><p>首先肯定是要选择自己想做的项目了，选择的角度可以有很多，每个人的情况不同，根据自己的情况自行选择，以下是我选取项目所考虑到的部分角度：</p><ul><li>以后想做什么：这肯定是首先要考虑的因素，我想要做一些更偏向于底层的东西，因为偏向于底层的东西更有技术挑战性。克服一个个困难，实现一个个新功能，这样的开发过程很有意思。</li><li>项目技术与自身的切合度：如果选取一个自己完全陌生的项目，从零开始学习，那么项目做起来的难度肯定是非常大的，所以需要考虑下自己目前所掌握的知识和技术，判断下学习某个项目大概需要的时间，难度是否能够接受。</li><li>社区情况：社区的情况同样也很重要，如果某个社区非常活跃，导师也非常渴望新鲜血液的加入，那么这个社区肯定是值得加入的。</li></ul><p>经过筛选后，我选择了<code>为openEuler操作系统引入libvirt 8.2.0版本</code>这个项目，该项目属于<code>openEuler</code>社区。欧拉社区可以说是国内非常活跃的开源社区了，各种高校活动、比赛、社区活动、开源活动源源不断。社区主要负责开发和维护国产操作系统<code>openEuler</code>，本来就对开发操作系统比较感兴趣的我，与欧拉社区可以算是完美切合了。</p><h2 id="简要了解项目内容"><a href="#简要了解项目内容" class="headerlink" title="简要了解项目内容"></a>简要了解项目内容</h2><p>根据项目简介和项目产出要求，可以得知该项目的简要工作内容是兼容适配新版本的<code>libvirt</code>，当前<code>openEuler</code>使用的<code>libvirt</code>版本为<code>6.2.0</code>，随着<code>qemu</code>、<code>kvm</code>等包的新功能引入，旧版本的<code>libvirt</code>不能很好地适配这些新功能，<code>libvirt</code>也是时候升级一下了。项目的任务就是适配<code>libvirt 8.2.0</code>版本，将<code>6.2.0</code>版本中添加的、欧拉系统独有的功能特性继续在<code>8.2.0</code>版本中支持。</p><p>项目的产出要求如下：</p><ul><li>基于<code>openEuler</code>操作系统构建<code>libvirt 8.2.0</code>RPM包</li><li>将<code>6.2.0</code>版本中的补丁回合到<code>8.2.0</code>版本中</li></ul><p>对于项目的评价：</p><ul><li>涉及到操作系统的虚拟化技术，我对此比较感兴趣</li><li>主要内容是分析补丁并适配，工作量不会很大</li><li>虽然工作量不大，但需要熟悉项目和对应的技术，是个学习新技术的好机会</li><li>涉及到了打补丁的操作，这也是Linux内核维护常用的方式</li><li>C语言项目经验+1</li></ul><h2 id="联系导师"><a href="#联系导师" class="headerlink" title="联系导师"></a>联系导师</h2><p>在对项目进行简要了解之后，接下来就是联系导师了，在给导师发的第一封邮件中，我问了几个关于项目的问题。下午5点发的邮件，当天晚上7点多导师就回信了，不得不说导师的回复效率还是很高的，给导师点个赞！导师详细地回答了我提问的几个问题，同时附上了微信号，我也是马上就加了导师的微信。导师在微信中提供了很多相关的学习资料和文档，让我获益匪浅。</p><p>当然，导师也是很忙的，我们不能稍微有点小问题就去问导师，导师日常工作是很忙的。学习过程中遇到问题后，首先要尝试问问搜索引擎，要善于运用搜索引擎。实在是找不到相关解答的，再去问导师。</p><h2 id="撰写申请书"><a href="#撰写申请书" class="headerlink" title="撰写申请书"></a>撰写申请书</h2><p>撰写申请书是项目申请过程中最关键的一环了，前期联系交流的再愉快，最终还是要看申请书的质量的，关于申请书怎么写，OSPP委员会给出了一些指导意见，我们照着指导意见来写就基本没有问题了。参考链接点<a href="https://summer-ospp.ac.cn/help/proj_apply/" target="_blank" rel="noopener">这里</a>，此外今年中选的项目申请书都公示了，想要看看别人的写的申请书可以去官网项目列表中看。</p><p>我的项目书结构如下：</p><ul><li>标题</li><li>目录</li><li>项目简要描述</li><li>实现方案</li><li>开发计划</li><li>未来期望</li></ul><p>申请书写完之后就可以发给导师看看，让导师给出一些修改的建议，导师说基本没有问题之后，就可以等着提交到系统中了。</p><h1 id="申请结果"><a href="#申请结果" class="headerlink" title="申请结果"></a>申请结果</h1><p>6月5日申请书提交截至，6月15日晚公布结果，这10天毫无疑问就是折磨。但好事多磨，公布中选名单之后，邮箱第一时间就收到了邮件，不负所望，正式中选！</p><p><img src="images/ospp/selected.png" alt="中选邮件"></p><p>接下来就是正式开工前的准备了，跟导师开个线上会议，讨论接下来需要做的工作，确认工作内容后，就可以愉快地开工咯。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;世界上有能够学到技术、提升协作能力、拿丰厚奖金这种“三全其美”的事情吗？在以前我是不相信的，但自从师兄介绍了开源之夏（OSPP）这种活动之后，我第一次知道世界上还有这样一种顶级的活动，鱼和熊掌二者竟可得兼！&lt;/p&gt;&lt;p&gt;简单地介绍下OSPP吧，这是一个由中科院软件研究所“开源软件供应链点亮计划”发起并长期支持的一项暑期开源活动，旨在鼓励在校学生积极参与开源软件的开发维护，促进优秀开源软件社区的蓬勃发展，培养和发掘更多优秀的开发者。官网地址点&lt;a href=&quot;https://summer-ospp.ac.cn/#/homepage&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="OSPP" scheme="http://www.fisheryung.top/tags/ospp/"/>
+    
+      <category term="开源" scheme="http://www.fisheryung.top/tags/%E5%BC%80%E6%BA%90/"/>
+    
+      <category term="操作系统" scheme="http://www.fisheryung.top/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker搭建CSGO服务器</title>
@@ -440,26 +464,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;操作系统系列博客的所有实验源自于课程&lt;code&gt;&amp;quot;操作系统原理与实践检验&amp;quot;&lt;/code&gt;，代码是参考老师给的&lt;code&gt;&amp;quot;软件工程专业操作系统实验指导书&amp;quot;&lt;/code&gt;文档后的改进版本。操作系统是计算机系统的核心，因此了解操作系统的设计和实现思路是必不可少的。了解操作系统的基本要求是：理解进程的概念，理解死锁，掌握银行家算法；掌握页式储存管理的实现原理以及页面置换法&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="操作系统" scheme="http://www.fisheryung.top/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>VMware运行bin引导文件</title>
-    <link href="http://www.fisheryung.top/vmware%E8%BF%90%E8%A1%8Cbin%E5%BC%95%E5%AF%BC%E6%96%87%E4%BB%B6.html"/>
-    <id>http://www.fisheryung.top/vmware运行bin引导文件.html</id>
-    <published>2019-12-01T07:26:24.000Z</published>
-    <updated>2019-12-01T14:52:00.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近在看《自己动手写操作系统》这本书，其中第一章有一段简单的引导代码。书中的指导是将源代码文件<code>.asm</code>编译为二进制文件<code>.bin</code>后写入到软盘中，然后启动运行；又或者是使用<code>FloppyWriter</code>将二进制文件<code>.bin</code>写为镜像文件<code>.img</code>，再放到<code>Virtual PC</code>中运行。由于年代久远，现在的电脑已经没有软盘位，遗留下来的软盘也早被我小时候当玩具玩坏了，而且macOS已经不支持<code>Virtual PC</code>了，<code>FloppyWriter</code>也仅仅是在Windows平台下能够运行。由此看来，书上的运行方法已经全部行不通了</p><a id="more"></a><p>但是<code>.img</code>镜像文件能在<code>VMware Fusion</code>中运行，因此我就想着有没有工具能够将<code>.bin</code>文件转换为<code>.img</code>文件，上网查了一下还真有，工具的名称叫<code>dd</code>，听起来很奇怪，但是这工具却很强大，能够将文件写入到镜像文件中。废话不多说，那就开始试试吧</p><h1 id="编译源文件"><a href="#编译源文件" class="headerlink" title="编译源文件"></a>编译源文件</h1><p>书中第一章最简单的<code>Hello world</code>代码如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">org 07c00h ; 告诉编译器程序加载到07c00h处</span><br><span class="line">    mov ax, cs</span><br><span class="line">    mov ds, ax</span><br><span class="line">    mov es, ax</span><br><span class="line">    call DispStr ; 调用显示字符串函数  </span><br><span class="line">    jmp $; 无限循环</span><br><span class="line"></span><br><span class="line">DispStr:</span><br><span class="line">    mov ax, BootMessge</span><br><span class="line">    mov bp, ax</span><br><span class="line">    mov cx, 16</span><br><span class="line">    mov ax, 01301h</span><br><span class="line">    mov bx, 000ch</span><br><span class="line">    mov dl, 0</span><br><span class="line">    int 10h</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">BootMessge: db &quot;hello, OS world!&quot;</span><br><span class="line">times 510 - ($ - $$) db 0; 剩余字节用0填充，一共512字节</span><br><span class="line">dw 0aa55h; 以这个地址结束，计算机认为是一个引导扇区</span><br></pre></td></tr></table></figure><p>编译一下：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nasm boot.asm -o boot.bin</span><br></pre></td></tr></table></figure><p>这样子我们就得到了二进制格式的引导文件，接下来就是制作镜像了</p><h1 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h1><p>使用<code>dd</code>制作为镜像，<code>dd</code>本身有很多种参数，我们只需要定义输入和输出即可，其他参数默认就行了</p><blockquote><p>网上的教程思路是先将bin文件写入为img文件，每次写入操作的缓冲大小为512byte，写入到第一块扇区中。然后另外创建一块空的大小为1.44MB（标准软盘容量）的空镜像文件，每次执行写入缓冲的大小也是512byte，总共2880块扇区。最后将空镜像的第2到2880块扇区追加写入到刚刚写入的镜像文件中，这样子就做成了一张标准的软盘。但经过我的测试之后发现，不需要这么标准的操作，只需要把bin文件写成img文件就能在VMware中运行了</p></blockquote><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=boot.bin of=boot.img</span><br></pre></td></tr></table></figure><p><img src="images/os/bintoimg.png" alt="写入镜像"></p><p>这样子我们就得到了一个镜像文件，接下来就可以放到虚拟机中运行测试了</p><h1 id="启动虚拟机，查看成果"><a href="#启动虚拟机，查看成果" class="headerlink" title="启动虚拟机，查看成果"></a>启动虚拟机，查看成果</h1><p>虚拟机的创建就不多说了，自定义的虚拟机不需要很高的配置，甚至硬盘都能去掉。我的虚拟机整体配置如下：</p><ul><li>客户机操作系统：其他</li><li>新硬盘：无（先创建后移除）</li><li>内存：32MB</li><li>网络连接：无（创建后移除网卡）</li><li>设备摘要：软盘（创建后移除CD/DVD和声卡，添加软盘）</li></ul><p>需要注意一点的就是，我们需要为虚拟机添加软盘设备，然后软盘的镜像选择我们刚刚制作的镜像</p><p><img src="images/os/vmconfig.png" alt="虚拟机配置"></p><p>启动虚拟机，看到以下界面，大功告成！</p><p><img src="images/os/boot.png" alt="启动界面"></p><p><strong>注意：在VMware中，书上所说的将<code>org</code>的跳转地址修改为<code>0100h</code>即进入Debug模式，这个方法在VMware中似乎不起作用，因此在后面参考书本源码时，我们需要将<code>org</code>跳转地址固定为<code>07c00h</code></strong></p><h1 id="一键转换脚本"><a href="#一键转换脚本" class="headerlink" title="一键转换脚本"></a>一键转换脚本</h1><p>每次从<code>asm</code>文件转换到<code>img</code>文件都会产生一个<code>bin</code>文件，并且输入的命令都颇为麻烦，因此我写了一个小小的脚本<code>AsmToImg.sh</code>，该脚本能帮我们将中间的过程省去，直接输出一个<code>img</code>文件</p><p>该脚本的仓库地址在<a href="https://github.com/FisherWY/Shell/blob/master/asmtoimg/AsmToImg.sh" target="_blank" rel="noopener">这里</a></p><p>用法：<code>./AsmToImg.sh [-h] source.asm</code></p><p>脚本会将<code>img</code>文件输出到与<code>source.asm</code>同一级目录中，并且自动将<code>bin</code>文件删除</p><p><img src="images/os/asmtoimg.png" alt="脚本演示"></p><h1 id="附：书本源码资源"><a href="#附：书本源码资源" class="headerlink" title="附：书本源码资源"></a>附：书本源码资源</h1><p>书中的源码其实是不全的，我看到第三章，尝试编译的时候才发现，作者把源码和FloppyWriter都放在随书光盘中了</p><p>书的年代久远，光盘早就弄丢了，找这本书的资源花了我好长时间，我把资源就放在我的服务器上吧，下载地址点<a href="http://fisher.lazybone.xyz/downloads/document/%E8%87%AA%E5%B7%B1%E5%8A%A8%E6%89%8B%E5%86%99%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" target="_blank" rel="noopener">这里</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近在看《自己动手写操作系统》这本书，其中第一章有一段简单的引导代码。书中的指导是将源代码文件&lt;code&gt;.asm&lt;/code&gt;编译为二进制文件&lt;code&gt;.bin&lt;/code&gt;后写入到软盘中，然后启动运行；又或者是使用&lt;code&gt;FloppyWriter&lt;/code&gt;将二进制文件&lt;code&gt;.bin&lt;/code&gt;写为镜像文件&lt;code&gt;.img&lt;/code&gt;，再放到&lt;code&gt;Virtual PC&lt;/code&gt;中运行。由于年代久远，现在的电脑已经没有软盘位，遗留下来的软盘也早被我小时候当玩具玩坏了，而且macOS已经不支持&lt;code&gt;Virtual PC&lt;/code&gt;了，&lt;code&gt;FloppyWriter&lt;/code&gt;也仅仅是在Windows平台下能够运行。由此看来，书上的运行方法已经全部行不通了&lt;/p&gt;
     
     </summary>
     

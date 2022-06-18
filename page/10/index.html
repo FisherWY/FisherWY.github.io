@@ -198,6 +198,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c5-043.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/c-language-c5-043.html" class="post-title-link" itemprop="url">C语言第五章T10</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-02-26 18:36:10" itemprop="dateCreated datePublished" datetime="2018-02-26T18:36:10+08:00">2018-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-31 21:38:50" itemprop="dateModified" datetime="2019-10-31T21:38:50+08:00">2019-10-31</time>
+              </span>
+
+          
+            <span id="/c-language-c5-043.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言第五章T10" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目：输出杨辉三角形，其中行数n由用户输入。"><a href="#题目：输出杨辉三角形，其中行数n由用户输入。" class="headerlink" title="题目：输出杨辉三角形，其中行数n由用户输入。"></a>题目：输出杨辉三角形，其中行数n由用户输入。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,x,y,a[<span class="number">20</span>][<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"triangle's line:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;i);</span><br><span class="line">    <span class="keyword">for</span> (x=<span class="number">1</span>;x&lt;=i;x++)		<span class="comment">//使每一行的首尾都为1</span></span><br><span class="line">    &#123;</span><br><span class="line">        a[x][<span class="number">1</span>]=a[x][x]=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (x=<span class="number">3</span>;x&lt;=i;x++)		<span class="comment">//第三行开始的中间的数都为上一行的左右两个数之和</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (y=<span class="number">2</span>;y&lt;=x<span class="number">-1</span>;y++)</span><br><span class="line">        &#123;</span><br><span class="line">            a[x][y]=a[x<span class="number">-1</span>][y<span class="number">-1</span>]+a[x<span class="number">-1</span>][y];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (x=<span class="number">1</span>;x&lt;=i;x++)		<span class="comment">//打印杨辉三角</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (y=<span class="number">1</span>;y&lt;=i-x;y++)	<span class="comment">//使杨辉三角变成等腰三角形</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"   "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (y=<span class="number">1</span>;y&lt;=x;y++)		<span class="comment">//打印杨辉三角</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%6d"</span>,a[x][y]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);		<span class="comment">//每一行结束时换行</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/c-language-c5-043.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c5-042.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -516,87 +595,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c5-038.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/c-language-c5-038.html" class="post-title-link" itemprop="url">C语言学习第五章T5</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-02-12 11:12:08" itemprop="dateCreated datePublished" datetime="2018-02-12T11:12:08+08:00">2018-02-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-31 21:40:46" itemprop="dateModified" datetime="2019-10-31T21:40:46+08:00">2019-10-31</time>
-              </span>
-
-          
-            <span id="/c-language-c5-038.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言学习第五章T5" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目：查找，替换数字并输出下标。"><a href="#题目：查找，替换数字并输出下标。" class="headerlink" title="题目：查找，替换数字并输出下标。"></a>题目：查找，替换数字并输出下标。</h2><blockquote>
-<p>输入5个整数，并存储在数组中，找出最大数与最小数所在的下标位置，并把两者对调，然后输出调整后的5个数。 </p>
-</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight rsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># include &lt;stdio.h&gt;</span></span><br><span class="line">int main (void)</span><br><span class="line">&#123;</span><br><span class="line">    int a[<span class="number">5</span>],<span class="built_in">max</span>,<span class="built_in">min</span>,i,x,y,t;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//input:</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input 5 numbers:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">            scanf(<span class="string">"%d"</span>,&amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"start:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%4d"</span>,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//judge:</span></span><br><span class="line">    <span class="built_in">max</span> = a[<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">min</span> = a[<span class="number">0</span>];</span><br><span class="line">    x = y = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">1</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i]&gt;<span class="built_in">max</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">max</span> = a[i];</span><br><span class="line">            x = i+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (a[i]&lt;<span class="built_in">min</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">min</span> = a[i];</span><br><span class="line">            y = i+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//exchange:</span></span><br><span class="line">    t = a[x<span class="number">-1</span>];</span><br><span class="line">    a[x<span class="number">-1</span>] = a[y<span class="number">-1</span>];</span><br><span class="line">    a[y<span class="number">-1</span>] = t;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//output:</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"max is the %d number,max=%d\n"</span>,x,<span class="built_in">max</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"min is the %d number,min=%d\n"</span>,y,<span class="built_in">min</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"after exchange:"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%4d"</span>,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/c-language-c5-038.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -647,14 +645,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
