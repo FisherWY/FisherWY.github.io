@@ -50,18 +50,23 @@
   };
 </script>
 
-  <meta name="description" content="记录学习生活中的点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fisher&#39;s Blog">
-<meta property="og:url" content="http://www.fisheryung.top/archives/2021/05/index.html">
+  <meta name="description" content="前言开工的第一步当然是要搭建好工作环境。根据任务的描述，我们需要编译构建出libvirt 8.2.0RPM包，因此工作环境首先是要顺利完成源码编译的任务。因此本篇博客中，我们需要新建一个虚拟机，在虚拟机中安装openEuler 22.03 LTS，拉取libvirt库，根据libvirt的文档手动编译出8.2.0版本。">
+<meta name="keywords" content="OSPP,开源,操作系统,虚拟化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSPP之旅（二）">
+<meta property="og:url" content="http://www.fisheryung.top/ospp之旅（二）.html">
 <meta property="og:site_name" content="Fisher&#39;s Blog">
-<meta property="og:description" content="记录学习生活中的点滴">
+<meta property="og:description" content="前言开工的第一步当然是要搭建好工作环境。根据任务的描述，我们需要编译构建出libvirt 8.2.0RPM包，因此工作环境首先是要顺利完成源码编译的任务。因此本篇博客中，我们需要新建一个虚拟机，在虚拟机中安装openEuler 22.03 LTS，拉取libvirt库，根据libvirt的文档手动编译出8.2.0版本。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.fisheryung.top/images/ospp/compile.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/ospp/virsh.png">
+<meta property="og:updated_time" content="2022-06-21T08:49:45.355Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fisher&#39;s Blog">
-<meta name="twitter:description" content="记录学习生活中的点滴">
+<meta name="twitter:title" content="OSPP之旅（二）">
+<meta name="twitter:description" content="前言开工的第一步当然是要搭建好工作环境。根据任务的描述，我们需要编译构建出libvirt 8.2.0RPM包，因此工作环境首先是要顺利完成源码编译的任务。因此本篇博客中，我们需要新建一个虚拟机，在虚拟机中安装openEuler 22.03 LTS，拉取libvirt库，根据libvirt的文档手动编译出8.2.0版本。">
+<meta name="twitter:image" content="http://www.fisheryung.top/images/ospp/compile.png">
 
-<link rel="canonical" href="http://www.fisheryung.top/archives/2021/05/">
+<link rel="canonical" href="http://www.fisheryung.top/ospp之旅（二）.html">
 
 
 <script id="page-configurations">
@@ -69,13 +74,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
-    isArchive: true
+    isArchive: false
   };
 </script>
 
-  <title>归档 | Fisher's Blog</title>
+  <title>OSPP之旅（二） | Fisher's Blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
     <script>
@@ -193,50 +198,112 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">很好! 目前共计 89 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/ospp之旅（二）.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OSPP之旅（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-21 15:42:04 / 修改时间：16:49:45" itemprop="dateCreated datePublished" datetime="2022-06-21T15:42:04+08:00">2022-06-21</time>
+            </span>
+
+          
+            <span id="/ospp之旅（二）.html" class="post-meta-item leancloud_visitors" data-flag-title="OSPP之旅（二）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2021</h1>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>开工的第一步当然是要搭建好工作环境。根据任务的描述，我们需要编译构建出<code>libvirt 8.2.0</code>RPM包，因此工作环境首先是要顺利完成源码编译的任务。因此本篇博客中，我们需要新建一个虚拟机，在虚拟机中安装<code>openEuler 22.03 LTS</code>，拉取<code>libvirt</code>库，根据<code>libvirt</code>的文档手动编译出<code>8.2.0</code>版本。</p><a id="more"></a>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>以下是编译前需要准备的东西，由于过于简单，就不详细说明如何搭建的：</p>
+<ul>
+<li>操作系统：<code>openEuler 22.03 LTS</code>，在虚拟机中安装，流程几乎和<code>CentOS</code>一样</li>
+<li><code>Meson</code>：<code>libvirt 8.2.0</code>的构建工具，可以使用命令<code>sudo pip3 install meson</code>安装</li>
+<li><code>Ninja</code>：<code>libvirt 8.2.0</code>的构建系统，可以使用命令<code>sudo pip3 install ninja</code>安装</li>
+<li><code>Clangd</code>：<code>LLVM</code>推出的语法分析工具，使用<code>compile_commands.json</code>文件分析项目代码，配合VSCode的Clangd插件使用起来很舒服，照着官方文档安装即可，文档地址在<a href="https://clangd.llvm.org/installation" target="_blank" rel="noopener">这里</a></li>
+<li><code>libvirt</code>其他依赖：好像还有xml什么的依赖，<code>meson build</code>检查依赖的时候会有日志的，提示缺什么包用<code>pip</code>照着安装就行了</li>
+</ul>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><h2 id="准备源码"><a href="#准备源码" class="headerlink" title="准备源码"></a>准备源码</h2><p>在Gitee上Fork<code>libvirt</code>仓库，地址在<a href="https://gitee.com/openeuler/libvirt" target="_blank" rel="noopener">这里</a>，并拉取到本地：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> git@gitee.com:wengyu1/libvirt.git</span><br></pre></td></tr></table></figure></p>
+<p>从<code>8.2.0</code>的Tag创建新的分支，命名为<code>libvirt-8.2.0</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> libvirt</span><br><span class="line">git branch libvirt-8.2.0 v8.2.0</span><br></pre></td></tr></table></figure></p>
+<h2 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h2><p>官方的编译文档在<a href="https://libvirt.org/compiling.html" target="_blank" rel="noopener">这里</a>。由于我们不需要安装，因此我们直接编译构建即可，编译选项直接默认即可：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">meson build</span><br><span class="line">ninja -C build</span><br></pre></td></tr></table></figure></p>
+<p>顺利编译完成，速度还挺快的</p>
+<p><img src="images/ospp/compile.png" alt="编译完成"></p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p>将<code>build</code>文件夹中的<code>compile_commands.json</code>链接到项目根目录，<code>clangd</code>就会自动分析项目代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s `<span class="built_in">pwd</span>`/build/compile_commands.json `<span class="built_in">pwd</span>`</span><br></pre></td></tr></table></figure></p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>验证下编译的效果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> build/tools</span><br><span class="line">./virsh --version</span><br></pre></td></tr></table></figure></p>
+<p>效果如下图</p>
+<p><img src="images/ospp/virsh.png" alt="运行效果"></p>
+<p>至此，<code>libvirt</code>的源码编译完成了，下一步可以编写RPM spec文件，使用<code>rpmbuild</code>工具构建RPM包</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-05-30T11:52:26+08:00"
-              content="2021-05-30">
-          05-30
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ospp/" rel="tag"># OSPP</a>
+              <a href="/tags/开源/" rel="tag"># 开源</a>
+              <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+              <a href="/tags/虚拟化/" rel="tag"># 虚拟化</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/从high-sierra升级到big-sur.html" itemprop="url">
-            <span itemprop="name">从High Sierra升级到Big Sur</span>
-          </a>
-      </h2>
+        
 
-    </header>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/ospp之旅（一）.html" rel="next" title="OSPP之旅（一）">
+                  <i class="fa fa-chevron-left"></i> OSPP之旅（一）
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -265,6 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">3.</span> <span class="nav-text">编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备源码"><span class="nav-number">3.1.</span> <span class="nav-text">准备源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译-1"><span class="nav-number">3.2.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接"><span class="nav-number">3.3.</span> <span class="nav-text">链接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效果"><span class="nav-number">4.</span> <span class="nav-text">效果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
