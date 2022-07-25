@@ -198,6 +198,156 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/docker搭建csgo服务器.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/docker搭建csgo服务器.html" class="post-title-link" itemprop="url">Docker搭建CSGO服务器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-05-26 19:05:26 / 修改时间：19:29:14" itemprop="dateCreated datePublished" datetime="2022-05-26T19:05:26+08:00">2022-05-26</time>
+            </span>
+
+          
+            <span id="/docker搭建csgo服务器.html" class="post-meta-item leancloud_visitors" data-flag-title="Docker搭建CSGO服务器" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>很久之前在简书上写过几篇博客，内容就是搭建属于自己的CSGO服务器，点击<a href="https://www.jianshu.com/u/a23466842ccc" target="_blank" rel="noopener">这里</a>可以进行考古。但是纯命令行的搭建方式有着以下几种缺点：</p><ul>
+<li>搭建步骤繁琐：全程直接使用命令行搭建服务器，对于不熟悉Linux环境的新手并不友好</li>
+<li>插件切换繁琐：想要服务器能够快速地切换不同的插件（回防、Multi 1v1、跑图、KZ等），每次手动操作Addons文件夹中的插件极其令人烦躁</li>
+<li>硬盘空间珍贵：同样是插件切换繁琐引起的问题，当时用的是阿里云最便宜的云服务器，只有40G的硬盘，只能存一份服务器游戏文件，没有足够的空间存多份服务器游戏文件然后多开</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/docker搭建csgo服务器.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/使用git同步开发机与开发服务器的代码.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/使用git同步开发机与开发服务器的代码.html" class="post-title-link" itemprop="url">使用Git同步开发机与开发服务器的代码</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-25 10:06:08 / 修改时间：10:11:38" itemprop="dateCreated datePublished" datetime="2021-12-25T10:06:08+08:00">2021-12-25</time>
+            </span>
+
+          
+            <span id="/使用git同步开发机与开发服务器的代码.html" class="post-meta-item leancloud_visitors" data-flag-title="使用Git同步开发机与开发服务器的代码" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在开发机上开发完成一个小版本的开发之后，需要将代码部署到开发服务器上，但由于代码仍在测试中，可能需要频繁修改代码，每次打包都会显得很麻烦，而每次手动将修改的代码复制到服务器上更是低效的做法，因此想到了用Git的钩子来解决这个痛点，下面是具体的操作。</p><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>首先是在开发机和服务器上都安装Git，我使用的Git版本如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/使用git同步开发机与开发服务器的代码.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/将svn托管的ssh项目导入到idea中.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -423,157 +573,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/scnu校园网ipv6配置.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/scnu校园网ipv6配置.html" class="post-title-link" itemprop="url">SCNU校园网IPv6配置</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-24 11:03:47 / 修改时间：12:55:00" itemprop="dateCreated datePublished" datetime="2021-06-24T11:03:47+08:00">2021-06-24</time>
-            </span>
-
-          
-            <span id="/scnu校园网ipv6配置.html" class="post-meta-item leancloud_visitors" data-flag-title="SCNU校园网IPv6配置" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>因教育网IPv6不限速，使用清华TUNA的开源镜像站下载资源能够跑满带宽，体验非常好，所以就有了给路由器配置IPv6的想法。之前使用极路由官方固件时有官方的教育网插件可以用（使用6relay），但换了Openwrt后使用的是odhcpd，需要自己重新配置一下。这篇博客纪录了我的配置过程，其中参考了恩山论坛的<a href="https://www.right.com.cn/forum/thread-316405-1-1.html" target="_blank" rel="noopener">这篇</a>帖子。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/scnu校园网ipv6配置.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/从high-sierra升级到big-sur.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/从high-sierra升级到big-sur.html" class="post-title-link" itemprop="url">从High Sierra升级到Big Sur</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-05-30 11:52:26 / 修改时间：17:26:28" itemprop="dateCreated datePublished" datetime="2021-05-30T11:52:26+08:00">2021-05-30</time>
-            </span>
-
-          
-            <span id="/从high-sierra升级到big-sur.html" class="post-meta-item leancloud_visitors" data-flag-title="从High Sierra升级到Big Sur" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>看着Dock栏的图标一个个变成了正方形，软件慢慢开始不支持High Sierra系统，我也按耐不住想要升级系统了。但插在主板上的GTX1060告诉我，升级了系统之后就再也用不了它了，并且升级后的系统也不知道能不能正常使用。为了解决显卡这个问题，我去网上查了许多资料，研究了几种不同的解法，最终在不变动当前配置的情况下成功升级到Big Sur，Windows系统也毫无影响，付出的代价有2个：一是Big Sur下GTX1060无法使用；二是需要频繁插拔HDMI线，想要切换到Windows系统并使用GTX1060，需要把HDMI线从板载HDMI口拔下并插到显卡HDMI口上。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/从high-sierra升级到big-sur.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -619,14 +623,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
