@@ -198,6 +198,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c4-033.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/c-language-c4-033.html" class="post-title-link" itemprop="url">C语言学习第四章T9</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-02-06 11:42:55" itemprop="dateCreated datePublished" datetime="2018-02-06T11:42:55+08:00">2018-02-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-31 21:42:34" itemprop="dateModified" datetime="2019-10-31T21:42:34+08:00">2019-10-31</time>
+              </span>
+
+          
+            <span id="/c-language-c4-033.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言学习第四章T9" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目：编程找到并输出5个整数中的最大和最小数。"><a href="#题目：编程找到并输出5个整数中的最大和最小数。" class="headerlink" title="题目：编程找到并输出5个整数中的最大和最小数。"></a>题目：编程找到并输出5个整数中的最大和最小数。</h2><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> main (<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> i,x,<span class="built_in">max</span>,<span class="built_in">min</span>,a[x];</span><br><span class="line">    printf(<span class="string">"how many numbers do you want to input:"</span>);</span><br><span class="line">    scanf(<span class="string">"%d"</span>,&amp;x);</span><br><span class="line">    <span class="built_in">for</span> (i=<span class="number">0</span>;i&lt;x;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(<span class="string">"now input No.%d number:"</span>,i+<span class="number">1</span>);</span><br><span class="line">        scanf(<span class="string">"%d"</span>,&amp;a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">max</span>=a[<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">min</span>=a[<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">for</span> (i=<span class="number">0</span>;i&lt;x;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">if</span>(a[i]&gt;<span class="built_in">max</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">max</span>=a[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">if</span>(a[i]&lt;<span class="built_in">min</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">min</span>=a[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"max=%d\n"</span>,<span class="built_in">max</span>);</span><br><span class="line">    printf(<span class="string">"min=%d\n"</span>,<span class="built_in">min</span>);</span><br><span class="line">    <span class="built_in">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/c-language-c4-033.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c4-032.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -516,87 +595,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/c-language-c4-028.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/icons/avatar.jpg">
-      <meta itemprop="name" content="Fisher">
-      <meta itemprop="description" content="记录学习生活中的点滴">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Fisher's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/c-language-c4-028.html" class="post-title-link" itemprop="url">C语言学习第四章T4</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-02-01 13:13:22" itemprop="dateCreated datePublished" datetime="2018-02-01T13:13:22+08:00">2018-02-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-31 21:44:45" itemprop="dateModified" datetime="2019-10-31T21:44:45+08:00">2019-10-31</time>
-              </span>
-
-          
-            <span id="/c-language-c4-028.html" class="post-meta-item leancloud_visitors" data-flag-title="C语言学习第四章T4" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目：计算银行存款余额和利息"><a href="#题目：计算银行存款余额和利息" class="headerlink" title="题目：计算银行存款余额和利息"></a>题目：计算银行存款余额和利息</h2><blockquote>
-<p>假设银行存款季度利息是5.3%。<br> 根据输入的原始数据计算利息和账户余额，并以表格的形式输出每个季度的利息和账户余额。<br> 要求写两个函数，一个用来计算利息和余额，一个用来输出。</p>
-</blockquote><h3 id="主要代码："><a href="#主要代码：" class="headerlink" title="主要代码："></a>主要代码：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">function</span> <span class="params">(<span class="keyword">float</span> sum)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">finals</span> <span class="params">(<span class="keyword">float</span> a)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"seasonal lixi is&gt;&gt;&gt;&gt;&gt;&gt;&gt;5.3%\n"</span>);</span><br><span class="line">    <span class="keyword">float</span> a,z;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"input start money:"</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%f"</span>,&amp;a);</span><br><span class="line">    z = finals(a);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">function</span> <span class="params">(<span class="keyword">float</span> sum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> lixi;</span><br><span class="line">    lixi = sum*<span class="number">0.053</span>;</span><br><span class="line">    sum = sum + lixi;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">finals</span> <span class="params">(<span class="keyword">float</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> x,y,z;		<span class="comment">//x为利息,y为总金</span></span><br><span class="line">    <span class="keyword">int</span> b,i=<span class="number">0</span>,c=<span class="number">0</span>;</span><br><span class="line">    z = function(a);</span><br><span class="line">    <span class="keyword">while</span> (z/<span class="number">10</span> &gt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        i = i + <span class="number">1</span>;</span><br><span class="line">        z = z/<span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"---date---"</span>);</span><br><span class="line">    <span class="keyword">for</span> (c=<span class="number">0</span>;c&lt;=i;c++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"-"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"-------money--------------lixi----------- \n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (b=<span class="number">1</span>;b&lt;=<span class="number">4</span>;b++)</span><br><span class="line">    &#123;</span><br><span class="line">        y = function(a);</span><br><span class="line">        x = y - a;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"|the %d  season:      %.2f          %.2f        | \n"</span>,b,y,x);</span><br><span class="line">        a = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (c=<span class="number">0</span>;c&lt;=i;c++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"-"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------------------------------------------------- \n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/c-language-c4-028.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -647,7 +645,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
