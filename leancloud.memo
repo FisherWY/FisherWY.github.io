@@ -72,6 +72,7 @@
 {"title":"VMware装OpenWrt","url":"/vmware装openwrt.html"},
 {"title":"VMware运行bin引导文件","url":"/vmware运行bin引导文件.html"},
 {"title":"中级软件实作总结","url":"/中级软件实作总结.html"},
+{"title":"为没有80、443端口的域名申请SSL证书","url":"/为没有80、443端口的域名申请ssl证书.html"},
 {"title":"从Clover迁移到OpenCore","url":"/从clover迁移到opencore.html"},
 {"title":"从Github迁移Hexo博客","url":"/从github迁移hexo博客.html"},
 {"title":"从High Sierra升级到Big Sur","url":"/从high-sierra升级到big-sur.html"},
