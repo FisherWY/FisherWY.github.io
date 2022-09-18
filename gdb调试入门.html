@@ -64,7 +64,7 @@
 <meta property="og:image" content="http://www.fisheryung.top/images/gdb/info_br.png">
 <meta property="og:image" content="http://www.fisheryung.top/images/gdb/info_args.png">
 <meta property="og:image" content="http://www.fisheryung.top/images/gdb/print_image_size.png">
-<meta property="og:updated_time" content="2022-09-18T12:00:15.901Z">
+<meta property="og:updated_time" content="2022-09-18T12:25:17.978Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GDB调试入门">
 <meta name="twitter:description" content="前言在写Mindspore算子过程中，由于自己粗心、又或是理解出现了一些偏差，导致项目在编译、运行时会出现错误。对于一些简单的语法错误，语法检查器可以帮助我们纠正错误，但有一部分错误只有在运行时才会暴露出来，这一类错误很难发现，程序崩溃之后只会输出Core dump，使用print大法虽然能知道程序在哪一行Core dump了，而具体是什么原因导致的Core dump还是需要使用调试器进一步分析。">
@@ -237,7 +237,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-18 20:00:15" itemprop="dateModified" datetime="2022-09-18T20:00:15+08:00">2022-09-18</time>
+                <time title="修改时间：2022-09-18 20:25:17" itemprop="dateModified" datetime="2022-09-18T20:25:17+08:00">2022-09-18</time>
               </span>
 
           
@@ -294,7 +294,8 @@
 <p>重新编译、安装一次<code>mindspore-gpu</code>包，再次启动GDB，在同样的位置打下断点，程序运行到断点停下来后，查看<code>image_size</code>变量，可以看到GDN正确地输出变量值，并且变量地址也是正确的Host端地址了。</p>
 <p><img src="images/gdb/print_image_size.png" alt="Bug修复后"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在这次实战之前，我天真地以为GDB只能调试C/C++程序，并且还以为只能调试可执行的文件，直到这一次实战我才了解到，GDB实际上是一个通用的调试器，功能非常强大。虽然之前用过GDB，但是都是调试<code>Hello world</code>之类的C/C++小程序，只能说是小打小闹，遇到大型项目的调试就无从下手了，要不是这一次print大法实在是不好使了，我还一直不情愿去学习、使用、将GDB真正用到实战中。真正上手使用GDB并解决问题过后，现在的我就觉得GDB可太香辣！</p>
-<p>关于GDB的工作原理，我还是属于一窍不通的，接下来需要花点时间去学习一下GDB到底是如何工作的，进一步提高我对GDB的理解。</p>
+<p>关于GDB的工作原理，我是一窍不通的，接下来需要花点时间去学习一下GDB到底是如何工作的，进一步提高我对GDB的理解。</p>
+<p>最后贴一个GDB命令速查表，<a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf" target="_blank" rel="noopener">链接</a>在此。</p>
 <h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><ol>
 <li><code>sample_distorted_bounding_box_v2_gpu_kernel.h</code></li>
 </ol>
