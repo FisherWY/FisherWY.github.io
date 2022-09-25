@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://www.fisheryung.top/images/mindspore/compile.png">
 <meta property="og:image" content="http://www.fisheryung.top/images/mindspore/result.png">
-<meta property="og:updated_time" content="2022-09-22T08:56:05.524Z">
+<meta property="og:updated_time" content="2022-09-25T11:30:55.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Ubuntu18.04上编译安装MindSpore">
 <meta name="twitter:description" content="一、前言本篇博客最初发布于Gitlink论坛中的MindSpore解读评注，链接在这里。在参与MindSpore项目开发之前，第一件需要做的事情就是搭建开发环境，从源码编译安装MindSpore是一个绕不开的话题。本篇博客记录了我在Ubuntu18.04上从源码编译安装MindSpore的全过程。二、环境准备">
@@ -225,10 +225,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-09-22 16:12:30 / 修改时间：16:56:05" itemprop="dateCreated datePublished" datetime="2022-09-22T16:12:30+08:00">2022-09-22</time>
+              <time title="创建时间：2022-09-22 16:12:30" itemprop="dateCreated datePublished" datetime="2022-09-22T16:12:30+08:00">2022-09-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-25 19:30:55" itemprop="dateModified" datetime="2022-09-25T19:30:55+08:00">2022-09-25</time>
+              </span>
 
           
             <span id="/在ubuntu18-04上编译安装mindspore.html" class="post-meta-item leancloud_visitors" data-flag-title="在Ubuntu18.04上编译安装MindSpore" title="阅读次数">
@@ -313,7 +319,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate mindspore-dev</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>执行编译脚本</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> mindspore</span><br><span class="line">bash build.sh -e gpu -S on -j64</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> mindspore</span><br><span class="line">bash build.sh -d -e gpu -S on -j64</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>编译成功<br><img src="images/mindspore/compile.png" alt="编译成果"></p>
