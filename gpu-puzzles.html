@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/logo64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/logo32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/logo32.png">
+  <link rel="mask-icon" href="/images/icons/logo200.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言某天在知乎上刷到了一个很有意思的GPU并行编程学习仓库，叫GPU-Puzzles，通过解谜+可视化的方式学习并行编程，使用Python就可以实现CUDA核函数，并且可以观察线程和数据的对应关系，对于初学者而言非常友好。仓库链接，花了一个下午全部解出来了，以下记录下我的题解和对于题目的分析理解。题解">
+<meta name="keywords" content="GPU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPU-Puzzles全记录">
+<meta property="og:url" content="http://www.fisheryung.top/gpu-puzzles.html">
+<meta property="og:site_name" content="Fisher&#39;s Blog">
+<meta property="og:description" content="前言某天在知乎上刷到了一个很有意思的GPU并行编程学习仓库，叫GPU-Puzzles，通过解谜+可视化的方式学习并行编程，使用Python就可以实现CUDA核函数，并且可以观察线程和数据的对应关系，对于初学者而言非常友好。仓库链接，花了一个下午全部解出来了，以下记录下我的题解和对于题目的分析理解。题解">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle2.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle3.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle4.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle5.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle6.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle7.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle8.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle9.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle10.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle11case1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle11case2.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle12case1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle12case2.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle13.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle14case1.png">
+<meta property="og:image" content="http://www.fisheryung.top/images/gpu/puzzle14case2.png">
+<meta property="og:updated_time" content="2023-06-18T11:47:22.937Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GPU-Puzzles全记录">
+<meta name="twitter:description" content="前言某天在知乎上刷到了一个很有意思的GPU并行编程学习仓库，叫GPU-Puzzles，通过解谜+可视化的方式学习并行编程，使用Python就可以实现CUDA核函数，并且可以观察线程和数据的对应关系，对于初学者而言非常友好。仓库链接，花了一个下午全部解出来了，以下记录下我的题解和对于题目的分析理解。题解">
+<meta name="twitter:image" content="http://www.fisheryung.top/images/gpu/puzzle1.png">
+
+<link rel="canonical" href="http://www.fisheryung.top/gpu-puzzles.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>GPU-Puzzles全记录 | Fisher's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111555456-1"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !true) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-111555456-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisher's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">自由尋覓快樂別人從沒法感受</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/FisherWY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.fisheryung.top/gpu-puzzles.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icons/avatar.jpg">
+      <meta itemprop="name" content="Fisher">
+      <meta itemprop="description" content="记录学习生活中的点滴">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisher's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GPU-Puzzles全记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-18 10:36:04 / 修改时间：19:47:22" itemprop="dateCreated datePublished" datetime="2023-06-18T10:36:04+08:00">2023-06-18</time>
+            </span>
+
+          
+            <span id="/gpu-puzzles.html" class="post-meta-item leancloud_visitors" data-flag-title="GPU-Puzzles全记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>某天在知乎上刷到了一个很有意思的GPU并行编程学习仓库，叫<code>GPU-Puzzles</code>，通过解谜+可视化的方式学习并行编程，使用Python就可以实现CUDA核函数，并且可以观察线程和数据的对应关系，对于初学者而言非常友好。仓库<a href="https://github.com/srush/GPU-Puzzles" target="_blank" rel="noopener">链接</a>，花了一个下午全部解出来了，以下记录下我的题解和对于题目的分析理解。</p><h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><a id="more"></a>
+<h2 id="Puzzle-1"><a href="#Puzzle-1" class="headerlink" title="Puzzle 1"></a>Puzzle 1</h2><p>题目：<code>Map</code>。签到题，顾名思义就是映射，题目保证线程数量与数据量一致，因此数据与线程是一对一的关系，一条线程对应处理一个数据即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="comment"># 通过threadIdx.x获取本Block内的线程号</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 直接+10，写回到输出的对应位置即可</span></span><br><span class="line">        out[local_i] = a[local_i] + <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>下图便是本题的可视化结果，可以看到每一条线程从数组<code>a</code>中读取一个数据，+10后写到<code>out</code>数组中，完成映射操作，全局内存上读和写的次数是一样的。</p>
+<p><img src="images/gpu/puzzle1.png" alt="Puzzle 1"></p>
+<h2 id="Puzzle-2"><a href="#Puzzle-2" class="headerlink" title="Puzzle 2"></a>Puzzle 2</h2><p>题目：<code>Zip</code>。可以理解为组合，将数组<code>a</code>和<code>b</code>中每一个元素相加，结果储存在<code>out</code>中，题目保证线程数量与数据量一致，因此数据与线程仍然是一对一的关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">zip_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, b)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 一对一映射关系，一条线程处理一次加法操作</span></span><br><span class="line">        out[local_i] = a[local_i] + b[local_i]</span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果可以看到一条线程分别从<code>a</code>和<code>b</code>中读取一个数据，相加后写到<code>out</code>中，全局内存上读的次数是写的两倍。</p>
+<p><img src="images/gpu/puzzle2.png" alt="Puzzle 2"></p>
+<h2 id="Puzzle-3"><a href="#Puzzle-3" class="headerlink" title="Puzzle 3"></a>Puzzle 3</h2><p>题目：<code>Guard</code>。从这题开始，题目就更符合并行编程下实际的情景了，线程的数量一般情况下是与数据量不相等的，在读写操作前，我们需要判断某条线程是否需要进行读写操作，以防出现越界或重复计算等错误。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_guard_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 当线程数多于要处理的数据量时，需要判断一下本线程是否需要处理数据</span></span><br><span class="line">        <span class="keyword">if</span> local_i &lt; size:</span><br><span class="line">            out[local_i] = a[local_i] + <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>这题的可视化结果看不出<code>if local_i &lt; size:</code>判断有什么作用，实际上线程的数量是要多于数据量的，多出的这部分线程没有进行任何的操作。</p>
+<p><img src="images/gpu/puzzle3.png" alt="Puzzle 3"></p>
+<h2 id="Puzzle-4"><a href="#Puzzle-4" class="headerlink" title="Puzzle 4"></a>Puzzle 4</h2><p>题目：<code>Map 2D</code>。本题是第一题的二维扩展版，在CUDA编程中，一个Grid可以有3维Block，一个Block可以有3维Thread。当启动核函数配置为多维Block或多维Thread时，我们需要稍微修改一下线程的索引方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_2D_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        local_j = cuda.threadIdx.y</span><br><span class="line">        <span class="comment"># 一维Block，二维Thread，按照二维数组的方式去索引即可，注意线程数量比数据量多</span></span><br><span class="line">        <span class="keyword">if</span> local_i &lt; size <span class="keyword">and</span> local_j &lt; size:</span><br><span class="line">            out[local_i, local_j] = a[local_i, local_j] + <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果可以看到，一条线程对应二维数组上的一个数据，同样的，没有参与数据读写操作的线程并没有画出来。</p>
+<p><img src="images/gpu/puzzle4.png" alt="Puzzle 4"></p>
+<h2 id="Puzzle-5"><a href="#Puzzle-5" class="headerlink" title="Puzzle 5"></a>Puzzle 5</h2><p>题目：<code>Broadcast</code>。广播操作，一个列向量与一个行向量相加，结果将会自动广播为一个矩阵，本题用了二维的Thread，注意行、列向量是一维的，需要理解输入输出数据的映射关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">broadcast_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, b, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        local_j = cuda.threadIdx.y</span><br><span class="line">        <span class="comment"># 广播操作，列向量 + 行向量，结果广播为矩阵</span></span><br><span class="line">        <span class="keyword">if</span> local_i &lt; size <span class="keyword">and</span> local_j &lt; size:</span><br><span class="line">            out[local_i, local_j] = a[local_i, <span class="number">0</span>] + b[<span class="number">0</span>, local_j]</span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>可视化结果如下，行向量数据映射到矩阵中的每一行，列向量数据映射到矩阵中的每一列。</p>
+<p><img src="images/gpu/puzzle5.png" alt="Puzzle 5"></p>
+<h2 id="Puzzle-6"><a href="#Puzzle-6" class="headerlink" title="Puzzle 6"></a>Puzzle 6</h2><p>题目：<code>Blocks</code>。在CUDA中，每一个Block内线程的数量是有限制的，为了使用更多的线程，我们可以增加更多的Block。本题开始，核函数不再只使用一个Block了，此时我们需要考虑数据在Block间的跨度和Block内线程对数据的索引关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_block_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 多Block下的数据索引，需要考虑BlockIdx</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            out[i] = a[i] + <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果中看到，我们有多个Block，每个Block中都有相同数量的线程。考虑数据索引时，我们需要将Block间的索引也考虑上，与二维数组的索引相似，Block和Thread组成了二维的索引关系。</p>
+<p><img src="images/gpu/puzzle6.png" alt="Puzzle 6"></p>
+<h2 id="Puzzle-7"><a href="#Puzzle-7" class="headerlink" title="Puzzle 7"></a>Puzzle 7</h2><p>题目：<code>Blocks 2D</code>。二维的Block加上二维的Thread，这是实际应用中最常见的场景。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_block2D_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 二维多Block索引</span></span><br><span class="line">        j = cuda.blockIdx.y * cuda.blockDim.y + cuda.threadIdx.y</span><br><span class="line">        <span class="keyword">if</span> i &lt; size <span class="keyword">and</span> j &lt; size:</span><br><span class="line">            out[i, j] = a[i, j] + <span class="number">10</span></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果中可以看到，每一个Block负责处理矩阵<code>a</code>中的一部分数据，一个大矩阵就这样被切分为几个小矩阵，分别进行数据操作，最后写回到输出中。</p>
+<p><img src="images/gpu/puzzle7.png" alt="Puzzle 7"></p>
+<h2 id="Puzzle-8"><a href="#Puzzle-8" class="headerlink" title="Puzzle 8"></a>Puzzle 8</h2><p>题目：<code>Shared</code>。本题是<code>Shared memory(共享内存)</code>的第一次使用，共享内存是<code>SM</code>中的片上内存，实际上是开放给开发人员自由编程的一种L1缓存，读写的速度要比全局内存快很多倍，当核函数需要频繁、重复地读取一部分数据进行运算时，先将这一部分数据从全局内存中读取到共享内存中，能够提升非常多倍的性能。</p>
+<p>本题其实不用共享内存也可以，只是给大伙演示一下共享内存是如何使用的。</p>
+<p>使用共享内存的操作一般为：从全局内存中读取数据并储存到共享内存中，显示地同步内存，保证所需的数据已正确存放到共享内存中，从共享内存中读取数据并进行计算，将结果写回到全局内存的输出中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Thread Per Block</span></span><br><span class="line">TPB = <span class="number">4</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shared_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="comment"># 声明共享内存以及共享内存的大小，注意L1缓存大小有限，不能用太大的共享内存</span></span><br><span class="line">        shared = cuda.shared.array(TPB, numba.float32)</span><br><span class="line">        <span class="comment"># 数据全局索引</span></span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 数据在Block内的局部索引</span></span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 带共享内存的加法，通常操作是：从全局内存中读数据到共享内存、在共享内存上运算、将结果从共享内存写回全局内存</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            <span class="comment"># 将数据从全局内存中加载到共享内存，注意是全局索引 -&gt; 局部索引</span></span><br><span class="line">            shared[local_i] = a[i]</span><br><span class="line">            <span class="comment"># 显式同步所有线程，保证所有数据都加载到共享内存中</span></span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">            <span class="comment"># 读写共享内存</span></span><br><span class="line">            shared[local_i] = shared[local_i] + <span class="number">10</span></span><br><span class="line">            <span class="comment"># 将结果写回到全局内存的输出中，此时便是局部索引 -&gt; 全局索引</span></span><br><span class="line">            out[i] = shared[local_i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果中看到，存在一个数据从全局内存中加载到共享内存上的一个操作，计算完成后将结果写回到全局内存的输出中。</p>
+<p><img src="images/gpu/puzzle8.png" alt="Puzzle 8"></p>
+<h2 id="Puzzle-9"><a href="#Puzzle-9" class="headerlink" title="Puzzle 9"></a>Puzzle 9</h2><p>题目：<code>Pooling</code>。一维池化操作，池化核大小为3，需要将数组上相邻的三个元素相加，因此需要频繁地读取数据，此时使用共享内存就很有必要了。题目给的共享内存大小正好能将输入的数组<code>a</code>完全装下，将输入完全搬运到共享内存上后，每条线程将其相邻的三个元素相加，将结果写回输出即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TPB = <span class="number">8</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pool_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        shared = cuda.shared.array(TPB, numba.float32)</span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 模拟池化操作，池化核大小为3</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            <span class="comment"># 将所有输入数据搬运到共享内存上</span></span><br><span class="line">            shared[i] = a[i]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">            <span class="comment"># 使用一个寄存器变量，储存相加结果</span></span><br><span class="line">            acc = <span class="number">0</span></span><br><span class="line">            <span class="comment"># 池化核大小，注意要判断是否越界</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">                <span class="keyword">if</span> local_i - j &gt;= <span class="number">0</span>:</span><br><span class="line">                    acc = acc + shared[local_i - j]</span><br><span class="line">            <span class="comment"># 结果写回全局内存</span></span><br><span class="line">            out[i] = acc</span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>从可视化结果中可以看到，读取数据的次数远多于写入数据的次数，使用共享内存能带来非常大的性能提升。同时共享内存大小能装下数组<code>a</code>，省去了判断数据是否存在于共享内存中的判断。</p>
+<p><img src="images/gpu/puzzle9.png" alt="Puzzle 9"></p>
+<h2 id="Puzzle-10"><a href="#Puzzle-10" class="headerlink" title="Puzzle 10"></a>Puzzle 10</h2><p>题目：<code>Dot product</code>。点乘，将向量<code>a</code>和<code>b</code>中对应位置元素相乘，最后相加。整体运算可以分为两个阶段，第一阶段是元素相乘，可以将数据加载到共享内存上的同时完成相乘的操作，第二阶段是元素的规约运算，将共享内存上的所有元素进行规约相加，也就是<code>reduce_sum</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TPB = <span class="number">8</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dot_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, b, size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        shared = cuda.shared.array(TPB, numba.float32)</span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 点乘，最后求和，求和部分可以用reduce解决</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            <span class="comment"># 加载数据的同时进行乘法操作</span></span><br><span class="line">            shared[local_i] = a[i] * b[i]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">        <span class="comment"># 规约求和运算，每次都是前半部分+后半部分</span></span><br><span class="line">        stride = size // <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> stride != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> local_i &lt; stride:</span><br><span class="line">                shared[local_i] = shared[local_i] + shared[local_i + stride]</span><br><span class="line">            stride = stride // <span class="number">2</span></span><br><span class="line">        <span class="comment"># 写回结果</span></span><br><span class="line">        out[<span class="number">0</span>] = shared[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>可视化结果看不出数据读写的顺序，首先是从数组<code>a</code>和<code>b</code>中读出元素相乘，并存放到共享内存中，然后将共享内存上所有元素规约相加到共享内存的第一个元素中，最后将结果写回到输出。</p>
+<p><img src="images/gpu/puzzle10.png" alt="Puzzle 10"></p>
+<h2 id="Puzzle-11"><a href="#Puzzle-11" class="headerlink" title="Puzzle 11"></a>Puzzle 11</h2><p>题目：<code>1D Convolution</code>。一维卷积运算，本题中的共享内存大小不足以存放下输入的所有元素，因此我们需要判断数据是否在共享内存上，对于不在共享内存上的数据，我们只能从全局内存中读取并计算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">MAX_CONV = <span class="number">4</span></span><br><span class="line">TPB = <span class="number">8</span></span><br><span class="line">TPB_MAX_CONV = TPB + MAX_CONV</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, b, a_size, b_size)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        shared = cuda.shared.array(TPB_MAX_CONV, numba.float32)</span><br><span class="line">        <span class="comment"># 将卷积核`b`从全局内存搬到共享内存，这里保证共享内存能够放下卷积核的所有数据</span></span><br><span class="line">        <span class="comment"># 将卷积核的数据存放在共享内存的最后面，由于还需要将部分输入`a`的数据搬运到共享内存，这里可以省一次线程同步</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; b_size:</span><br><span class="line">            shared[local_i + TPB] = b[i]</span><br><span class="line">        <span class="comment"># 计算`a`中每个元素对卷积核`b`的点乘</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; a_size:</span><br><span class="line">            <span class="comment"># 先将`a`中数据从全局内存搬到共享内存，并同步一次所有线程</span></span><br><span class="line">            shared[local_i] = a[i]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">            <span class="comment"># 记录该点的类加值</span></span><br><span class="line">            acc = <span class="number">0</span></span><br><span class="line">            <span class="comment"># 对卷积核`b`进行点乘</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(b_size):</span><br><span class="line">                <span class="comment"># 记得限制一下卷积的范围，不要越界</span></span><br><span class="line">                <span class="keyword">if</span> i + j &lt; a_size:</span><br><span class="line">                    <span class="comment"># 如果`a`中的数据在共享内存中有，则直接从共享内存中读，没有则从全局内存中读</span></span><br><span class="line">                    <span class="keyword">if</span> local_i + j &lt; TPB:</span><br><span class="line">                        acc = acc + shared[local_i + j] * shared[TPB + j]</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        acc = acc + a[i + j] * shared[TPB + j]</span><br><span class="line">            <span class="comment"># 结果写回到全局内存中</span></span><br><span class="line">            out[i] = acc</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>本题有两个测试用例，第一个测试用例只使用了一个Block，并且输入和卷积核都能够全部载入到共享内存中。第二个测试用例使用了2个Block，并且输入并不能完全载入到共享内存中。</p>
+<p><img src="images/gpu/puzzle11case1.png" alt="Puzzle 11 case 1"></p>
+<p><img src="images/gpu/puzzle11case2.png" alt="Puzzle 11 case 2"></p>
+<h2 id="Puzzle-12"><a href="#Puzzle-12" class="headerlink" title="Puzzle 12"></a>Puzzle 12</h2><p>题目：<code>Prefix sum</code>。前缀和，其实就是规约求和，题目要求的是相邻线程相加，与第十题中使用到的规约计算方法稍有不同，相邻线程相加的情况下<code>stride</code>是从小到大增长的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">TPB = <span class="number">8</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        cache = cuda.shared.array(TPB, numba.float32)</span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        <span class="comment"># 前缀和，其实就是reduce操作，这里实现的版本是相邻线程相加的reduce</span></span><br><span class="line">        <span class="comment"># 将输入加载到共享内存中</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            cache[local_i] = a[i]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">        <span class="comment"># 相邻线程相加</span></span><br><span class="line">        stride = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> stride != TPB:</span><br><span class="line">            <span class="keyword">if</span> local_i % (stride * <span class="number">2</span>) == <span class="number">0</span>:</span><br><span class="line">                cache[local_i] = cache[local_i] + cache[local_i + stride]</span><br><span class="line">            stride = stride * <span class="number">2</span></span><br><span class="line">        <span class="comment"># 结果储存在共享内存的第一个元素中</span></span><br><span class="line">        <span class="keyword">if</span> local_i == <span class="number">0</span>:</span><br><span class="line">            out[cuda.blockIdx.x] = cache[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>可视化图并看不出共享内存中的规约操作，图个乐就好。第二个测试用例中的输出如果要进一步求和，可以再进行一次规约操作，也称为两阶段式的<code>reduce</code>。</p>
+<p><img src="images/gpu/puzzle12case1.png" alt="Puzzle 12 case 1"></p>
+<p><img src="images/gpu/puzzle12case2.png" alt="Puzzle 12 case 2"></p>
+<h2 id="Puzzle-13"><a href="#Puzzle-13" class="headerlink" title="Puzzle 13"></a>Puzzle 13</h2><p>题目：<code>Axis sum</code>。同样是<code>reduce_sum</code>，不过本题支持的是任意轴上的规约操作，不同的地方在于要正确处理输入加载到共享内存上的下标映射关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">TPB = <span class="number">8</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">axis_sum_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, size: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        cache = cuda.shared.array(TPB, numba.float32)</span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        batch = cuda.blockIdx.y</span><br><span class="line">        <span class="comment"># 沿某个轴上的相加操作，正确处理好batch的关系即可，其他跟reduce一样</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size:</span><br><span class="line">            cache[local_i] = a[batch, i]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">        stride = TPB // <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> stride &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> local_i &lt; stride:</span><br><span class="line">                cache[local_i] = cache[local_i] + cache[local_i + stride]</span><br><span class="line">            stride = stride // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> local_i == <span class="number">0</span>:</span><br><span class="line">            out[batch, <span class="number">0</span>] = cache[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>可视化图太长了，截图不完全，其实与上一题多Block下的规约计算是一样的。</p>
+<p><img src="images/gpu/puzzle13.png" alt="Puzzle 13"></p>
+<h2 id="Puzzle-14"><a href="#Puzzle-14" class="headerlink" title="Puzzle 14"></a>Puzzle 14</h2><p>题目：<code>Matrix multiply</code>。矩阵乘法，非常经典的带共享内存版本的矩阵乘法，使用两个共享内存矩阵，用于储存矩阵的局部数据，并在这局部数据上进行矩阵相乘，将结果写到全局内存的输出中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">TPB = <span class="number">3</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mm_oneblock_test</span><span class="params">(cuda)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(out, a, b, size: int)</span> -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        a_shared = cuda.shared.array((TPB, TPB), numba.float32)</span><br><span class="line">        b_shared = cuda.shared.array((TPB, TPB), numba.float32)</span><br><span class="line"></span><br><span class="line">        i = cuda.blockIdx.x * cuda.blockDim.x + cuda.threadIdx.x</span><br><span class="line">        j = cuda.blockIdx.y * cuda.blockDim.y + cuda.threadIdx.y</span><br><span class="line">        local_i = cuda.threadIdx.x</span><br><span class="line">        local_j = cuda.threadIdx.y</span><br><span class="line">        <span class="comment"># Naive，不带共享内存的原始写法</span></span><br><span class="line">        <span class="comment"># if i &lt; size and j &lt; size:</span></span><br><span class="line">        <span class="comment">#     acc = 0</span></span><br><span class="line">        <span class="comment">#     for k in range(size):</span></span><br><span class="line">        <span class="comment">#         acc = acc + a[i, k] * b[k, j]</span></span><br><span class="line">        <span class="comment">#     out[i, j] = acc</span></span><br><span class="line">        <span class="comment"># 带共享内存的写法</span></span><br><span class="line">        acc = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 一个Block负责管一个小区域，这个小区域中的元素正好全部能装到Shared memory中</span></span><br><span class="line">        <span class="comment"># 每个Block都加载一次，然后计算Shared memory这一个小矩阵的乘积</span></span><br><span class="line">        <span class="keyword">for</span> blockId <span class="keyword">in</span> range(cuda.blockDim.x):</span><br><span class="line">            <span class="comment"># 将当前Block内的数据搬到Shared memory中</span></span><br><span class="line">            <span class="keyword">if</span> i &lt; size <span class="keyword">and</span> (blockId * cuda.blockDim.y + cuda.threadIdx.y) &lt; size:</span><br><span class="line">                a_shared[local_i, local_j] = a[i, blockId * cuda.blockDim.y + cuda.threadIdx.y]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 如果超过原矩阵的边界，则置零，以免上一个Stride中的数据扰乱结果</span></span><br><span class="line">                a_shared[local_i, local_j] = <span class="number">0.0</span></span><br><span class="line">            <span class="keyword">if</span> j &lt; size <span class="keyword">and</span> (blockId * cuda.blockDim.x + cuda.threadIdx.x) &lt; size:</span><br><span class="line">                b_shared[local_i, local_j] = b[blockId * cuda.blockDim.x + cuda.threadIdx.x, j]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                b_shared[local_i, local_j] = <span class="number">0.0</span></span><br><span class="line">            <span class="comment"># 数据搬完之后，同步一下线程</span></span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">            <span class="comment"># 矩阵乘法，一行乘一列，结果累加</span></span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> range(cuda.blockDim.x):</span><br><span class="line">                acc = acc + a_shared[local_i, k] * b_shared[k, local_j]</span><br><span class="line">            cuda.syncthreads()</span><br><span class="line">        <span class="comment"># 结果写回</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; size <span class="keyword">and</span> j &lt; size:</span><br><span class="line">            out[i, j] = acc</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> call</span><br></pre></td></tr></table></figure>
+<p>测试用例同样有两个，第一个用例中共享内存的大小比矩阵要大，使用一个Block便可以完成计算。第二个用例中矩阵要大于共享内存的大小，此时就需要分片加载，计算局部矩阵和，最后将结果累加写回到输出。</p>
+<p><img src="images/gpu/puzzle14case1.png" alt="Puzzle 14 case 1"></p>
+<p><img src="images/gpu/puzzle14case2.png" alt="Puzzle 14 case 2"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对于初学者来说，前九题的难度还是十分友好的，第十题开始需要更深入的理解，配合可视化图，花点时间也能完全理解。使用Python编写核函数的方法也降低了学习成本，通过一题之后的小动物视频很有趣。总而言之是一个宝藏小仓库，值得给仓库作者点一个小星星。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gpu/" rel="tag"># GPU</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/在ubuntu18-04上编译安装mindspore.html" rel="next" title="在Ubuntu18.04上编译安装MindSpore">
+                  <i class="fa fa-chevron-left"></i> 在Ubuntu18.04上编译安装MindSpore
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#题解"><span class="nav-number">2.</span> <span class="nav-text">题解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-1"><span class="nav-number">2.1.</span> <span class="nav-text">Puzzle 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-2"><span class="nav-number">2.2.</span> <span class="nav-text">Puzzle 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-3"><span class="nav-number">2.3.</span> <span class="nav-text">Puzzle 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-4"><span class="nav-number">2.4.</span> <span class="nav-text">Puzzle 4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-5"><span class="nav-number">2.5.</span> <span class="nav-text">Puzzle 5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-6"><span class="nav-number">2.6.</span> <span class="nav-text">Puzzle 6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-7"><span class="nav-number">2.7.</span> <span class="nav-text">Puzzle 7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-8"><span class="nav-number">2.8.</span> <span class="nav-text">Puzzle 8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-9"><span class="nav-number">2.9.</span> <span class="nav-text">Puzzle 9</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-10"><span class="nav-number">2.10.</span> <span class="nav-text">Puzzle 10</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-11"><span class="nav-number">2.11.</span> <span class="nav-text">Puzzle 11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-12"><span class="nav-number">2.12.</span> <span class="nav-text">Puzzle 12</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-13"><span class="nav-number">2.13.</span> <span class="nav-text">Puzzle 13</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puzzle-14"><span class="nav-number">2.14.</span> <span class="nav-text">Puzzle 14</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="Fisher"
+    src="/images/icons/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Fisher</p>
+  <div class="site-description" itemprop="description">记录学习生活中的点滴</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/FisherWY" title="GitHub &rarr; https://github.com/FisherWY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fisheryung@outlook.com" title="E-Mail &rarr; mailto:fisheryung@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://beian.miit.gov.cn" rel="noopener" target="_blank">粤ICP备2022017631号-1 </a>
+      <img src="/images/icons/beian.png" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisher</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=l8bvleb0PFB0er4hTWo3bGL1-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'l8bvleb0PFB0er4hTWo3bGL1-gzGzoHsz',
+            'X-LC-Key': 'vOPowrKK83zOB6LhLKYOsGd1',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"display":{"position":"left","width":175,"height":350},"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"mobile":{"show":false},"log":false});</script></body>
+</html>
